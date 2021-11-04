@@ -13,19 +13,19 @@ import UserInfoEdit from "./src/Components/Home/UserInfoEdit";
 import Antibody from './src/Components/Home/HomeComponents/Antibody/Antibody';
 
 import PCR from "./src/Components/Home/HomeComponents/PCR/PCR";
-// import PCRPaymentMethod from "./src/Components/Home/HomeComponents/PCR/PCRPaymentMethod";
+import PCRPaymentMethod from "./src/Components/Home/HomeComponents/PCR/PCRPaymentMethod";
 import PCRLeftDate from "./src/Components/Home/HomeComponents/PCR/PCRLeftDate";
 
 import VaccineRegistration from "./src/Components/Home/HomeComponents/Vaccination/Vaccination";
 import VaccineDateLeft from "./src/Components/Home/HomeComponents/Vaccination/vaccineLeftDate";
-// import VaccinePaymentMethod from "./src/Components/Home/HomeComponents/Vaccination/VaccinePaymentMethod";
+import VaccinePaymentMethod from "./src/Components/Home/HomeComponents/Vaccination/VaccinePaymentMethod";
 
 import AddCountry from "./src/Components/Home/HomeComponents/AddCountry/AddCountry";
 import Synchronise from "./src/Components/Home/HomeComponents/Synchronise";
 
 import Booster from "./src/Components/Home/HomeComponents/Booster/Booster";
 import BoosterDateLeft from "./src/Components/Home/HomeComponents/Booster/BoosterLeftDate";
-// import BoosterPaymentMethod from "./src/Components/Home/HomeComponents/Booster/BoosterPaymentMethod";
+import BoosterPaymentMethod from "./src/Components/Home/HomeComponents/Booster/BoosterPaymentMethod";
 import Artboard from "./src/Components/Home/Artboard";
 
 const Stack = createNativeStackNavigator();
