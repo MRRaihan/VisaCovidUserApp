@@ -87,7 +87,7 @@ const VaccineRegistration = (props) => {
 
 
                 <TouchableOpacity style={styles.button} onPress={() => {
-                            props.navigation.navigate("Vaccine Payment Method");
+                            props.navigation.navigate("Vaccine Date Status");
                     }}>
                         <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Register & Exit</Text>
                 </TouchableOpacity>

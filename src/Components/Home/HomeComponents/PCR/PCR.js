@@ -88,7 +88,7 @@ const PCR = (props) => {
 
 
                 <TouchableOpacity style={styles.button} onPress={() => {
-                            props.navigation.navigate("PCR Payment Method");
+                            props.navigation.navigate("PCR Date Status");
                     }}>
                         <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Register</Text>
                 </TouchableOpacity>
