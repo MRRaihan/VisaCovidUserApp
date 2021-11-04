@@ -89,7 +89,7 @@ export default function App(props) {
               if (responseJson.status == "1")
               {
                 Alert.alert(responseJson.message);
-                props.navigation.navigate("Home");
+                props.navigation.navigate("Mobile OTP");
               }else if(responseJson.status == "0"){
                 Alert.alert(responseJson.message);
               }
