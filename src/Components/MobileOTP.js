@@ -1,16 +1,18 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {TextInput} from "react-native-gesture-handler";
-import {View, StyleSheet, KeyboardAvoidingView, TouchableOpacity, Text, ScrollView } from 'react-native';
+import {View, StyleSheet, KeyboardAvoidingView, TouchableOpacity, Text, ScrollView, Alert} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
-const MobileOTP= (props) =>{
+const MobileOTP= ({navigation, route}) =>{
           const lengthInput = 6;
           const defaultCountdown = 30;
-          let clockCall= null;    
+          let clockCall= null;
           let textInput = useRef(null);
           const [internalVal, setInternalVal] = useState("");
           const [countdown, setCountdown] = useState(defaultCountdown);
           const [enableResend, setEnableResend] = useState(false);
+          const [phone, setPhone] = useState("");
           useEffect(() => {
                     clockCall = setInterval(() => {
                               decrementClock();
@@ -19,6 +21,12 @@ const MobileOTP= (props) =>{
                               clearInterval(clockCall);
                     }
           })
+
+        useEffect(()=>{
+            AsyncStorage.getItem('phone').then(value =>{
+                setPhone(value)
+            });
+        })
           const decrementClock = () =>{12
                     if(countdown === 0){
                               setEnableResend(true)
@@ -56,13 +64,13 @@ const MobileOTP= (props) =>{
           return (
             <ScrollView>
           <View style={styles.container}>
-            <KeyboardAvoidingView 
+            <KeyboardAvoidingView
                 keyboardVerticalOffset={50}
                 behavior={'padding'}
                 styles={styles.containerAvoidingView}
             >
-        
-                <Text style={styles.titleStyle}>Code is sent to <Text style={styles.titleNumberStyle}>+8801700000000</Text></Text>
+
+                <Text style={styles.titleStyle}>Code is sent to <Text style={styles.titleNumberStyle}>{phone}</Text></Text>
 
                 <View>
                 <TextInput
@@ -104,17 +112,17 @@ const MobileOTP= (props) =>{
                     <View style={styles.btnChangeNumber} >
                     <Text style={styles.textChange} >Send again</Text>
                     </View>
-                </TouchableOpacity>   
+                </TouchableOpacity>
                 </View>
                 <View style={styles.SubmitBtn}>
                 <TouchableOpacity onPress={()=>{
                             props.navigation.navigate("Home")
                             }}  style={styles.otpButton}
-                > 
+                >
                             <Text style={styles.otpButtonView}>Verify & Continue</Text>
                 </TouchableOpacity>
                 </View>
-                        
+
             </KeyboardAvoidingView>
           </View>
           </ScrollView>
@@ -134,14 +142,14 @@ const styles = StyleSheet.create({
 
     containerAvoidingView:{
         flex: 1,
-        alignItems: 'center', 
+        alignItems: 'center',
         padding: 10,
     },
     titleStyle: {
         fontSize: 20,
         textAlign: 'center',
         color: "#0f0f0f"
-            
+
     },
         titleNumberStyle: {
         fontSize: 20,
@@ -181,13 +189,13 @@ const styles = StyleSheet.create({
         height: 'auto',
         alignItems: 'center',
         justifyContent: 'center',
-            
+
     },
     textChange:{
         color: '#234BB7',
         alignItems: 'center',
         fontSize: 17
-            
+
     },
     btnResend: {
         width: 200,
