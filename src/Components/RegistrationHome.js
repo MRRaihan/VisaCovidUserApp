@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, ScrollView, Alert} from "react-native";
 
 import appUrl from '../RestApi/AppUrl';
+import AsyncStorage from '@react-native-community/async-storage';
 
-export default function App(props) {
+export default function App({navigation}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -16,7 +17,7 @@ export default function App(props) {
       <View style={styles.accountsForm}>
           <View style={styles.loginSign}>
             <TouchableOpacity style={styles.loginSignBtn1} onPress={() =>{
-                  props.navigation.navigate("Login")
+                navigation.navigate("Login")
               }}>
                 <Text style={styles.accountsText}>LOGIN</Text>
             </TouchableOpacity>
@@ -89,7 +90,8 @@ export default function App(props) {
               if (responseJson.status == "1")
               {
                 Alert.alert(responseJson.message);
-                props.navigation.navigate("Mobile OTP");
+                AsyncStorage.setItem('phone', responseJson.phone);
+                navigation.navigate("Mobile OTP");
               }else if(responseJson.status == "0"){
                 Alert.alert(responseJson.message);
               }

@@ -20,7 +20,7 @@ export default function App({navigation}) {
           </View>
           <View style={styles.loginSign}>
             <TouchableOpacity style={styles.loginSignBtn2} onPress={() =>{
-                props.navigation.navigate("Registration")
+                navigation.navigate("Registration")
               }}>
                 <Text style={styles.accountsText}>REGISTRATION</Text>
             </TouchableOpacity>
