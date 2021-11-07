@@ -2,6 +2,8 @@ import React, {useState, useEffect, useRef} from 'react';
 import {TextInput} from "react-native-gesture-handler";
 import {View, StyleSheet, KeyboardAvoidingView, TouchableOpacity, Text, ScrollView, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import appUrl from "../RestApi/AppUrl";
+
 
 
 const MobileOTP= ({navigation, route}) =>{
@@ -116,7 +118,36 @@ const MobileOTP= ({navigation, route}) =>{
                 </View>
                 <View style={styles.SubmitBtn}>
                 <TouchableOpacity onPress={()=>{
-                            props.navigation.navigate("Home")
+                    const url = appUrl.OtpCheck;
+                    const config = {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ phone:phone, otp:internalVal})
+                    };
+
+                    fetch(url,config)
+                        .then((response) => response.json())
+                        .then((responseJson) => {
+                            //Alert.alert(responseJson.message);
+                            if (responseJson.status == "1")
+                            {
+                                Alert.alert(responseJson.message);
+                                AsyncStorage.setItem('phone', responseJson.phone);
+                                navigation.navigate("Home")
+                            }else if(responseJson.status == "0"){
+                                Alert.alert(responseJson.message);
+                            }
+                        })
+                        .catch((error) => {
+                            //Alert.alert("Failed to registration 2");
+                        });
+
+
+                    //Alert.alert(url);
+                            //props.navigation.navigate("Home")
                             }}  style={styles.otpButton}
                 >
                             <Text style={styles.otpButtonView}>Verify & Continue</Text>
