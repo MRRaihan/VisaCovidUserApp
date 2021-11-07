@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {ScrollView, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert} from "react-native";
 import appUrl from "../RestApi/AppUrl";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
-export default function App(props) {
+export default function App({navigation}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -66,13 +66,12 @@ export default function App(props) {
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
+
               if (responseJson.status == "1")
               {
                 Alert.alert(responseJson.message);
-                AsyncStorage.setItem('@storage_Key', "hello");
-                let msg = AsyncStorage.getItem('@storage_Key');
-                Alert.alert(msg)
-                //props.navigation.navigate("Home")
+                AsyncStorage.setItem('phone', responseJson.phone);
+                navigation.navigate("Mobile OTP")
               }else if(responseJson.status == "0"){
                 Alert.alert(responseJson.message);
               }
