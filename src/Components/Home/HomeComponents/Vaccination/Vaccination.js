@@ -1,14 +1,60 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView  } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Image} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import appUrl from "../../../../RestApi/AppUrl";
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
+import AsyncStorage from "@react-native-community/async-storage";
 
-const VaccineRegistration = (props) => {
+const VaccineRegistration = ({navigation}) => {
     const [selectedFirstItem, setSelectedFirstItem] = useState();
     const [selectedSecondItem, setSelectedSecondItem] = useState();
     const [selectedThirdItem, setSelectedThirdItem] = useState();
     const [selectedFourItem, setSelectedFourItem] = useState();
     const [selectedFiveItem, setSelectedFiveItem] = useState();
-    
+
+    const [allCountry, setCountryItem] = useState([]);
+    const [allState, setStateItem] = useState([]);
+    const [allCity, setCityItem] = useState([]);
+    const [allCenter, setCenterItem] = useState([]);
+
+    //time
+    const [currentDate, setCurrentDate] = useState('');
+    const [phone, setPhone] = useState("");
+
+    useEffect(()=>{
+        var date = moment().format();
+        var currentDate = moment(date).format('YYYY-MM-DD');
+        setCurrentDate(currentDate);
+
+        AsyncStorage.getItem('phone').then(value =>{
+            setPhone(value)
+        });
+
+        const url = appUrl.Country;
+        const config = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        };
+
+        fetch(url,config)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // Alert.alert(responseJson.status);
+                if (responseJson.status == "1")
+                {
+                    setCountryItem(responseJson.countries);
+                }else if(responseJson.status == "0"){
+                    Alert.alert(responseJson.message);
+                }
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
+    },[])
 
     return (
         <ScrollView>
@@ -19,42 +65,119 @@ const VaccineRegistration = (props) => {
                     <Picker
                         style={styles.checkItemColor}
                         selectedValue={selectedFirstItem}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedFirstItem(itemValue)
+                        onValueChange={(itemValue) =>{
+                            const url = appUrl.State+"/"+itemValue;
+                            const config = {
+                                method: 'GET',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                }
+                            };
+                            fetch(url,config)
+                                .then((response) => response.json())
+                                .then((responseJson) => {
+                                    if (responseJson.status == "1")
+                                    {
+                                        setSelectedFirstItem(itemValue);
+                                        setStateItem(responseJson.states);
+                                    }else if(responseJson.status == "0"){
+                                        Alert.alert(responseJson.message);
+                                    }
+                                })
+                                .catch((error) => {
+                                    //Alert.alert("Failed to registration 2");
+                                });
+                        }
                     }>
-                        <Picker.Item label="Bangladesh" value="Bangladesh" />
-                        <Picker.Item label="Argentina" value="Argentina" />
-                        <Picker.Item label="Brazil" value="Brazil" />
-                        <Picker.Item label="Germany" value="Germany" />
+                        {
+                            allCountry.map((country)=>{
+                                return (
+                                    <Picker.Item key={country.id} label={country.name} value={country.id} />
+                                )
+                            })
+                        }
                     </Picker>
                 </View>
                 <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select a City</Text>
+                    <Text style={styles.checkTitle}>Select State</Text>
                     <Picker
                         style={styles.checkItemColor}
                         selectedValue={selectedSecondItem}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedSecondItem(itemValue)
+                        onValueChange={(itemValue, itemIndex) =>{
+                            const url = appUrl.City+"/"+itemValue;
+                            const config = {
+                                method: 'GET',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                }
+                            };
+                            fetch(url,config)
+                                .then((response) => response.json())
+                                .then((responseJson) => {
+                                    if (responseJson.status == "1")
+                                    {
+                                        setSelectedSecondItem(itemValue)
+                                        setCityItem(responseJson.cities);
+                                    }else if(responseJson.status == "0"){
+                                        Alert.alert(responseJson.message);
+                                    }
+                                })
+                                .catch((error) => {
+                                    //Alert.alert("Failed to registration 2");
+                                });
+                        }
                     }>
-                        <Picker.Item label="Dhaka" value="Dhaka" />
-                        <Picker.Item label="Buenos Aires" value="Buenos Aires" />
-                        <Picker.Item label="Sao Paulo" value="Sao Paulo" />
-                        <Picker.Item label="Berlin" value="Berlin" />
+                        {
+                            allState.map((state)=>{
+                                return (
+                                    <Picker.Item key={state.id} label={state.name} value={state.id} />
+                                )
+                            })
+                        }
                     </Picker>
                 </View>
 
                 <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select a Zone</Text>
+                    <Text style={styles.checkTitle}>Select City</Text>
                     <Picker
                         style={styles.checkItemColor}
                         selectedValue={selectedThirdItem}
                         onValueChange={(itemValue, itemIndex) =>
-                            setSelectedThirdItem(itemValue)
+                        {
+                            const url = appUrl.Center+"/"+itemValue;
+                            const config = {
+                                method: 'GET',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                }
+                            };
+                            fetch(url,config)
+                                .then((response) => response.json())
+                                .then((responseJson) => {
+                                    if (responseJson.status == "1")
+                                    {
+                                        setSelectedThirdItem(itemValue)
+                                        setCenterItem(responseJson.centers);
+                                    }else if(responseJson.status == "0"){
+                                        Alert.alert(responseJson.message);
+                                    }
+                                })
+                                .catch((error) => {
+                                    //Alert.alert("Failed to registration 2");
+                                });
+                        }
+
                     }>
-                        <Picker.Item label="Uttara" value="Uttara" />
-                        <Picker.Item label="Buenos Aires" value="Buenos Aires" />
-                        <Picker.Item label="Sao Paulo" value="Sao Paulo" />
-                        <Picker.Item label="Berlin" value="Berlin" />
+                        {
+                            allCity.map((city)=>{
+                                return (
+                                    <Picker.Item key={city.id} label={city.name} value={city.id} />
+                                )
+                            })
+                        }
                     </Picker>
                 </View>
 
@@ -66,38 +189,83 @@ const VaccineRegistration = (props) => {
                         onValueChange={(itemValue, itemIndex) =>
                             setSelectedFourItem(itemValue)
                     }>
-                        <Picker.Item label="Kuet Moitri Medical" value="Kuet Moitri Medical" />
-                        <Picker.Item label="Argentina Medical Center" value="Argentina Medical Center" />
-                        <Picker.Item label="Brazil Medical Center" value="Brazil Medical Center" />
-                        <Picker.Item label="Germany Medical Center" value="Germany Medical Center" />
+                        {
+                            allCenter.map((center)=>{
+                                return (
+                                    <Picker.Item key={center.id} label={center.name} value={center.id} />
+                                )
+                            })
+                        }
                     </Picker>
                 </View>
 
                 <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select a Date</Text>
-                    <Picker
-                        style={styles.checkItemColor}
-                        selectedValue={selectedFiveItem}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedFiveItem(itemValue)
-                    }>
-                        <Picker.Item label="12 / 07 / 2020" value="12 / 07 / 2020" />
-                    </Picker>
+                    <DatePicker
+                        style={{width: '100%'}}
+                        date={currentDate}
+                        mode="date"
+                        placeholder="select date"
+                        format="YYYY-MM-DD"
+                        minDate={currentDate}
+                        maxDate="2022-06-01"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                marginLeft: 36
+                            }
+                            // ... You can check the source to find the other keys.
+                        }}
+                        onDateChange={(date) => {
+                            var currentMyDate = moment(date).format('YYYY-MM-DD');
+                            setCurrentDate(currentMyDate);
+                        }}
+                    />
                 </View>
 
 
                 <TouchableOpacity style={styles.button} onPress={() => {
-                            props.navigation.navigate("Vaccine Date Status");
+                    const url = appUrl.Vaccine;
+                    const config = {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, date:currentDate })
+                    };
+                    //Alert.alert(url);
+
+                    fetch(url,config)
+                        .then((response) => response.json())
+                        .then((responseJson) => {
+                            if (responseJson.status == "1")
+                            {
+                                Alert.alert(responseJson.message);
+                                navigation.navigate("Vaccine Date Status", {});
+                            }else if(responseJson.status == "0"){
+                                Alert.alert(responseJson.message);
+                            }
+                        })
+                        .catch((error) => {
+                            //Alert.alert("Failed to registration 2");
+                        });
                     }}>
                         <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Register & Exit</Text>
                 </TouchableOpacity>
-                
-                
+
+
             </View>
 
         </View>
     </ScrollView>
-    
+
 
     )
 }
@@ -132,7 +300,7 @@ const styles = StyleSheet.create({
         width: "100%",
         marginLeft: 10
     },
-    
+
     map: {
         width: "100%",
         height: 345,
@@ -163,3 +331,4 @@ const styles = StyleSheet.create({
 })
 
 export default VaccineRegistration;
+

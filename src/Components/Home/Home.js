@@ -31,7 +31,6 @@ const Home = (props) =>{
                 'Content-Type': 'application/json'
             }
         };
-
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -46,7 +45,7 @@ const Home = (props) =>{
             .catch((error) => {
                 //Alert.alert("Failed to registration 2");
             });
-    })
+    }, [])
     return(
         <ScrollView>
           <View style={styles.container}>
