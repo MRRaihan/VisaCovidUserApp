@@ -11,7 +11,7 @@ const VaccineRegistration = ({navigation}) => {
     const [selectedSecondItem, setSelectedSecondItem] = useState();
     const [selectedThirdItem, setSelectedThirdItem] = useState();
     const [selectedFourItem, setSelectedFourItem] = useState();
-    const [selectedFiveItem, setSelectedFiveItem] = useState();
+
 
     const [allCountry, setCountryItem] = useState([]);
     const [allState, setStateItem] = useState([]);
@@ -182,7 +182,7 @@ const VaccineRegistration = ({navigation}) => {
                 </View>
 
                 <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select a center for PCR Test</Text>
+                    <Text style={styles.checkTitle}>Select a center for Vaccination Test</Text>
                     <Picker
                         style={styles.checkItemColor}
                         selectedValue={selectedFourItem}
@@ -248,7 +248,7 @@ const VaccineRegistration = ({navigation}) => {
                             if (responseJson.status == "1")
                             {
                                 Alert.alert(responseJson.message);
-                                navigation.navigate("Vaccine Date Status", {});
+                                navigation.navigate("Vaccine Date Status");
                             }else if(responseJson.status == "0"){
                                 Alert.alert(responseJson.message);
                             }
@@ -257,7 +257,7 @@ const VaccineRegistration = ({navigation}) => {
                             //Alert.alert("Failed to registration 2");
                         });
                     }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Register & Exit</Text>
+                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Registration Now</Text>
                 </TouchableOpacity>
 
 
