@@ -28,7 +28,7 @@ const MobileOTP= ({navigation, route}) =>{
             AsyncStorage.getItem('phone').then(value =>{
                 setPhone(value)
             });
-        })
+        }, [])
           const decrementClock = () =>{
                     if(countdown === 0){
                               setEnableResend(true)

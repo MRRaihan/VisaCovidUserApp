@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Card, Paragraph, Title } from "react-native-paper";
-import { TouchableOpacity, StyleSheet, View, Text,Image, ScrollView} from "react-native";
+import {TouchableOpacity, StyleSheet, View, Text, Image, ScrollView, Alert, Dimensions} from "react-native";
 
 import UpSlider from "../../../assets/images/slider.png";
 import Antibody from "../../../assets/images/battery.png";
@@ -9,24 +9,61 @@ import PCR from "../../../assets/images/done.png";
 import Vaccination from "../../../assets/images/Vaccination.png";
 import AddCountry from "../../../assets/images/CAddCountry.jpeg";
 import Booster from "../../../assets/images/CBooster.jpeg";
+import {useEffect, useState} from "react";
+import AsyncStorage from "@react-native-community/async-storage";
+import appUrl from "../../RestApi/AppUrl";
+
 
 
 const Home = (props) =>{
+    const [sliders, setSlider] = useState([]);
+    //const [state, setState] = useState({ fName: "", lName: "" });
+
+    const WIDTH = Dimensions.get('window').width;
+    const HEIGHT = Dimensions.get('window').height;
+
+    useEffect(()=>{
+        const url = appUrl.Slider;
+        const config = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        };
+        fetch(url,config)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // Alert.alert(responseJson.status);
+                if (responseJson.status == "1")
+                {
+                    setSlider(responseJson.sliders);
+                }else if(responseJson.status == "0"){
+                    Alert.alert(responseJson.message);
+                }
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
+    }, [])
     return(
         <ScrollView>
           <View style={styles.container}>
-            <Card style={styles.Slider}>
-              <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5}}>
-                <View style={{color:"white", flexDirection: "column", justifyContent:'flex-start', width:"55%", padding:5}}>
-                  <Title>Covid increasing at Bahrain</Title>
-                  <Paragraph>Bangladesh fight limited & 10 days quarantine is must.</Paragraph>
-                </View>
-                <View style={{justifyContent:'flex-end', width:"44%", padding:5, height: 150, }}>
-                <Card.Cover style={{width:"100%", height: 150}} source={UpSlider} />
-                </View>
+              <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: "60%"}}>
+                  <ScrollView horizontal={true} showsHorizontalqScrollIndicator={false}>
+                      {
+                          sliders.map((slider)=>{
+                              return (
+                                  <Image key={slider.id} source = {{uri:appUrl.BaseUrl+slider.image}}
+                                         style = {{ width: WIDTH, height: HEIGHT * 0.25 }}
+                                  />
+                              )
+                          })
+                      }
+                  </ScrollView>
               </View>
-            </Card>
-            <View style={styles.healthData}>
+
+              <View style={styles.healthData}>
               <Text style={styles.HelthTitle}>Health Data</Text>
               <View
                 style={{
@@ -44,7 +81,6 @@ const Home = (props) =>{
                         alignItems: "center",
                         flex: 1,
                         justifyContent: "center",
-                        marginTop: 9,
                         fontSize: 18,
                         color: "#050505"
                       }}
@@ -193,7 +229,7 @@ const Home = (props) =>{
                   </View>
                 </Card>
 
-                
+
 
                 <Card style={styles.dataFlex}>
                   <View style={styles.CardInsideTitle}>
@@ -233,7 +269,7 @@ const Home = (props) =>{
                   </TouchableOpacity>
                   </View>
                 </Card>
-                
+
               </View>
             </View>
           </View>
@@ -263,11 +299,10 @@ const styles = StyleSheet.create({
   HelthTitle: {
     fontSize: 22,
     marginBottom: 10,
-    marginTop: -50,
     color: "#050505"
   },
   healthData: {
-    marginTop: 100,
+    marginTop: 50,
   },
   fDataFlex: {
     backgroundColor: "white",
@@ -275,7 +310,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "80%",
     borderWidth: 2,
-    marginTop: -220,
+    marginTop: -320,
     marginBottom: 6,
     height: 250
 
