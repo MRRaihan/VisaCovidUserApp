@@ -28,8 +28,8 @@ const MobileOTP= ({navigation, route}) =>{
             AsyncStorage.getItem('phone').then(value =>{
                 setPhone(value)
             });
-        })
-          const decrementClock = () =>{12
+        }, [])
+          const decrementClock = () =>{
                     if(countdown === 0){
                               setEnableResend(true)
                               setCountdown(0)
@@ -131,11 +131,12 @@ const MobileOTP= ({navigation, route}) =>{
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
-                            //Alert.alert(responseJson.message);
+
                             if (responseJson.status == "1")
                             {
                                 Alert.alert(responseJson.message);
                                 AsyncStorage.setItem('phone', responseJson.phone);
+                                AsyncStorage.setItem('loginStatus', responseJson.loginStatus);
                                 navigation.navigate("Home")
                             }else if(responseJson.status == "0"){
                                 Alert.alert(responseJson.message);
