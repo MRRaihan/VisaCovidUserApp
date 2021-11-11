@@ -22,7 +22,7 @@ const Home = ({navigation}) =>{
 
     //For service status check
     const [vaccination, setVaccination] = useState("");
-    const [pcr, setPcr] = useState("");
+    const [pcr, setPcrStatus] = useState("");
     const [booster, setBooster] = useState("");
 
     //For Slider width & hight
@@ -33,7 +33,7 @@ const Home = ({navigation}) =>{
         AsyncStorage.getItem('phone').then(value =>{
             //For Vaccination Status
             const vaccineUrl = appUrl.VaccineStatus;
-            const vaccineConfig = {
+            const postConfig = {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -41,30 +41,65 @@ const Home = ({navigation}) =>{
                 },
                 body: JSON.stringify({phone:value})
             };
-            fetch(vaccineUrl,vaccineConfig)
+            fetch(vaccineUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    console.log(responseJson);
-
-                    if (responseJson.status == "1")
-                    {
-                        setVaccination(responseJson.navigationPath);
-                    }else if(responseJson.status == "0"){
-                        Alert.alert(responseJson.message);
-                    }
-
+                    setVaccination(responseJson.navigationPath);
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
                 });
-            Alert.alert(value)
         });
 
-        AsyncStorage.getItem('userId').then(value =>{
-            setUserId(value)
+    }, []);
+
+    useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const pcrUrl = appUrl.PcrStatus;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(pcrUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setPcrStatus(responseJson.navigationPath);
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
         });
 
-    }, [])
+    }, []);
+
+    useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const boosterUrl = appUrl.BoosterStatus;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(boosterUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setBooster(responseJson.navigationPath);
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+
+    }, []);
 
     useEffect(()=>{
         //For slider
