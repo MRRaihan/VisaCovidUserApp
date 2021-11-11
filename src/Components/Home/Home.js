@@ -15,14 +15,59 @@ import appUrl from "../../RestApi/AppUrl";
 
 
 
-const Home = (props) =>{
+const Home = ({navigation}) =>{
     const [sliders, setSlider] = useState([]);
-    //const [state, setState] = useState({ fName: "", lName: "" });
+    const [phone, setPhone] = useState("");
+    const [userId, setUserId] = useState("");
 
+    //For service status check
+    const [vaccination, setVaccination] = useState("");
+    const [pcr, setPcr] = useState("");
+    const [booster, setBooster] = useState("");
+
+    //For Slider width & hight
     const WIDTH = Dimensions.get('window').width;
     const HEIGHT = Dimensions.get('window').height;
 
     useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            //For Vaccination Status
+            const vaccineUrl = appUrl.VaccineStatus;
+            const vaccineConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(vaccineUrl,vaccineConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+
+                    if (responseJson.status == "1")
+                    {
+                        setVaccination(responseJson.navigationPath);
+                    }else if(responseJson.status == "0"){
+                        Alert.alert(responseJson.message);
+                    }
+
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+            Alert.alert(value)
+        });
+
+        AsyncStorage.getItem('userId').then(value =>{
+            setUserId(value)
+        });
+
+    }, [])
+
+    useEffect(()=>{
+        //For slider
         const url = appUrl.Slider;
         const config = {
             method: 'GET',
@@ -45,7 +90,11 @@ const Home = (props) =>{
             .catch((error) => {
                 //Alert.alert("Failed to registration 2");
             });
-    }, [])
+
+
+    }, []);
+
+
     return(
         <ScrollView>
           <View style={styles.container}>
@@ -104,7 +153,8 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Vaccine Registration");
+                      //props.navigation.navigate("Vaccine Registration");
+                        navigation.navigate(vaccination);
                     }}
                   >
                     <Image style={styles.vSliderImage} source={Vaccination} />
@@ -143,7 +193,7 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Antibody");
+                        navigation.navigate("Antibody");
                     }}
                   >
                     <Image style={styles.SliderImage} source={Antibody} />
@@ -182,7 +232,8 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("PCR");
+                      //navigation.navigate("PCR");
+                      navigation.navigate(pcr);
                     }}
                   >
                     <Image style={styles.pSliderImage} source={PCR} />
@@ -221,7 +272,8 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Booster");
+                      //navigation.navigate("Booster");
+                      navigation.navigate(booster);
                     }}
                   >
                     <Image style={styles.bSliderImage} source={Booster} />

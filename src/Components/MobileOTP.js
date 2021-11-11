@@ -15,6 +15,8 @@ const MobileOTP= ({navigation, route}) =>{
           const [countdown, setCountdown] = useState(defaultCountdown);
           const [enableResend, setEnableResend] = useState(false);
           const [phone, setPhone] = useState("");
+          const [userId, setUserId] = useState("");
+
           useEffect(() => {
                     clockCall = setInterval(() => {
                               decrementClock();
@@ -28,6 +30,11 @@ const MobileOTP= ({navigation, route}) =>{
             AsyncStorage.getItem('phone').then(value =>{
                 setPhone(value)
             });
+
+            AsyncStorage.getItem('userId').then(value =>{
+                setUserId(value)
+            });
+
         }, [])
           const decrementClock = () =>{
                     if(countdown === 0){
@@ -131,16 +138,18 @@ const MobileOTP= ({navigation, route}) =>{
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
-
+                            console.log(responseJson);
                             if (responseJson.status == "1")
                             {
                                 Alert.alert(responseJson.message);
                                 AsyncStorage.setItem('phone', responseJson.phone);
+                                AsyncStorage.setItem('userId', responseJson.userId);
                                 AsyncStorage.setItem('loginStatus', responseJson.loginStatus);
                                 navigation.navigate("Home")
                             }else if(responseJson.status == "0"){
                                 Alert.alert(responseJson.message);
                             }
+
                         })
                         .catch((error) => {
                             //Alert.alert("Failed to registration 2");
