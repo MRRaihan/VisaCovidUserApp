@@ -17,6 +17,13 @@ class AppUrl{
     static Vaccine = this.BaseUrl+'api/home/vaccine/registration';
     static PCR = this.BaseUrl+'api/home/prc/registration';
     static Booster = this.BaseUrl+'api/home/booster/registration';
+
+
+    // Service status check
+    static VaccineStatus = this.BaseUrl+'api/home/vaccine/statusCheck';
+    static PcrStatus = this.BaseUrl+'api/home/pcr/statusCheck';
+    static BoosterStatus = this.BaseUrl+'api/home/booster/statusCheck';
+
 }
 
 export default AppUrl;
