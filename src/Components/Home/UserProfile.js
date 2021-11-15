@@ -1,11 +1,64 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, } from "react-native";
 import {Button, Card} from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AntibodyLogo from "../../../assets/images/userProfileLogoImg.jpg";
+import AsyncStorage from "@react-native-community/async-storage";
+import appUrl from "../../RestApi/AppUrl";
 
-const UserProfile = (props) => {
+const UserProfile = ({navigation}) => {
   const [userId, setUserId] = useState();
+  const [lastEffected, setLastEffected] = useState('');
+  const [recovered, setRecovered] = useState('');
+  const [antibodyRemaining, setAntibodyRemaining] = useState('');
+  const [pcrLastTest, setPcrLastTest] = useState('');
+  const [lastPcrResult, setLastPcrResult] = useState('');
+  const [pcrTestCenter, setPcrTestCenter] = useState('');
+  const [pcrCenterLocation, setPcrCenterLocation] = useState('');
+  const [vaccinationDoseOne, setVaccinationDoseOne] = useState('');
+  const [vaccinationDoseTwo, setVaccinationDoseTwo] = useState('');
+  const [vaccinationName, setVaccinationName] = useState('');
+  const [vaccinationCenter, setVaccinationCenter] = useState('');
+  const [boosterCenter, setBoosterCenter] = useState('');
+  const [boosterDate, setBoosterDate] = useState('');
+
+  useEffect(()=>{
+    AsyncStorage.getItem('phone').then(value =>{
+      //For pcr Status
+      const boosterUrl = appUrl.boosterLeftTime;
+      const postConfig = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({phone:value})
+      };
+      fetch(boosterUrl,postConfig)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            console.log(responseJson)
+            setLastEffected(responseJson.leftDay);
+            setRecovered(responseJson.leftDay);
+            setAntibodyRemaining(responseJson.leftDay);
+            setPcrLastTest(responseJson.leftDay);
+            setLastPcrResult(responseJson.leftDay);
+            setPcrTestCenter(responseJson.leftDay);
+            setPcrCenterLocation(responseJson.leftDay);
+            setVaccinationDoseOne(responseJson.leftDay);
+            setVaccinationDoseTwo(responseJson.leftDay);
+            setVaccinationName(responseJson.leftDay);
+            setVaccinationCenter(responseJson.leftDay);
+            setBoosterCenter(responseJson.leftDay);
+            setBoosterDate(responseJson.leftDay);
+          })
+          .catch((error) => {
+            //Alert.alert("Failed to registration 2");
+          });
+    });
+  },[])
+
+
 
   return (
     <ScrollView>
@@ -21,13 +74,13 @@ const UserProfile = (props) => {
           <View style={styles.subscribtionBtn}>
             <View style={{width: "60%", justifyContent: "center", alignItems: 'center', marginLeft: 20}}>
               <TouchableOpacity style={styles.subscribtionBtnMain} onPress={() =>{
-                  props.navigation.navigate("")
+                  navigation.navigate("")
                 }}>
                   <Text style={styles.PaymentText}>Subscribe Now</Text>
               </TouchableOpacity>
             </View>
           </View>
-          
+
           <View style={{ paddingTop: 20 }}>
             <Text style={styles.testStyle}>COVID-19 Antibody</Text>
             <View
@@ -39,15 +92,15 @@ const UserProfile = (props) => {
             />
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Last affected</Text>
-              <Text style={styles.testEndItem}>12 Sep 2021</Text>
+              <Text style={styles.testEndItem}>{lastEffected}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Recovered</Text>
-              <Text style={styles.testEndItem}>22 Sep 2021</Text>
+              <Text style={styles.testEndItem}>{recovered}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Antibody Remaining</Text>
-              <Text style={styles.testEndItem}>4 mon 14 days</Text>
+              <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
             </View>
           </View>
 
@@ -62,19 +115,19 @@ const UserProfile = (props) => {
             />
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Last Test</Text>
-              <Text style={styles.testEndItem}>12 Sep 2021</Text>
+              <Text style={styles.testEndItem}>{pcrLastTest}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Last result</Text>
-              <Text style={styles.testEndItem}>Negative</Text>
+              <Text style={styles.testEndItem}>{lastPcrResult}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Test Center</Text>
-              <Text style={styles.testEndItem}>UTTPS</Text>
+              <Text style={styles.testEndItem}>{pcrTestCenter}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Test Location</Text>
-              <Text style={styles.testEndItem}>Dhaka</Text>
+              <Text style={styles.testEndItem}>{pcrCenterLocation}</Text>
             </View>
           </View>
 
@@ -89,35 +142,58 @@ const UserProfile = (props) => {
             />
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Dose 1</Text>
-              <Text style={styles.testEndItem}>No data</Text>
+              <Text style={styles.testEndItem}>{vaccinationDoseOne}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Dose 2</Text>
-              <Text style={styles.testEndItem}>No data</Text>
+              <Text style={styles.testEndItem}>{vaccinationDoseTwo}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Vaccine name</Text>
-              <Text style={styles.testEndItem}>No data</Text>
+              <Text style={styles.testEndItem}>{vaccinationName}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Vaccine center</Text>
-              <Text style={styles.testEndItem}>No data</Text>
+              <Text style={styles.testEndItem}>{vaccinationCenter}</Text>
             </View>
-            
           </View>
+
+          <View style={{ paddingTop: 20 }}>
+            <Text style={styles.testStyle}>Booster</Text>
+            <View
+                style={{
+                  borderBottomColor: "#e8e2e1",
+                  borderBottomWidth: 2,
+                  marginBottom: 10,
+                }}
+            />
+            <View style={styles.testContents}>
+              <Text style={styles.testStartItem}>Booster Center</Text>
+              <Text style={styles.testEndItem}>{boosterCenter}</Text>
+            </View>
+            <View style={styles.testContents}>
+              <Text style={styles.testStartItem}>Booster Date</Text>
+              <Text style={styles.testEndItem}>{boosterDate}</Text>
+            </View>
+            <View style={styles.testContents}>
+              <Text style={styles.testStartItem}>Antibody Remaining</Text>
+              <Text style={styles.testEndItem}>{}</Text>
+            </View>
+          </View>
+
           <View style={styles.accountsForm}>
               <View style={styles.editInfo}>
                 <TouchableOpacity style={styles.editInerView} onPress={() =>{
-                    props.navigation.navigate("Personal Information")}}>
+                    navigation.navigate("Personal Information")}}>
 
                     <Icon name="edit" size={30} color="#2d28b5" solid />
                     <Text style={styles.editBtnText}>Edit Personal Data</Text>
-                    
+
                 </TouchableOpacity>
               </View>
               <View style={styles.logoutUser}>
                 <TouchableOpacity style={styles.loginSignBtn2} onPress={() =>{
-                    props.navigation.navigate("Login")
+                    navigation.navigate("Login")
                   }}>
                     <Text style={styles.PaymentText}>Log Out</Text>
                 </TouchableOpacity>
@@ -231,7 +307,7 @@ const styles = StyleSheet.create({
   editInfo:{
     width: "60%",
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',
 
   },
   editInerView:{

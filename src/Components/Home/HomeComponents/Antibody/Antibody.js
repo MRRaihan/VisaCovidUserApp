@@ -6,53 +6,55 @@ import AntibodyLogo from "../../../../../assets/images/battery.png";
 
 const Antibody = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.AntibodyLogo}>
-        <Image style={styles.AntibodyLogoImg} source={AntibodyLogo} />
-      </View>
-      {AntibodyData.map((val, ind) => {
-        return (
-            <Card style={styles.cardStyle}>
-            <Card.Content>
-              <Title>{val.title}</Title>
-              <View
-                style={{
-                  borderBottomColor: "#e8e2e1",
-                  borderBottomWidth: 2,
-                  marginTop: 2,
-                }}
-              />
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.AntibodyLogo}>
+            <Image style={styles.AntibodyLogoImg} source={AntibodyLogo} />
+          </View>
+          {AntibodyData.map((val, ind) => {
+            return (
+                <Card style={styles.cardStyle}>
+                <Card.Content>
+                  <Title>{val.title}</Title>
+                  <View
+                    style={{
+                      borderBottomColor: "#e8e2e1",
+                      borderBottomWidth: 2,
+                      marginTop: 2,
+                    }}
+                  />
 
-              <View style={styles.testContents}>
-                <View style={styles.testStartItem}>
-                  <Paragraph style={styles.itemColor}>{val.result}</Paragraph>
-                  <Paragraph>{val.testDate}</Paragraph>
-                  <Paragraph>{val.antibodyLeft}</Paragraph>
-                  <Paragraph>{val.testCenter}</Paragraph>
-                  <Paragraph>{val.servedBy}</Paragraph>
-                  <Paragraph>{val.servedId}</Paragraph>
-                  <Paragraph>{val.report}</Paragraph>
-                </View>
-                <View style={styles.testEndItem}>
-                  <Paragraph>{val.resultOfPerson}</Paragraph>
-                  <Paragraph>{val.personTestDate}</Paragraph>
-                  <Paragraph>{val.pwesonAntibodyLeft}</Paragraph>
-                  <Paragraph>{val.covidTestCenter}</Paragraph>
-                  <Paragraph>{val.covidServedBy}</Paragraph>
-                  <Paragraph>{val.covidServedId}</Paragraph>
-                  <TouchableOpacity>
-                    <Paragraph style={{ color: "blue" }}>
-                      {val.testReport}
-                    </Paragraph>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Card.Content>
-          </Card>
-          
-        );
-      })}
-    </View>
+                  <View style={styles.testContents}>
+                    <View style={styles.testStartItem}>
+                      <Paragraph style={styles.itemColor}>{val.result}</Paragraph>
+                      <Paragraph>{val.testDate}</Paragraph>
+                      <Paragraph>{val.antibodyLeft}</Paragraph>
+                      <Paragraph>{val.testCenter}</Paragraph>
+                      <Paragraph>{val.servedBy}</Paragraph>
+                      <Paragraph>{val.servedId}</Paragraph>
+                      <Paragraph>{val.report}</Paragraph>
+                    </View>
+                    <View style={styles.testEndItem}>
+                      <Paragraph>{val.resultOfPerson}</Paragraph>
+                      <Paragraph>{val.personTestDate}</Paragraph>
+                      <Paragraph>{val.pwesonAntibodyLeft}</Paragraph>
+                      <Paragraph>{val.covidTestCenter}</Paragraph>
+                      <Paragraph>{val.covidServedBy}</Paragraph>
+                      <Paragraph>{val.covidServedId}</Paragraph>
+                      <TouchableOpacity>
+                        <Paragraph style={{ color: "blue" }}>
+                          {val.testReport}
+                        </Paragraph>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Card.Content>
+              </Card>
+
+            );
+          })}
+        </View>
+      </ScrollView>
   );
 };
 
@@ -64,7 +66,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "100%",
     width: "100%",
-    paddingBottom: 40
+    paddingBottom: 40,
+
   },
   cardStyle: {
     backgroundColor: "white",

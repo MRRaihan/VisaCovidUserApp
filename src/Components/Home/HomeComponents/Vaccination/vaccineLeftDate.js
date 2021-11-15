@@ -1,17 +1,50 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, ScrollView, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-paper';
+import AsyncStorage from "@react-native-community/async-storage";
+import appUrl from "../../../../RestApi/AppUrl";
 
-const vaccineLeftDate = (props) => {
+const vaccineLeftDate = ({navigation}) => {
+
+    const [vaccinationLeftDay, setVaccinationLeftDay] = useState('');
+    const [vaccinationLeftTime, setVaccinationLeftTime] = useState('');
+    const [centerAddress, setCenterAddress] = useState('');
+
+    useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const boosterUrl = appUrl.vaccinationLeftTime;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(boosterUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setVaccinationLeftDay(responseJson.leftDay);
+                    setVaccinationLeftTime(responseJson.leftHour)
+                    setCenterAddress(responseJson.centerAddress)
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+    },[])
+
+
     return (
         <ScrollView>
             <View style={styles.container}>
                 <Text style={styles.statusText}>You have registered for the Vaccination</Text>
                 <View style={styles.dateTimesStatus}>
                     <View style={styles.leftTime}>
-                        <Text style={styles.leftDates}>14</Text>
+                        <Text style={styles.leftDates}>{vaccinationLeftDay}</Text>
                         <Text style={styles.leftMiddle}>:</Text>
-                        <Text style={styles.leftHours}>10</Text>
+                        <Text style={styles.leftHours}>{vaccinationLeftTime}</Text>
                     </View>
                     <View style={styles.timeBottomTitte}>
                         <Text style={styles.leftDatesText}>Days</Text>
@@ -20,11 +53,11 @@ const vaccineLeftDate = (props) => {
                 </View>
                 <Card style={{paddingRight: 20, marginTop: 30}}>
                     <View style={styles.pickLocation}>
-                        <Text style={{fontSize: 20, color: "#050505"}}>House 24, Road 03, Sector 04, Uttara Dhaka, Bangladesh</Text>
+                        <Text style={{fontSize: 20, color: "#050505"}}>{centerAddress}</Text>
                     </View>
                 </Card>
                 <TouchableOpacity style={styles.button} onPress={() => {
-                        props.navigation.navigate("");
+                        navigation.navigate("");
                     }}>
                         <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Ready to Vaccination</Text>
                     </TouchableOpacity>

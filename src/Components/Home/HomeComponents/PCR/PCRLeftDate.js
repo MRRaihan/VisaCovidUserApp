@@ -1,27 +1,66 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import {Card} from "react-native-paper";
+import AsyncStorage from "@react-native-community/async-storage";
+import appUrl from "../../../../RestApi/AppUrl";
 // import { Card } from 'react-native-paper';
 // import MapView from 'react-native-maps';
 
-const PCRLeftDate = (props) => {
+const PCRLeftDate = ({navigation}) => {
+
+    const [pcrLeftDay, setPcrLeftDay] = useState('');
+    const [pcrLeftTime, setPcrLeftTime] = useState('');
+    const [centerAddress, setPcrAddress] = useState('');
+
+    useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const pcrUrl = appUrl.pcrLeftTime;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(pcrUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setPcrLeftDay(responseJson.leftDay);
+                    setPcrLeftTime(responseJson.leftHour)
+                    setPcrAddress(responseJson.centerAddress)
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+    },[])
+
     return (
         <ScrollView>
             <View style={styles.container}>
                 <Text style={styles.statusText}>You have registered for the PCR test.</Text>
                 <View style={styles.dateTimesStatus}>
                     <View style={styles.leftTime}>
-                        <Text style={styles.leftDates}>14</Text>
+                        <Text style={styles.leftDates}>{pcrLeftDay}</Text>
                         <Text style={styles.leftMiddle}>:</Text>
-                        <Text style={styles.leftHours}>10</Text>
+                        <Text style={styles.leftHours}>{pcrLeftTime}</Text>
                     </View>
                     <View style={styles.timeBottomTitte}>
                         <Text style={styles.leftDatesText}>Days</Text>
                         <Text style={styles.leftHoursText}>Hours</Text>
                     </View>
                 </View>
-                
+
+                <Card style={{paddingRight: 20, marginTop: 30}}>
+                    <View style={styles.pickLocation}>
+                        <Text style={{fontSize: 20, color: "#050505"}}>{centerAddress}</Text>
+                    </View>
+                </Card>
+
                 <TouchableOpacity style={styles.button} onPress={() => {
-                        props.navigation.navigate("");
+                        navigation.navigate("");
                     }}>
                         <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Ready to Test</Text>
                     </TouchableOpacity>
