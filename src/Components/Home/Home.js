@@ -349,7 +349,7 @@ const Home = ({navigation}) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Add Country");
+                      navigation.navigate("Add Country");
                     }}
                   >
                     <Image style={styles.adSliderImage} source={AddCountry} />

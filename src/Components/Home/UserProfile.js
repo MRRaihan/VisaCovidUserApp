@@ -193,6 +193,7 @@ const UserProfile = ({navigation}) => {
               </View>
               <View style={styles.logoutUser}>
                 <TouchableOpacity style={styles.loginSignBtn2} onPress={() =>{
+                    AsyncStorage.setItem('loginStatus', "");
                     navigation.navigate("Login")
                   }}>
                     <Text style={styles.PaymentText}>Log Out</Text>
