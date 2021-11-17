@@ -10,44 +10,44 @@ import Icons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
-const NavigationTab = (props) => {
+const NavigationTab = ({navigation}) => {
     return (
         <Tab.Navigator>
                 <Tab.Screen name="Home" component={Home}
                     options={{
                         tabBarIcon: ({color, size}) =>(
-                            <Icons name="home" color={color} size={size} 
+                            <Icons name="home" color={color} size={size}
                                 onPress={() =>
-                                    props.navigation.navigate("Home")
+                                    navigation.navigate("Home")
                                 } />
                         )}}
                 />
-                <Tab.Screen name="Scan" component={Scan} 
+                <Tab.Screen name="Scan" component={Scan}
                     options={{
                         tabBarIcon: ({color, size}) =>(
                             <Icons name="grid" color={color} size={size}
                                 onPress={() =>
-                                    props.navigation.navigate("Scan")
+                                    navigation.navigate("Scan")
                                 }
                         />
                         ) }}
                 />
-                <Tab.Screen name="Notification" component={Notification} 
+                <Tab.Screen name="Notification" component={Notification}
                     options={{
                         tabBarIcon: ({color, size}) =>(
                             <Icons name="notifications" color={color} size={size}
                                 onPress={() =>
-                                    props.navigation.navigate("Notification")
+                                    navigation.navigate("Notification")
                                 }
                             />
                         ) }}
                 />
-                <Tab.Screen name="Profile" component={UserProfile} 
+                <Tab.Screen name="Profile" component={UserProfile}
                     options={{
                         tabBarIcon: ({color, size}) =>(
-                            <Icons name="person" color={color} size={size} 
+                            <Icons name="person" color={color} size={size}
                                 onPress={() =>
-                                    props.navigation.navigate("Profile")
+                                    navigation.navigate("Profile")
                                 }
                             />
                         )

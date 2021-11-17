@@ -15,10 +15,12 @@ import Antibody from './src/Components/Home/HomeComponents/Antibody/Antibody';
 import PCR from "./src/Components/Home/HomeComponents/PCR/PCR";
 import PCRPaymentMethod from "./src/Components/Home/HomeComponents/PCR/PCRPaymentMethod";
 import PCRLeftDate from "./src/Components/Home/HomeComponents/PCR/PCRLeftDate";
+import PCRTestStatus from './src/Components/Home/HomeComponents/PCR/PCRTestStatus';
 
 import VaccineRegistration from "./src/Components/Home/HomeComponents/Vaccination/Vaccination";
 import VaccineDateLeft from "./src/Components/Home/HomeComponents/Vaccination/vaccineLeftDate";
 import VaccinePaymentMethod from "./src/Components/Home/HomeComponents/Vaccination/VaccinePaymentMethod";
+import VaccinationStatus from './src/Components/Home/HomeComponents/Vaccination/VaccinationStatus';
 
 import AddCountry from "./src/Components/Home/HomeComponents/AddCountry/AddCountry";
 import Synchronise from "./src/Components/Home/HomeComponents/Synchronise";
@@ -26,6 +28,7 @@ import Synchronise from "./src/Components/Home/HomeComponents/Synchronise";
 import Booster from "./src/Components/Home/HomeComponents/Booster/Booster";
 import BoosterDateLeft from "./src/Components/Home/HomeComponents/Booster/BoosterLeftDate";
 import BoosterPaymentMethod from "./src/Components/Home/HomeComponents/Booster/BoosterPaymentMethod";
+import BoosterStatus from './src/Components/Home/HomeComponents/Booster/BoosterStatus';
 import Artboard from "./src/Components/Home/Artboard";
 
 const Stack = createNativeStackNavigator();
@@ -51,10 +54,12 @@ const App = () => {
         <Stack.Screen name="PCR" component={PCR} />
         {/* <Stack.Screen name="PCR Payment Method" component={PCRPaymentMethod} /> */}
         <Stack.Screen name="PCR Date Status" component={PCRLeftDate} />
+        <Stack.Screen name="PCR Test Status" component={PCRTestStatus} />
 
         <Stack.Screen name="Vaccine Registration" component={VaccineRegistration} />
         {/* <Stack.Screen name="Vaccine Payment Method" component={VaccinePaymentMethod} /> */}
         <Stack.Screen name="Vaccine Date Status" component={VaccineDateLeft} />
+        <Stack.Screen name="Vaccination Status" component={VaccinationStatus} />
 
         <Stack.Screen name="Add Country" component={AddCountry} />
         <Stack.Screen name="Synchronise" component={Synchronise} />
@@ -62,6 +67,7 @@ const App = () => {
         <Stack.Screen name="Booster" component={Booster} />
         <Stack.Screen name="Booster Date Status" component={BoosterDateLeft} />
         {/* <Stack.Screen name="Booster Payment Method" component={BoosterPaymentMethod} /> */}
+        <Stack.Screen name="Booster Status" component={BoosterDateLeft} />
         <Stack.Screen name="Artboard" component={Artboard} /> 
         
       </Stack.Navigator>

@@ -13,6 +13,7 @@ const AntibodyScroll = () => {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
+        marginTop:"50%",
         width: "100%"
     }
 })

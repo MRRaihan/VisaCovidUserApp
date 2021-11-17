@@ -15,14 +15,94 @@ import appUrl from "../../RestApi/AppUrl";
 
 
 
-const Home = (props) =>{
+const Home = ({navigation}) =>{
     const [sliders, setSlider] = useState([]);
-    //const [state, setState] = useState({ fName: "", lName: "" });
+    const [phone, setPhone] = useState("");
+    const [userId, setUserId] = useState("");
 
+    //For service status check
+    const [vaccination, setVaccination] = useState("");
+    const [pcr, setPcrStatus] = useState("");
+    const [booster, setBooster] = useState("");
+
+    //For Slider width & hight
     const WIDTH = Dimensions.get('window').width;
     const HEIGHT = Dimensions.get('window').height;
 
     useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            //For Vaccination Status
+            const vaccineUrl = appUrl.VaccineStatus;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(vaccineUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setVaccination(responseJson.navigationPath);
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+
+    }, []);
+
+    useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const pcrUrl = appUrl.PcrStatus;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(pcrUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setPcrStatus(responseJson.navigationPath);
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+
+    }, []);
+
+    useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const boosterUrl = appUrl.BoosterStatus;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(boosterUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setBooster(responseJson.navigationPath);
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+
+    }, []);
+
+    useEffect(()=>{
+        //For slider
         const url = appUrl.Slider;
         const config = {
             method: 'GET',
@@ -45,7 +125,11 @@ const Home = (props) =>{
             .catch((error) => {
                 //Alert.alert("Failed to registration 2");
             });
-    }, [])
+
+
+    }, []);
+
+
     return(
         <ScrollView>
           <View style={styles.container}>
@@ -104,7 +188,8 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Vaccine Registration");
+                      //props.navigation.navigate("Vaccine Registration");
+                        navigation.navigate(vaccination);
                     }}
                   >
                     <Image style={styles.vSliderImage} source={Vaccination} />
@@ -143,7 +228,7 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Antibody");
+                        navigation.navigate("Antibody");
                     }}
                   >
                     <Image style={styles.SliderImage} source={Antibody} />
@@ -182,7 +267,8 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("PCR");
+                      //navigation.navigate("PCR");
+                      navigation.navigate(pcr);
                     }}
                   >
                     <Image style={styles.pSliderImage} source={PCR} />
@@ -221,7 +307,8 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Booster");
+                      //navigation.navigate("Booster");
+                      navigation.navigate(booster);
                     }}
                   >
                     <Image style={styles.bSliderImage} source={Booster} />
@@ -253,7 +340,7 @@ const Home = (props) =>{
                           flex: 1,
                           justifyContent: "space-between",
                           marginTop: 15,
-                          marginRight: -25
+                          marginRight: -25,
                         }}
                         icon="information-outline"
                       />
@@ -262,14 +349,13 @@ const Home = (props) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Add Country");
+                      navigation.navigate("Add Country");
                     }}
                   >
                     <Image style={styles.adSliderImage} source={AddCountry} />
                   </TouchableOpacity>
                   </View>
                 </Card>
-
               </View>
             </View>
           </View>
@@ -284,7 +370,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    marginBottom: 85,
+    marginBottom: 120,
   },
   Slider: {
     flex: 1,

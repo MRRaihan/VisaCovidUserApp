@@ -28,6 +28,7 @@ const Welcome = ({navigation}) => {
                 setLoginStatus("0");
             }
         });
+
     })
 
     const onRedirect = () =>{
