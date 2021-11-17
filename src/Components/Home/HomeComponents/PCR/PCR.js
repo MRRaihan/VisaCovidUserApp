@@ -244,7 +244,11 @@ const PCR = ({navigation}) => {
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
-                            if (responseJson.status == "1")
+                            if (responseJson.status == "2")
+                            {
+                                Alert.alert(responseJson.message);
+                                navigation.navigate("PCR Date Status");
+                            }else if (responseJson.status == "1")
                             {
                                 Alert.alert(responseJson.message);
                                 navigation.navigate("PCR Date Status");
