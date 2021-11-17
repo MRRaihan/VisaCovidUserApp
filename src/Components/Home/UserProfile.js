@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, } from "react-native";
+import {View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert,} from "react-native";
 import {Button, Card} from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AntibodyLogo from "../../../assets/images/userProfileLogoImg.jpg";
@@ -10,22 +10,37 @@ const UserProfile = ({navigation}) => {
   const [userId, setUserId] = useState();
   const [lastEffected, setLastEffected] = useState('');
   const [recovered, setRecovered] = useState('');
-  const [antibodyRemaining, setAntibodyRemaining] = useState('');
+  // const [antibodyRemaining, setAntibodyRemaining] = useState('');
+
+  //Profile
+  const [userProfileImage, setUserProfileImage] = useState('');
+  const [userProfileId, setUserProfileId] = useState('');
+
+  //PCR
   const [pcrLastTest, setPcrLastTest] = useState('');
   const [lastPcrResult, setLastPcrResult] = useState('');
   const [pcrTestCenter, setPcrTestCenter] = useState('');
   const [pcrCenterLocation, setPcrCenterLocation] = useState('');
+
+  //Vaccination
   const [vaccinationDoseOne, setVaccinationDoseOne] = useState('');
   const [vaccinationDoseTwo, setVaccinationDoseTwo] = useState('');
   const [vaccinationName, setVaccinationName] = useState('');
   const [vaccinationCenter, setVaccinationCenter] = useState('');
+  const [vaccinationCenterLocation, setVaccinationCenterLocation] = useState('');
+
+  //Booster
   const [boosterCenter, setBoosterCenter] = useState('');
+  const [boosterCenterLocation, setBoosterCenterLocation] = useState('');
   const [boosterDate, setBoosterDate] = useState('');
+  const [antibodyRemaining, setAntibodyRemaining] = useState('');
+
 
   useEffect(()=>{
+
     AsyncStorage.getItem('phone').then(value =>{
       //For pcr Status
-      const boosterUrl = appUrl.boosterLeftTime;
+      const boosterUrl = appUrl.profileInformation;
       const postConfig = {
         method: 'POST',
         headers: {
@@ -38,19 +53,34 @@ const UserProfile = ({navigation}) => {
           .then((response) => response.json())
           .then((responseJson) => {
             console.log(responseJson)
-            setLastEffected(responseJson.leftDay);
+            /*setLastEffected(responseJson.leftDay);
             setRecovered(responseJson.leftDay);
-            setAntibodyRemaining(responseJson.leftDay);
-            setPcrLastTest(responseJson.leftDay);
-            setLastPcrResult(responseJson.leftDay);
-            setPcrTestCenter(responseJson.leftDay);
-            setPcrCenterLocation(responseJson.leftDay);
-            setVaccinationDoseOne(responseJson.leftDay);
-            setVaccinationDoseTwo(responseJson.leftDay);
-            setVaccinationName(responseJson.leftDay);
-            setVaccinationCenter(responseJson.leftDay);
-            setBoosterCenter(responseJson.leftDay);
-            setBoosterDate(responseJson.leftDay);
+            setAntibodyRemaining(responseJson.leftDay);*/
+
+            //Profiles
+            setUserProfileImage(responseJson.userImage);
+            setUserProfileId(responseJson.userId);
+
+
+            //PCR
+            setPcrLastTest(responseJson.myPcrLastTest);
+            setLastPcrResult(responseJson.myLastPcrResult);
+            setPcrTestCenter(responseJson.myPcrTestCenter);
+            setPcrCenterLocation(responseJson.myPcrCenterLocation);
+
+            //Vaccination
+            setVaccinationDoseOne(responseJson.myVaccinationDoseOne);
+            setVaccinationDoseTwo(responseJson.myVaccinationDoseTwo);
+            setVaccinationName(responseJson.myVaccinationName);
+            setVaccinationCenter(responseJson.myVaccinationCenter);
+            setVaccinationCenterLocation(responseJson.myVaccinationCenterLocation);
+
+            //Booster
+            setBoosterCenter(responseJson.myBoosterCenter);
+            setBoosterCenterLocation(responseJson.myBoosterCenterLocation);
+            setBoosterDate(responseJson.myBoosterDate);
+            setAntibodyRemaining(responseJson.myAntibodyRemaining);
+
           })
           .catch((error) => {
             //Alert.alert("Failed to registration 2");
@@ -64,9 +94,9 @@ const UserProfile = ({navigation}) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.AntibodyLogo}>
-          <Image style={styles.AntibodyLogoImg} source={AntibodyLogo} />
+          <Image style={styles.AntibodyLogoImg} source = {{uri:appUrl.BaseUrl+userProfileImage}} />
           <View style={styles.UserID}>
-            <Text style={{ width: "100%", marginLeft: "27%",color: "#050505" }}>ID: <Text style={{fontWeight: "bold", padding: 10}}>954 322 541</Text> </Text>
+            <Text style={{ width: "100%", marginLeft: "27%",color: "#050505" }}>ID: <Text style={{fontWeight: "bold", padding: 10}}>{userProfileId}</Text> </Text>
           </View>
         </View>
 
@@ -100,7 +130,7 @@ const UserProfile = ({navigation}) => {
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Antibody Remaining</Text>
-              <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
+              <Text style={styles.testEndItem}>{""}</Text>
             </View>
           </View>
 
@@ -156,6 +186,11 @@ const UserProfile = ({navigation}) => {
               <Text style={styles.testStartItem}>Vaccine center</Text>
               <Text style={styles.testEndItem}>{vaccinationCenter}</Text>
             </View>
+
+            <View style={styles.testContents}>
+              <Text style={styles.testStartItem}>Center Location</Text>
+              <Text style={styles.testEndItem}>{vaccinationCenterLocation}</Text>
+            </View>
           </View>
 
           <View style={{ paddingTop: 20 }}>
@@ -172,12 +207,16 @@ const UserProfile = ({navigation}) => {
               <Text style={styles.testEndItem}>{boosterCenter}</Text>
             </View>
             <View style={styles.testContents}>
+              <Text style={styles.testStartItem}>Center Location</Text>
+              <Text style={styles.testEndItem}>{boosterCenterLocation}</Text>
+            </View>
+            <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Booster Date</Text>
               <Text style={styles.testEndItem}>{boosterDate}</Text>
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Antibody Remaining</Text>
-              <Text style={styles.testEndItem}>{}</Text>
+              <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
             </View>
           </View>
 
@@ -252,10 +291,12 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   testStartItem:{
-    color: "#050505"
+    color: "#050505",
+    width: '30%'
   },
   testEndItem:{
-    color: "#050505"
+    color: "#050505",
+    width: '60%'
   },
   UserID: {
     justifyContent: "center",

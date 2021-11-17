@@ -34,6 +34,8 @@ class AppUrl{
     static editUserProfile = this.BaseUrl+'api/home/editProfile';
     static updateUserProfile = this.BaseUrl+'api/home/updateProfile';
 
+    static profileInformation = this.BaseUrl+'api/home/profileInformation';
+
 }
 
 export default AppUrl;
