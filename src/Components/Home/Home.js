@@ -340,7 +340,7 @@ const Home = ({navigation}) =>{
                           flex: 1,
                           justifyContent: "space-between",
                           marginTop: 15,
-                          marginRight: -25
+                          marginRight: -25,
                         }}
                         icon="information-outline"
                       />
@@ -349,14 +349,13 @@ const Home = ({navigation}) =>{
                   <View>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Add Country");
+                      navigation.navigate("Add Country");
                     }}
                   >
                     <Image style={styles.adSliderImage} source={AddCountry} />
                   </TouchableOpacity>
                   </View>
                 </Card>
-
               </View>
             </View>
           </View>
@@ -371,7 +370,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    marginBottom: 85,
+    marginBottom: 120,
   },
   Slider: {
     flex: 1,
