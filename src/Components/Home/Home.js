@@ -125,8 +125,6 @@ const Home = ({navigation}) =>{
             .catch((error) => {
                 //Alert.alert("Failed to registration 2");
             });
-
-
     }, []);
 
 

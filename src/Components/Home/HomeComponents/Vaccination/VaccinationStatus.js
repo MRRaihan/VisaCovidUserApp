@@ -1,11 +1,57 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, StyleSheet, ScrollView, Image, TouchableOpacity, Text } from 'react-native';
 import { Card, Title, Paragraph } from "react-native-paper";
 import VaccinationImage from "../../../../../assets/images/Vaccination.png";
 import VaccinationData from "./VaccineStatusData";
+import AsyncStorage from "@react-native-community/async-storage";
+import appUrl from "../../../../RestApi/AppUrl";
 
 const VaccinationStatus = ({route}) => {
-    
+    //Vaccination
+    const [vaccinationDoseOne, setVaccinationDoseOne] = useState('');
+    const [vaccinationDoseTwo, setVaccinationDoseTwo] = useState('');
+    const [vaccinationName, setVaccinationName] = useState('');
+    const [vaccinationCenter, setVaccinationCenter] = useState('');
+    const [vaccinationCenterLocation, setVaccinationCenterLocation] = useState('');
+
+
+    const [serveByFirstId, setServeByFirstId] = useState('');
+    const [serveByFirstName, setServeByFirstName] = useState('');
+    const [serveBySecondId, setServeBySecondId] = useState('');
+    const [serveBySecondName, setServeBySecondName] = useState('');
+
+    useEffect(()=>{
+
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const boosterUrl = appUrl.vaccinationInformation;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(boosterUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+
+                    setVaccinationDoseOne(responseJson.myVaccinationDoseOne);
+                    setVaccinationDoseTwo(responseJson.myVaccinationDoseTwo);
+                    setVaccinationName(responseJson.myVaccinationName);
+                    setVaccinationCenter(responseJson.myVaccinationCenter);
+                    setVaccinationCenterLocation(responseJson.myVaccinationCenterLocation);
+                    setServeByFirstId(responseJson.myServeByFirstId);
+                    setServeByFirstName(responseJson.myServeByFirstName);
+                    setServeBySecondId(responseJson.myServeBySecondId);
+                    setServeBySecondName(responseJson.myServeBySecondName);
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+    },[])
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -17,44 +63,83 @@ const VaccinationStatus = ({route}) => {
                         <Text style={styles.video}>Liveness video!</Text>
                     </TouchableOpacity>
                 </Card>
-                {VaccinationData.map((val, ind) => {
-                    return (
-                        <Card style={styles.cardStyle}>
-                        <Card.Content>
-                        <Title>{val.title}</Title>
+
+                <Card style={styles.cardStyle}>
+                    <Card.Content>
+                        <Title>First Dose</Title>
                         <View
                             style={{
-                            borderBottomColor: "#e8e2e1",
-                            borderBottomWidth: 2,
-                            marginTop: 2,
+                                borderBottomColor: "#e8e2e1",
+                                borderBottomWidth: 2,
+                                marginTop: 2,
                             }}
                         />
-
                         <View style={styles.testContents}>
-                            <View style={styles.testStartItem}>
-                                <Paragraph>{val.vaccinationDate}</Paragraph>
-                                <Paragraph>{val.vaccineCenter}</Paragraph>
-                                <Paragraph>{val.servedBy}</Paragraph>
-                                <Paragraph>{val.servedId}</Paragraph>
-                                <Paragraph>{val.report}</Paragraph>
-                            </View>
-                            <View style={styles.testEndItem}>
-                                <Paragraph>{val.vaccinationFixedDate}</Paragraph>
-                                <Paragraph>{val.covidTestCenter}</Paragraph>
-                                <Paragraph>{val.covidServedBy}</Paragraph>
-                                <Paragraph>{val.covidServedId}</Paragraph>
-                            <TouchableOpacity>
-                                <Paragraph style={{ color: "blue" }}>
-                                {val.testReport}
-                                </Paragraph>
-                            </TouchableOpacity>
-                            </View>
+                            <Text style={styles.testStartItem}>Vaccination Date</Text>
+                            <Text style={styles.testEndItem}>{vaccinationDoseOne}</Text>
                         </View>
-                        </Card.Content>
-                    </Card>
-                    
-                    );
-                })}
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Vaccine Name</Text>
+                            <Text style={styles.testEndItem}>{vaccinationName}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Center Name</Text>
+                            <Text style={styles.testEndItem}>{vaccinationCenter}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Center Address</Text>
+                            <Text style={styles.testEndItem}>{vaccinationCenterLocation}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>ServedBy</Text>
+                            <Text style={styles.testEndItem}>{serveByFirstName}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>ServedById</Text>
+                            <Text style={styles.testEndItem}>{serveByFirstId}</Text>
+                        </View>
+                    </Card.Content>
+                </Card>
+
+
+
+                <Card style={styles.cardStyle}>
+                    <Card.Content>
+                        <Title>Second Dose</Title>
+                        <View
+                            style={{
+                                borderBottomColor: "#e8e2e1",
+                                borderBottomWidth: 2,
+                                marginTop: 2,
+                            }}
+                        />
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Vaccination Date</Text>
+                            <Text style={styles.testEndItem}>{vaccinationDoseTwo}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Vaccine Name</Text>
+                            <Text style={styles.testEndItem}>{vaccinationName}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Center Name</Text>
+                            <Text style={styles.testEndItem}>{vaccinationCenter}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Center Address</Text>
+                            <Text style={styles.testEndItem}>{vaccinationCenterLocation}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>ServedBy</Text>
+                            <Text style={styles.testEndItem}>{serveBySecondName}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>ServedById</Text>
+                            <Text style={styles.testEndItem}>{serveBySecondId}</Text>
+                        </View>
+
+                    </Card.Content>
+                </Card>
             </View>
         </ScrollView>
     )
@@ -91,20 +176,23 @@ const styles = StyleSheet.create({
     cardStyle: {
         backgroundColor: "white",
         width: "95%",
-        height: 230
+        height: 270,
+        marginTop:20,
     },
     testContents: {
-        flex: 1,
         justifyContent: "space-between",
         flexDirection: "row",
-        height: 40
+        paddingTop: 5,
     },
     testStartItem: {
-        justifyContent: "flex-start",
+        color: "#050505",
+        fontWeight: "bold",
+        width: '40%'
     },
     testEndItem: {
-        justifyContent: "flex-end",
-        marginTop: 100
+        color: "#050505",
+        width: '50%',
+        textAlign:"right",
     },
     LivenessVideo:{
         width: "95%",
