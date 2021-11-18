@@ -190,7 +190,7 @@ const UserProfile = (props) => {
               }}
           />
           <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Booster Center</Text>
+            <Text style={styles.testStartItem}>Center</Text>
             <Text style={styles.testEndItem}>{boosterCenter}</Text>
           </View>
           <View style={styles.testContents}>
@@ -259,10 +259,13 @@ const styles = StyleSheet.create({
   },
   testStartItem:{
     color: "#050505",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    width: '40%'
   },
   testEndItem:{
     color: "#050505",
+    width: '50%',
+    textAlign:"right",
   },
   UserID: {
     flex: 1,

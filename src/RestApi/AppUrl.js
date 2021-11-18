@@ -36,6 +36,11 @@ class AppUrl{
 
     static profileInformation = this.BaseUrl+'api/home/profileInformation';
 
+    // Information
+    static vaccinationInformation = this.BaseUrl+'api/home/vaccinationInformation';
+    static pcrInformation = this.BaseUrl+'api/home/pcrInformation';
+    static boosterInformation = this.BaseUrl+'api/home/boosterInformation';
+
 }
 
 export default AppUrl;
