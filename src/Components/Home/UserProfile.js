@@ -52,15 +52,9 @@ const UserProfile = ({navigation}) => {
       fetch(boosterUrl,postConfig)
           .then((response) => response.json())
           .then((responseJson) => {
-            console.log(responseJson)
-            /*setLastEffected(responseJson.leftDay);
-            setRecovered(responseJson.leftDay);
-            setAntibodyRemaining(responseJson.leftDay);*/
-
             //Profiles
             setUserProfileImage(responseJson.userImage);
             setUserProfileId(responseJson.userId);
-
 
             //PCR
             setPcrLastTest(responseJson.myPcrLastTest);
@@ -121,16 +115,7 @@ const UserProfile = ({navigation}) => {
               }}
             />
             <View style={styles.testContents}>
-              <Text style={styles.testStartItem}>Last affected</Text>
-              <Text style={styles.testEndItem}>{lastEffected}</Text>
-            </View>
-            <View style={styles.testContents}>
-              <Text style={styles.testStartItem}>Recovered</Text>
-              <Text style={styles.testEndItem}>{recovered}</Text>
-            </View>
-            <View style={styles.testContents}>
-              <Text style={styles.testStartItem}>Antibody Remaining</Text>
-              <Text style={styles.testEndItem}>{""}</Text>
+              <Text style={styles.testAntibodyRemaining}>{antibodyRemaining}</Text>
             </View>
           </View>
 
@@ -235,7 +220,8 @@ const UserProfile = ({navigation}) => {
                     AsyncStorage.setItem('loginStatus', "");
                     navigation.navigate("Login")
                   }}>
-                    <Text style={styles.PaymentText}>Log Out</Text>
+                  <Icon name="sign-out" size={16} color="#fff" solid />
+                  <Text style={styles.PaymentText}>Log Out</Text>
                 </TouchableOpacity>
               </View>
           </View>
@@ -252,6 +238,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "100%",
     width: "100%",
+    paddingBottom:20,
   },
   AntibodyLogo: {
     justifyContent: "center",
@@ -371,7 +358,6 @@ const styles = StyleSheet.create({
   },
   editBtnText:{
     color: "#121011",
-    marginTop: 5,
   },
   PaymentText:{
     color: "#ffffff"
@@ -397,6 +383,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#ffffff",
   },
+  testAntibodyRemaining:{
+    textAlign:"center",
+    fontWeight:"bold",
+    fontSize:20,
+  }
 });
 
 export default UserProfile;

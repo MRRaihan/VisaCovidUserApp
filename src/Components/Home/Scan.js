@@ -99,7 +99,7 @@ const UserProfile = (props) => {
 
       <Card style={styles.cardStyle}>
         <View style={{ paddingTop: 10 }}>
-          <Text style={styles.testStyle}>COVID-19 Antibody</Text>
+          <Text style={styles.testStyle}>Antibody Last Date</Text>
           <View
             style={{
               borderBottomColor: "#e8e2e1",
@@ -108,16 +108,7 @@ const UserProfile = (props) => {
             }}
           />
           <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Last affected</Text>
-            <Text style={styles.testEndItem}>12 Sep 2021</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Recovered</Text>
-            <Text style={styles.testEndItem}>22 Sep 2021</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Antibody Remaining</Text>
-            <Text style={styles.testEndItem}>4 mon 14 days</Text>
+            <Text style={styles.testAntibodyRemaining}>{antibodyRemaining}</Text>
           </View>
         </View>
 
@@ -180,7 +171,7 @@ const UserProfile = (props) => {
           </View>
         </View>
 
-        <View style={{ paddingTop: 20 }}>
+        <View style={{ paddingTop: 20, paddingBottom:15  }}>
           <Text style={styles.testStyle}>Booster</Text>
           <View
               style={{
@@ -219,6 +210,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "100%",
     width: "100%",
+    marginBottom:-80,
+    paddingBottom:0,
   },
   AntibodyLogo: {
     justifyContent: "center",
@@ -237,7 +230,7 @@ const styles = StyleSheet.create({
   },
   cardStyle: {
     padding: 10,
-    marginTop: 50,
+    marginTop: 40,
     backgroundColor: "white",
     width: "90%",
     height: "auto",
@@ -293,6 +286,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 10,
     marginTop: 30
+  },
+  testAntibodyRemaining:{
+    textAlign:"center",
+    fontWeight:"bold",
+    fontSize:20,
   }
 });
 
