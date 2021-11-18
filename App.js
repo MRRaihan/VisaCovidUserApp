@@ -67,9 +67,9 @@ const App = () => {
         <Stack.Screen name="Booster" component={Booster} />
         <Stack.Screen name="Booster Date Status" component={BoosterDateLeft} />
         {/* <Stack.Screen name="Booster Payment Method" component={BoosterPaymentMethod} /> */}
-        <Stack.Screen name="Booster Status" component={BoosterDateLeft} />
-        <Stack.Screen name="Artboard" component={Artboard} /> 
-        
+        <Stack.Screen name="Booster Status" component={BoosterStatus} />
+        <Stack.Screen name="Artboard" component={Artboard} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

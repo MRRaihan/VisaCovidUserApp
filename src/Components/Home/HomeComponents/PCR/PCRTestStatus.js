@@ -37,7 +37,6 @@ const PCRTestStatus = ({route}) => {
                     setPcrCenterLocation(responseJson.myPcrCenterLocation);
                     setServeById(responseJson.myServeById);
                     setServeByName(responseJson.myServeByName);
-                    console.log(serveByName)
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
