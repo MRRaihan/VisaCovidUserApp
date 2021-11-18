@@ -1,11 +1,50 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, StyleSheet, ScrollView, Image, TouchableOpacity, Text } from 'react-native';
-import { Card,Paragraph } from "react-native-paper";
+import {Card, Paragraph, Title} from "react-native-paper";
 import PCRImage from "../../../../../assets/images/done.png";
 import PCRData from "./PCRStatusData";
+import AsyncStorage from "@react-native-community/async-storage";
+import appUrl from "../../../../RestApi/AppUrl";
 
 const PCRTestStatus = ({route}) => {
-    
+    const [pcrLastTest, setPcrLastTest] = useState('');
+    const [lastPcrResult, setLastPcrResult] = useState('');
+    const [pcrTestCenter, setPcrTestCenter] = useState('');
+    const [pcrCenterLocation, setPcrCenterLocation] = useState('');
+
+    const [serveById, setServeById] = useState('');
+    const [serveByName, setServeByName] = useState('');
+
+    useEffect(()=>{
+
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const boosterUrl = appUrl.pcrInformation;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(boosterUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setPcrLastTest(responseJson.myPcrLastTest);
+                    setLastPcrResult(responseJson.myLastPcrResult);
+                    setPcrTestCenter(responseJson.myPcrTestCenter);
+                    setPcrCenterLocation(responseJson.myPcrCenterLocation);
+                    setServeById(responseJson.myServeById);
+                    setServeByName(responseJson.myServeByName);
+                    console.log(serveByName)
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+    },[])
+
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -17,39 +56,43 @@ const PCRTestStatus = ({route}) => {
                         <Text style={styles.video}>Liveness video!</Text>
                     </TouchableOpacity>
                 </Card>
-                {PCRData.map((val, ind) => {
-                    return (
-                        <Card style={styles.cardStyle}>
-                        <Card.Content>
+
+                <Card style={styles.cardStyle}>
+                    <Card.Content>
+                        <Title>First Dose</Title>
+                        <View
+                            style={{
+                                borderBottomColor: "#e8e2e1",
+                                borderBottomWidth: 2,
+                                marginTop: 2,
+                            }}
+                        />
                         <View style={styles.testContents}>
-                            <View style={styles.testStartItem}>
-                                <Text>{val.pcrResult}</Text>
-                                <Paragraph>{val.pcrDate}</Paragraph>
-                                <Paragraph>{val.pcrValidaty}</Paragraph>
-                                <Paragraph>{val.pcrCenter}</Paragraph>
-                                <Paragraph>{val.pcrServedBy}</Paragraph>
-                                <Paragraph>{val.pcrServedId}</Paragraph>
-                                <Paragraph>{val.pcrReport}</Paragraph>
-                            </View>
-                            <View style={styles.testEndItem}>
-                                <Paragraph>{val.pcrTestResult}</Paragraph>
-                                <Paragraph>{val.pcrTestDate}</Paragraph>
-                                <Paragraph>{val.pcrTestValidaty}</Paragraph>
-                                <Paragraph>{val.pcrTestCenter}</Paragraph>
-                                <Paragraph>{val.pcrTestServedBy}</Paragraph>
-                                <Paragraph>{val.pcrTestServedId}</Paragraph>
-                            <TouchableOpacity>
-                                <Paragraph style={{ color: "blue" }}>
-                                    {val.pcrTestReport}
-                                </Paragraph>
-                            </TouchableOpacity>
-                            </View>
+                            <Text style={styles.testStartItem}>PCR Test Date</Text>
+                            <Text style={styles.testEndItem}>{pcrLastTest}he</Text>
                         </View>
-                        </Card.Content>
-                    </Card>
-                    
-                    );
-                })}
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>PCR Test Result</Text>
+                            <Text style={styles.testEndItem}>{lastPcrResult}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Center Name</Text>
+                            <Text style={styles.testEndItem}>{pcrTestCenter}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>Center Address</Text>
+                            <Text style={styles.testEndItem}>{pcrCenterLocation}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>ServedBy</Text>
+                            <Text style={styles.testEndItem}>{serveById}</Text>
+                        </View>
+                        <View style={styles.testContents}>
+                            <Text style={styles.testStartItem}>ServedById</Text>
+                            <Text style={styles.testEndItem}>{serveByName}</Text>
+                        </View>
+                    </Card.Content>
+                </Card>
             </View>
         </ScrollView>
     )
@@ -61,8 +104,8 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         width:'100%',
-        marginBottom: 20
-        
+        marginBottom: 10
+
     },
     PCRLogo: {
         justifyContent: 'center',
@@ -82,22 +125,23 @@ const styles = StyleSheet.create({
     cardStyle: {
         backgroundColor: "white",
         width: "95%",
-        height: 230,
-        marginTop: 10,
-        borderRadius: 10
+        height: 270,
+        marginTop:20,
     },
     testContents: {
-        flex: 1,
         justifyContent: "space-between",
         flexDirection: "row",
-        height: 40
+        paddingTop: 5,
     },
     testStartItem: {
-        justifyContent: "flex-start",
+        color: "#050505",
+        fontWeight: "bold",
+        width: '40%'
     },
     testEndItem: {
-        justifyContent: "flex-end",
-        marginTop: 138
+        color: "#050505",
+        width: '50%',
+        textAlign:"right",
     },
     LivenessVideo:{
         width: "95%",
