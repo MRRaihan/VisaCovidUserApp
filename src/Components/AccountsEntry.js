@@ -30,7 +30,7 @@ export default function App({navigation}) {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Email."
+          placeholder="Phone Number"
           placeholderTextColor="#003f5c"
           onChangeText={(email) => setEmail(email)}
         />
