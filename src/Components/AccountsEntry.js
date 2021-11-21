@@ -4,7 +4,8 @@ import appUrl from "../RestApi/AppUrl";
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function App({navigation}) {
-  const [email, setEmail] = useState("");
+
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
   return (
@@ -32,7 +33,7 @@ export default function App({navigation}) {
           style={styles.TextInput}
           placeholder="Phone Number"
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(phone) => setPhone(phone)}
         />
       </View>
 
@@ -59,7 +60,7 @@ export default function App({navigation}) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email:email, password:password })
+          body: JSON.stringify({ phone:phone, password:password })
         };
         //Alert.alert(url);
 
@@ -133,6 +134,7 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
+    textAlign:"center",
   },
 
   forgot_button: {

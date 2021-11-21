@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 5,
+    textAlign:"center",
   },
 
   forgot_button: {

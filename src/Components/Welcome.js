@@ -42,7 +42,7 @@ const Welcome = ({navigation}) => {
 
      return (
          <View>
-             <View>
+             <View style={styles.container}>
                  <TouchableOpacity onPress={() =>{
                      let redirect = onRedirect();
                      navigation.navigate(redirect)
@@ -59,23 +59,14 @@ const Welcome = ({navigation}) => {
 
 const styles = StyleSheet.create({
    container: {
-       flex: 1,
-       justifyContent: 'center',
+       display:"flex",
+       height:'100%',
+       justifyContent:"center",
        alignItems: 'center',
    },
    logo: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        height:  250,
-        width: 200,
-        marginBottom: 5,
-        marginTop: "50%",
-        marginLeft: 80
+       height:  250,
+       width: 200,
    },
-//    background:{
-//        width: '100%',
-//        height: 450,
-
-//    }
 })
 export default Welcome;
