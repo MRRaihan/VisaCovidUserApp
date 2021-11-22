@@ -1,6 +1,6 @@
 
 class AppUrl{
-    static BaseUrl = 'http://10.10.10.124/VisaCovidCenterDevelopment/public/';
+    static BaseUrl = 'http://10.10.10.117/VisaCovidCenterDevelopment/public/';
     static UserCreate = this.BaseUrl+'api/user/create';
     static UserLogin = this.BaseUrl+'api/user/login';
     static OtpCheck = this.BaseUrl+'api/user/otpCheck';

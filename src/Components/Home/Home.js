@@ -47,7 +47,6 @@ const Home = ({navigation}) =>{
             fetch(vaccineUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    console.log(responseJson)
                     setVaccination(responseJson.navigationPath);
                     setVaccinationIcon(responseJson.vaccinationIcon);
                 })
@@ -424,11 +423,11 @@ const styles = StyleSheet.create({
   },
   SliderImage: {
     height: 100,
-    width: "97%",
+    width: "70%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
-    marginLeft: 5
+
+    marginLeft: 40
   },
   vSliderImage:{
     height: 165,
@@ -440,27 +439,21 @@ const styles = StyleSheet.create({
   },
   bSliderImage:{
     height: 140,
-    width: "70%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 5,
-    marginLeft: 15
+    width: "50%",
+    marginLeft:70,
+    marginTop:-20,
   },
   pSliderImage:{
     height: 140,
-    width: "60%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: -10,
-    marginLeft: 40
+    width: "50%",
+    marginLeft:60,
+    marginTop:-20,
   },
   adSliderImage:{
     height: 120,
-    width: "88%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 5,
-    marginLeft: 15
+    width: "80%",
+    marginLeft:30,
+    marginTop:-10,
   },
 });
 
