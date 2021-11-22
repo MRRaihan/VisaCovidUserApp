@@ -245,6 +245,7 @@ const VaccineRegistration = ({navigation}) => {
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
+                            console.log(responseJson)
                             if (responseJson.status == "2")
                             {
                                 Alert.alert(responseJson.message);

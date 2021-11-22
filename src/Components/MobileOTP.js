@@ -92,15 +92,16 @@ const MobileOTP= ({navigation, route}) =>{
                     maxLength={lengthInput}
                     returnKeyType="done"
                     keyboardType="numeric"
+                    onPress={() => textInput.focus()}
                 />
-                <View style={styles.containerInput}>
+                <View style={styles.containerInput} onPress={() => textInput.focus()}>
                 {
                     Array(lengthInput).fill().map((data, index) =>(
                         <View key={index} style={[styles.cellView,
                             {
                                 borderBottomColor: index === internalVal.length ? '#FB6CA6' : '#234DB7'
                             }
-                            ]}>
+                            ]} onPress={() => textInput.focus()}>
                             <Text style={styles.cellText}
                                     onPress={() => textInput.focus()}
                                 >

@@ -43,7 +43,6 @@ const Antibody = () => {
       fetch(boosterUrl,postConfig)
           .then((response) => response.json())
           .then((responseJson) => {
-            console.log(responseJson)
 
             //PCR
             setPcrLastTest(responseJson.myPcrLastTest);

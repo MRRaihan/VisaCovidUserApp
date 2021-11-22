@@ -22,8 +22,11 @@ const Home = ({navigation}) =>{
 
     //For service status check
     const [vaccination, setVaccination] = useState("");
+    const [vaccinationIcon, setVaccinationIcon] = useState("");
     const [pcr, setPcrStatus] = useState("");
+    const [pcrIcon, setPcrStatusIcon] = useState("");
     const [booster, setBooster] = useState("");
+    const [boosterIcon, setBoosterIcon] = useState("");
 
     //For Slider width & hight
     const WIDTH = Dimensions.get('window').width;
@@ -45,6 +48,7 @@ const Home = ({navigation}) =>{
                 .then((response) => response.json())
                 .then((responseJson) => {
                     setVaccination(responseJson.navigationPath);
+                    setVaccinationIcon(responseJson.vaccinationIcon);
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
@@ -69,6 +73,7 @@ const Home = ({navigation}) =>{
                 .then((response) => response.json())
                 .then((responseJson) => {
                     setPcrStatus(responseJson.navigationPath);
+                    setPcrStatusIcon(responseJson.pcrIcon);
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
@@ -93,6 +98,7 @@ const Home = ({navigation}) =>{
                 .then((response) => response.json())
                 .then((responseJson) => {
                     setBooster(responseJson.navigationPath);
+                    setBoosterIcon(responseJson.boosterIcon);
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
@@ -190,7 +196,7 @@ const Home = ({navigation}) =>{
                         navigation.navigate(vaccination);
                     }}
                   >
-                    <Image style={styles.vSliderImage} source={Vaccination} />
+                    <Image style={styles.vSliderImage} source={{uri:appUrl.BaseUrl+vaccinationIcon}} />
                   </TouchableOpacity>
                   </View>
                 </Card>
@@ -269,7 +275,7 @@ const Home = ({navigation}) =>{
                       navigation.navigate(pcr);
                     }}
                   >
-                    <Image style={styles.pSliderImage} source={PCR} />
+                    <Image style={styles.pSliderImage} source={{uri:appUrl.BaseUrl+pcrIcon}} />
                   </TouchableOpacity>
                   </View>
                 </Card>
@@ -309,7 +315,7 @@ const Home = ({navigation}) =>{
                       navigation.navigate(booster);
                     }}
                   >
-                    <Image style={styles.bSliderImage} source={Booster} />
+                    <Image style={styles.bSliderImage} source={{uri:appUrl.BaseUrl+boosterIcon}} />
                   </TouchableOpacity>
                   </View>
                 </Card>
@@ -417,15 +423,15 @@ const styles = StyleSheet.create({
   },
   SliderImage: {
     height: 100,
-    width: "97%",
+    width: "70%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
-    marginLeft: 5
+
+    marginLeft: 40
   },
   vSliderImage:{
-    height: 150,
-    width: "60%",
+    height: 165,
+    width: "56%",
     alignItems: "center",
     justifyContent: "center",
     marginTop: 5,
@@ -433,27 +439,21 @@ const styles = StyleSheet.create({
   },
   bSliderImage:{
     height: 140,
-    width: "90%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 5,
-    marginLeft: 15
+    width: "50%",
+    marginLeft:70,
+    marginTop:-20,
   },
   pSliderImage:{
-    height: 170,
-    width: "70%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: -10,
-    marginLeft: 40
+    height: 140,
+    width: "50%",
+    marginLeft:60,
+    marginTop:-20,
   },
   adSliderImage:{
     height: 120,
-    width: "88%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 5,
-    marginLeft: 15
+    width: "80%",
+    marginLeft:30,
+    marginTop:-10,
   },
 });
 
