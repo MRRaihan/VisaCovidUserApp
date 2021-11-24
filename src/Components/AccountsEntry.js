@@ -72,6 +72,7 @@ export default function App({navigation}) {
               {
                 Alert.alert(responseJson.message);
                 AsyncStorage.setItem('phone', responseJson.phone);
+                AsyncStorage.setItem('password', responseJson.password);
                 navigation.navigate("Mobile OTP")
               }else if(responseJson.status == "0"){
                 Alert.alert(responseJson.message);
