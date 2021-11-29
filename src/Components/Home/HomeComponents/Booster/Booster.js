@@ -91,6 +91,7 @@ const Booster = ({navigation}) => {
                                 });
                         }
                         }>
+                        <Picker.Item key="45643234" label="Select one"/>
                         {
                             allCountry.map((country)=>{
                                 return (
@@ -130,6 +131,7 @@ const Booster = ({navigation}) => {
                                 });
                         }
                         }>
+                        <Picker.Item key="4564234" label="Select one"/>
                         {
                             allState.map((state)=>{
                                 return (
@@ -172,6 +174,7 @@ const Booster = ({navigation}) => {
                         }
 
                         }>
+                        <Picker.Item key="345634" label="Select one"/>
                         {
                             allCity.map((city)=>{
                                 return (
@@ -190,6 +193,7 @@ const Booster = ({navigation}) => {
                         onValueChange={(itemValue, itemIndex) =>
                             setSelectedFourItem(itemValue)
                         }>
+                        <Picker.Item key="345543234" label="Select one"/>
                         {
                             allCenter.map((center)=>{
                                 return (
@@ -268,8 +272,6 @@ const Booster = ({navigation}) => {
 
         </View>
     </ScrollView>
-
-
     )
 }
 

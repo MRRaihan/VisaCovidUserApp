@@ -15,6 +15,7 @@ const MobileOTP= ({navigation, route}) =>{
           const [countdown, setCountdown] = useState(defaultCountdown);
           const [enableResend, setEnableResend] = useState(false);
           const [phone, setPhone] = useState("");
+          const [password, setPassword] = useState("");
           const [userId, setUserId] = useState("");
 
           useEffect(() => {
@@ -29,6 +30,10 @@ const MobileOTP= ({navigation, route}) =>{
         useEffect(()=>{
             AsyncStorage.getItem('phone').then(value =>{
                 setPhone(value)
+            });
+
+            AsyncStorage.getItem('password').then(value =>{
+                setPassword(value)
             });
 
             AsyncStorage.getItem('userId').then(value =>{
@@ -85,7 +90,7 @@ const MobileOTP= ({navigation, route}) =>{
                 <TextInput
                     ref={(input) => textInput = input}
                     onChangeText={onChangeText}
-                    style={{width: 0, height: 0, color: "#0f0f0f"}}
+                    style={{width: 0, height: 0, color: "#000000"}}
                     placeholderTextColor='#0f0f0f'
                     underlineColorAndroid='#0f0f0f'
                     value={internalVal}
@@ -118,7 +123,32 @@ const MobileOTP= ({navigation, route}) =>{
                         Didn't receive any code?
                         </Text>
                     </View>
-                <TouchableOpacity onPress={onChangeNumber}>
+                <TouchableOpacity onPress={() => {
+                    const url = appUrl.OtpResend;
+                    const config = {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({phone: phone})
+                    };
+                    console.log(url)
+                    fetch(url,config)
+                        .then((response) => response.json())
+                        .then((responseJson) => {
+                            if (responseJson.status == "1")
+                            {
+                                Alert.alert(responseJson.message);
+                                navigation.navigate("Mobile OTP")
+                            }else if(responseJson.status == "0"){
+                                Alert.alert(responseJson.message);
+                            }
+                        })
+                        .catch((error) => {
+                            //Alert.alert("Failed to registration 2");
+                        });
+                }}>
                     <View style={styles.btnChangeNumber} >
                     <Text style={styles.textChange} >Send again</Text>
                     </View>
@@ -155,8 +185,6 @@ const MobileOTP= ({navigation, route}) =>{
                         .catch((error) => {
                             //Alert.alert("Failed to registration 2");
                         });
-
-
                     //Alert.alert(url);
                             //props.navigation.navigate("Home")
                             }}  style={styles.otpButton}

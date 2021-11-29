@@ -1,12 +1,42 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { Card } from 'react-native-elements';
+import appUrl from "../../../../RestApi/AppUrl";
 
-const AddCountry = (props) => {
+const AddCountry = ({navigation}) => {
     const [fromAddress, setfromAddress] = useState();
     const [toAddress, settoAddress] = useState();
-    
+
+    const [allCountry, setCountryItem] = useState([]);
+
+
+    useEffect(()=>{
+        const url = appUrl.Country;
+        const config = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        };
+
+        fetch(url,config)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // Alert.alert(responseJson.status);
+                if (responseJson.status == "1")
+                {
+                    setCountryItem(responseJson.countries);
+                }else if(responseJson.status == "0"){
+                    Alert.alert(responseJson.message);
+                }
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
+
+    }, []);
 
     return (
             <Card style={styles.container}>
@@ -19,14 +49,13 @@ const AddCountry = (props) => {
                         onValueChange={(itemValue, itemIndex) =>
                             setfromAddress(itemValue)
                     }>
-                        <Picker.Item label="Bangladesh" value="Bangladesh" />
-                        <Picker.Item label="Argentina" value="Argentina" />
-                        <Picker.Item label="Brazil" value="Brazil" />
-                        <Picker.Item label="Germany" value="Germany" />
-                        <Picker.Item label="Baharain" value="Baharain" />
-                        <Picker.Item label="China" value="China" />
-                        <Picker.Item label="Dubai" value="Dubai" />
-                        <Picker.Item label="Arab" value="Arab" />
+                        {
+                            allCountry.map((country)=>{
+                                return (
+                                    <Picker.Item key={country.id} label={country.name} value={country.id} />
+                                )
+                            })
+                        }
                     </Picker>
                 </View>
 
@@ -38,27 +67,26 @@ const AddCountry = (props) => {
                         onValueChange={(itemValue, itemIndex) =>
                             settoAddress(itemValue)
                     }>
-                        
-                        <Picker.Item label="Argentina" value="Argentina" />
-                        <Picker.Item label="Bangladesh" value="Bangladesh" />
-                        <Picker.Item label="Brazil" value="Brazil" />
-                        <Picker.Item label="Germany" value="Germany" />
-                        <Picker.Item label="Baharain" value="Baharain" />
-                        <Picker.Item label="China" value="China" />
-                        <Picker.Item label="Dubai" value="Dubai" />
-                        <Picker.Item label="Arab" value="Arab" />
+
+                        {
+                            allCountry.map((country)=>{
+                                return (
+                                    <Picker.Item key={country.id} label={country.name} value={country.id} />
+                                )
+                            })
+                        }
                     </Picker>
                 </View>
 
                 <View style={{ justifyContent: 'center', alignItems: 'center', width:"100%"}}>
                     <TouchableOpacity style={styles.button} onPress={() => {
-                        props.navigation.navigate("Synchronise");
+                        navigation.navigate("Synchronise", { fromAddress: fromAddress, toAddress:toAddress });
                     }}>
                         <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Select</Text>
                     </TouchableOpacity>
                 </View>
         </Card>
-    
+
 
     )
 }
@@ -73,7 +101,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "column",
         height: 40
-    }, 
+    },
     itemView:{
         padding: 20,
         margin: 5

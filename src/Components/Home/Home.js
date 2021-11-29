@@ -1,14 +1,8 @@
 import * as React from "react";
 import { Button, Card, Paragraph, Title } from "react-native-paper";
 import {TouchableOpacity, StyleSheet, View, Text, Image, ScrollView, Alert, Dimensions} from "react-native";
-
-import UpSlider from "../../../assets/images/slider.png";
 import Antibody from "../../../assets/images/battery.png";
-
-import PCR from "../../../assets/images/done.png";
-import Vaccination from "../../../assets/images/Vaccination.png";
 import AddCountry from "../../../assets/images/CAddCountry.jpeg";
-import Booster from "../../../assets/images/CBooster.jpeg";
 import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../RestApi/AppUrl";
@@ -27,6 +21,7 @@ const Home = ({navigation}) =>{
     const [pcrIcon, setPcrStatusIcon] = useState("");
     const [booster, setBooster] = useState("");
     const [boosterIcon, setBoosterIcon] = useState("");
+    const [boosterStatus, setBoosterStatus] = useState("");
 
     //For Slider width & hight
     const WIDTH = Dimensions.get('window').width;
@@ -49,6 +44,8 @@ const Home = ({navigation}) =>{
                 .then((responseJson) => {
                     setVaccination(responseJson.navigationPath);
                     setVaccinationIcon(responseJson.vaccinationIcon);
+                    setBoosterStatus(responseJson.boosterStatus);
+
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
@@ -280,48 +277,48 @@ const Home = ({navigation}) =>{
                   </View>
                 </Card>
 
-                <Card style={styles.dataFlex}>
-                  <View style={styles.CardInsideTitle}>
-                    <Text
-                      style={{
-                        alignItems: "center",
-                        flex: 1,
-                        justifyContent: "center",
-                        marginTop: 9,
-                        fontSize: 18,
-                        color: "#050505"
-                      }}
-                    >
-                      Booster
-                    </Text>
+                  {boosterStatus == 1 &&
 
-                    <TouchableOpacity>
-                      <Button
-                        style={{
-                          alignItems: "center",
-                          flex: 1,
-                          justifyContent: "space-between",
-                          marginTop: 15,
-                          marginRight: -30
-                        }}
-                        icon="information-outline"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      //navigation.navigate("Booster");
-                      navigation.navigate(booster);
-                    }}
-                  >
-                    <Image style={styles.bSliderImage} source={{uri:appUrl.BaseUrl+boosterIcon}} />
-                  </TouchableOpacity>
-                  </View>
-                </Card>
+                      <Card style={styles.dataFlex}>
+                          <View style={styles.CardInsideTitle}>
+                              <Text
+                                  style={{
+                                      alignItems: "center",
+                                      flex: 1,
+                                      justifyContent: "center",
+                                      marginTop: 9,
+                                      fontSize: 18,
+                                      color: "#050505"
+                                  }}
+                              >
+                                  Booster
+                              </Text>
 
-
-
+                              <TouchableOpacity>
+                                  <Button
+                                      style={{
+                                          alignItems: "center",
+                                          flex: 1,
+                                          justifyContent: "space-between",
+                                          marginTop: 15,
+                                          marginRight: -30
+                                      }}
+                                      icon="information-outline"
+                                  />
+                              </TouchableOpacity>
+                          </View>
+                          <View>
+                              <TouchableOpacity
+                                  onPress={() => {
+                                      //navigation.navigate("Booster");
+                                      navigation.navigate(booster);
+                                  }}
+                              >
+                                  <Image style={styles.bSliderImage} source={{uri:appUrl.BaseUrl+boosterIcon}} />
+                              </TouchableOpacity>
+                          </View>
+                      </Card>
+                  }
                 <Card style={styles.dataFlex}>
                   <View style={styles.CardInsideTitle}>
                     <Text
@@ -388,7 +385,7 @@ const styles = StyleSheet.create({
   },
   HelthTitle: {
     fontSize: 22,
-    marginBottom: 10,
+    marginBottom: 20,
     color: "#050505"
   },
   healthData: {

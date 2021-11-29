@@ -90,7 +90,9 @@ const VaccineRegistration = ({navigation}) => {
                                 });
                         }
                     }>
+                        <Picker.Item key="4243234" label="Select one" />
                         {
+
                             allCountry.map((country)=>{
                                 return (
                                     <Picker.Item key={country.id} label={country.name} value={country.id} />
@@ -129,6 +131,7 @@ const VaccineRegistration = ({navigation}) => {
                                 });
                         }
                     }>
+                        <Picker.Item key="4243456" label="Select one"/>
                         {
                             allState.map((state)=>{
                                 return (
@@ -171,6 +174,7 @@ const VaccineRegistration = ({navigation}) => {
                         }
 
                     }>
+                        <Picker.Item key="4243789" label="Select one"/>
                         {
                             allCity.map((city)=>{
                                 return (
@@ -189,6 +193,7 @@ const VaccineRegistration = ({navigation}) => {
                         onValueChange={(itemValue, itemIndex) =>
                             setSelectedFourItem(itemValue)
                     }>
+                        <Picker.Item key="4243219" label="Select one"/>
                         {
                             allCenter.map((center)=>{
                                 return (

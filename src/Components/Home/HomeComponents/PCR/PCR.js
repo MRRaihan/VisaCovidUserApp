@@ -91,6 +91,7 @@ const PCR = ({navigation}) => {
                                 });
                         }
                         }>
+                        <Picker.Item key="3453234" label="Select one"/>
                         {
                             allCountry.map((country)=>{
                                 return (
@@ -130,6 +131,7 @@ const PCR = ({navigation}) => {
                                 });
                         }
                         }>
+                        <Picker.Item key="3453234" label="Select one"/>
                         {
                             allState.map((state)=>{
                                 return (
@@ -172,6 +174,7 @@ const PCR = ({navigation}) => {
                         }
 
                         }>
+                        <Picker.Item key="3453234" label="Select one"/>
                         {
                             allCity.map((city)=>{
                                 return (
@@ -190,6 +193,7 @@ const PCR = ({navigation}) => {
                         onValueChange={(itemValue, itemIndex) =>
                             setSelectedFourItem(itemValue)
                         }>
+                        <Picker.Item key="424456456" label="Select one" />
                         {
                             allCenter.map((center)=>{
                                 return (
