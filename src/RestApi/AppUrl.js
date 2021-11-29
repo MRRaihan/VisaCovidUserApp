@@ -1,9 +1,11 @@
 
 class AppUrl{
-    static BaseUrl = 'http://10.10.10.117/VisaCovidCenterDevelopment/public/';
+    static BaseUrl = 'https://visacovid.com/';
     static UserCreate = this.BaseUrl+'api/user/create';
     static UserLogin = this.BaseUrl+'api/user/login';
     static OtpCheck = this.BaseUrl+'api/user/otpCheck';
+
+    static OtpResend = this.BaseUrl+'api/otpResend';
 
     //Slider
     static Slider = this.BaseUrl+'api/home/slider';
@@ -40,6 +42,9 @@ class AppUrl{
     static vaccinationInformation = this.BaseUrl+'api/home/vaccinationInformation';
     static pcrInformation = this.BaseUrl+'api/home/pcrInformation';
     static boosterInformation = this.BaseUrl+'api/home/boosterInformation';
+
+    // Synchronize data
+    static synchronize = this.BaseUrl+'api/home/synchronizeInformation';
 
 }
 

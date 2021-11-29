@@ -1,14 +1,8 @@
 import * as React from "react";
 import { Button, Card, Paragraph, Title } from "react-native-paper";
 import {TouchableOpacity, StyleSheet, View, Text, Image, ScrollView, Alert, Dimensions} from "react-native";
-
-import UpSlider from "../../../assets/images/slider.png";
 import Antibody from "../../../assets/images/battery.png";
-
-import PCR from "../../../assets/images/done.png";
-import Vaccination from "../../../assets/images/Vaccination.png";
 import AddCountry from "../../../assets/images/CAddCountry.jpeg";
-import Booster from "../../../assets/images/CBooster.jpeg";
 import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../RestApi/AppUrl";
@@ -391,7 +385,7 @@ const styles = StyleSheet.create({
   },
   HelthTitle: {
     fontSize: 22,
-    marginBottom: 10,
+    marginBottom: 20,
     color: "#050505"
   },
   healthData: {

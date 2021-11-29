@@ -90,7 +90,7 @@ const MobileOTP= ({navigation, route}) =>{
                 <TextInput
                     ref={(input) => textInput = input}
                     onChangeText={onChangeText}
-                    style={{width: 0, height: 0, color: "#0f0f0f"}}
+                    style={{width: 0, height: 0, color: "#000000"}}
                     placeholderTextColor='#0f0f0f'
                     underlineColorAndroid='#0f0f0f'
                     value={internalVal}
@@ -124,20 +124,19 @@ const MobileOTP= ({navigation, route}) =>{
                         </Text>
                     </View>
                 <TouchableOpacity onPress={() => {
-                    const url = appUrl.UserLogin;
+                    const url = appUrl.OtpResend;
                     const config = {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({phone: phone, password: password})
+                        body: JSON.stringify({phone: phone})
                     };
-
+                    console.log(url)
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
-
                             if (responseJson.status == "1")
                             {
                                 Alert.alert(responseJson.message);
@@ -186,8 +185,6 @@ const MobileOTP= ({navigation, route}) =>{
                         .catch((error) => {
                             //Alert.alert("Failed to registration 2");
                         });
-
-
                     //Alert.alert(url);
                             //props.navigation.navigate("Home")
                             }}  style={styles.otpButton}

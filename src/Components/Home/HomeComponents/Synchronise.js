@@ -1,16 +1,49 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react'
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { Card } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 
 import BeAware from "../../../../assets/images/BeAware.png";
+import moment from "moment";
+import AsyncStorage from "@react-native-community/async-storage";
+import appUrl from "../../../RestApi/AppUrl";
 
-const Synchronise = (props) => {
+const Synchronise = ({navigation, route}) => {
     const [personalDataChecked, setPersonalDataChecked] = React.useState(false);
     const [diagnosisDataChecked, setDiagnosisDataChecked] = React.useState(false);
     const [PCRDataChecked, setPCRDataChecked] = React.useState(false);
     const [vaccinationDataChecked, setVaccinationDataChecked] = React.useState(false);
     const [biometricDataChecked, setBiometricDataChecked] = React.useState(false);
+
+    const [allRules, setAllRules] = useState([]);
+
+    useEffect(()=>{
+
+        const url = appUrl.synchronize+'/'+route.params.toAddress;
+        const config = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        };
+
+        fetch(url,config)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // Alert.alert(responseJson.status);
+                if (responseJson.status == "1")
+                {
+                    setCountryItem(responseJson.countries);
+                }else if(responseJson.status == "0"){
+                    Alert.alert(responseJson.message);
+                }
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
+    },[])
+
     return (
         <ScrollView>
             <View style={StyleSheet.container}>
@@ -20,26 +53,30 @@ const Synchronise = (props) => {
             <Card style={styles.cardStyleCovidVisa}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 20}}>
                     <View style={{flexDirection:"column", justifyContent: "flex-start", padding: 10}}>
-                        <Text style={{fontSize: 30, fontWeight: 'bold', color: "#050505" }}>Be Aware</Text> 
+                        <Text style={{fontSize: 30, fontWeight: 'bold', color: "#050505" }}>Be Aware</Text>
                         <Text style={{ color: "#050505" }}>United against COVID-19</Text>
                     </View>
                     <View style={{justifyContent: "flex-end", height: 100}}>
-                        <Image style={styles.ImageShow} source={BeAware} /> 
+                        <Image style={styles.ImageShow} source={BeAware} />
                     </View>
                 </View>
             </Card>
             </View>
+                {/*<View>
+                    <Text>This is {route.params.fromAddress}'s from</Text>
+                    <Text>This is {route.params.toAddress}'s to</Text>
+                </View>*/}
 
             <View>
             <Text style={styles.mainTitle}>Trusted app for Bangladesh</Text>
             <Card style={styles.cardStyleSurokkha}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 20}}>
                     <View style={{flexDirection:"column", justifyContent: "flex-start", padding: 10}}>
-                        <Text style={{fontSize: 30, fontWeight: 'bold', color: "#050505" }}>Surokkha</Text> 
+                        <Text style={{fontSize: 30, fontWeight: 'bold', color: "#050505" }}>Surokkha</Text>
                         <Text style={{ color: "#050505" }}>United against COVID-19</Text>
                     </View>
                     <View style={{justifyContent: "flex-end", height: 100}}>
-                        <Image style={styles.ImageShow} source={BeAware} /> 
+                        <Image style={styles.ImageShow} source={BeAware} />
                     </View>
                 </View>
             </Card>
@@ -114,7 +151,7 @@ const Synchronise = (props) => {
 
             </View>
         </ScrollView>
-        
+
     )
 }
 
@@ -189,7 +226,7 @@ export default Synchronise;
 <Card style={styles.cardStyleCovidVisa}>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 20}}>
         <View style={{flexDirection:"column", justifyContent: "flex-start", padding: 10}}>
-            <View style={{fontSize: 30, fontWeight: 'bold' }}>Be Aware</View> 
+            <View style={{fontSize: 30, fontWeight: 'bold' }}>Be Aware</View>
             <View>United against COVID-19</View>
         </View>
         <View style={{justifyContent: "flex-end", height: 100}}>
@@ -202,7 +239,7 @@ export default Synchronise;
 <Card style={styles.cardStyleSurokkha}>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 20}}>
         <View style={{flexDirection:"column", justifyContent: "flex-start", padding: 10}}>
-            <View style={{fontSize: 30, fontWeight: 'bold' }}>Surokkha</View> 
+            <View style={{fontSize: 30, fontWeight: 'bold' }}>Surokkha</View>
             <View>United against COVID-19</View>
         </View>
         <View style={{justifyContent: "flex-end", height: 100}}>
