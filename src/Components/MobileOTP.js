@@ -133,7 +133,6 @@ const MobileOTP= ({navigation, route}) =>{
                         },
                         body: JSON.stringify({phone: phone})
                     };
-                    console.log(url)
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
@@ -169,7 +168,7 @@ const MobileOTP= ({navigation, route}) =>{
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
-                            console.log(responseJson);
+
                             if (responseJson.status == "1")
                             {
                                 Alert.alert(responseJson.message);
