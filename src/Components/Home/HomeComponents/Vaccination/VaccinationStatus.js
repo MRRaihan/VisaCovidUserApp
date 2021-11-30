@@ -19,6 +19,7 @@ const VaccinationStatus = ({route}) => {
     const [serveByFirstName, setServeByFirstName] = useState('');
     const [serveBySecondId, setServeBySecondId] = useState('');
     const [serveBySecondName, setServeBySecondName] = useState('');
+    const [myVaccinationImage, setMyVaccinationImage] = useState('');
 
     useEffect(()=>{
 
@@ -36,7 +37,6 @@ const VaccinationStatus = ({route}) => {
             fetch(boosterUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
-
                     setVaccinationDoseOne(responseJson.myVaccinationDoseOne);
                     setVaccinationDoseTwo(responseJson.myVaccinationDoseTwo);
                     setVaccinationName(responseJson.myVaccinationName);
@@ -46,6 +46,7 @@ const VaccinationStatus = ({route}) => {
                     setServeByFirstName(responseJson.myServeByFirstName);
                     setServeBySecondId(responseJson.myServeBySecondId);
                     setServeBySecondName(responseJson.myServeBySecondName);
+                    setMyVaccinationImage(responseJson.myVaccinationImage);
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
@@ -56,7 +57,7 @@ const VaccinationStatus = ({route}) => {
         <ScrollView>
             <View style={styles.container}>
                 <View style={{width: "100%", height: 200, alignItems: 'center', backgroundColor: "#fff"}}>
-                <Image style={styles.VaccineLogo} source={VaccinationImage} />
+                <Image style={styles.VaccineLogo} source = {{uri:appUrl.BaseUrl+myVaccinationImage}} />
                 </View>
                 <Card style={styles.LivenessVideo}>
                     <TouchableOpacity>
