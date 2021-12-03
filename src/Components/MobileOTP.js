@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {TextInput} from "react-native-gesture-handler";
+import OTPInputView from '@twotalltotems/react-native-otp-input'
+
 import {View, StyleSheet, KeyboardAvoidingView, TouchableOpacity, Text, ScrollView, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import appUrl from "../RestApi/AppUrl";
@@ -7,122 +8,57 @@ import appUrl from "../RestApi/AppUrl";
 
 
 const MobileOTP= ({navigation, route}) =>{
-          const lengthInput = 6;
-          const defaultCountdown = 30;
-          let clockCall= null;
-          let textInput = useRef(null);
-          const [internalVal, setInternalVal] = useState("");
-          const [countdown, setCountdown] = useState(defaultCountdown);
-          const [enableResend, setEnableResend] = useState(false);
-          const [phone, setPhone] = useState("");
-          const [password, setPassword] = useState("");
-          const [userId, setUserId] = useState("");
 
-          useEffect(() => {
-                    clockCall = setInterval(() => {
-                              decrementClock();
-                    }, 1000)
-                    return () =>{
-                              clearInterval(clockCall);
-                    }
-          })
+    const [phone, setPhone] = useState("");
+    const [otp, setOtp] = useState(0);
+    const [password, setPassword] = useState("");
+    const [userId, setUserId] = useState("");
 
-        useEffect(()=>{
-            AsyncStorage.getItem('phone').then(value =>{
-                setPhone(value)
-            });
 
-            AsyncStorage.getItem('password').then(value =>{
-                setPassword(value)
-            });
+    useEffect(()=>{
+        AsyncStorage.getItem('phone').then(value =>{
+            setPhone(value)
+        });
 
-            AsyncStorage.getItem('userId').then(value =>{
-                setUserId(value)
-            });
+        AsyncStorage.getItem('password').then(value =>{
+            setPassword(value)
+        });
 
-        }, [])
-          const decrementClock = () =>{
-                    if(countdown === 0){
-                              setEnableResend(true)
-                              setCountdown(0)
-                              clearInterval(clockCall)
-                    }else{
-                              setCountdown( countdown -1)
-                    }
-          }
+        AsyncStorage.getItem('userId').then(value =>{
+            setUserId(value)
+        });
 
-          const onChangeText = (val) =>{
-                    setInternalVal(val);
-                    // if(val.length === lengthInput){
-                    //           navigation.navigate('Home');
-                    // }
-          }
+    }, [])
 
-          const onChangeNumber = (val) =>{
-                    setInterval(val);
-          }
-          const onResendOTP = () =>{
-                    if(enableResend){
-                              setCountdown(defaultCountdown)
-                              setEnableResend(false)
-                              clearInterval(clockCall)
-                              clockCall = setInterval(() => {
-                                        decrementClock(0)
-                              }, 1000)
-                    }
-          }
 
-          useEffect(() =>{
-                    textInput.focus();
-          }, [])
-          return (
-            <ScrollView>
-          <View style={styles.container}>
-            <KeyboardAvoidingView
-                keyboardVerticalOffset={50}
-                behavior={'padding'}
-                styles={styles.containerAvoidingView}
-            >
 
-                <Text style={styles.titleStyle}>Code is sent to <Text style={styles.titleNumberStyle}>{phone}</Text></Text>
 
+    return (
+        <ScrollView>
+            <View style={styles.container}>
                 <View>
-                <TextInput
-                    ref={(input) => textInput = input}
-                    onChangeText={onChangeText}
-                    style={{width: 0, height: 0, color: "#000000"}}
-                    placeholderTextColor='#0f0f0f'
-                    underlineColorAndroid='#0f0f0f'
-                    value={internalVal}
-                    maxLength={lengthInput}
-                    returnKeyType="done"
-                    keyboardType="numeric"
-                    onPress={() => textInput.focus()}
-                />
-                <View style={styles.containerInput} onPress={() => textInput.focus()}>
-                {
-                    Array(lengthInput).fill().map((data, index) =>(
-                        <View key={index} style={[styles.cellView,
-                            {
-                                borderBottomColor: index === internalVal.length ? '#FB6CA6' : '#234DB7'
-                            }
-                            ]} onPress={() => textInput.focus()}>
-                            <Text style={styles.cellText}
-                                    onPress={() => textInput.focus()}
-                                >
-                                {internalVal && internalVal.length > 0 ? internalVal[index] : ""}
-                                </Text>
-                            </View>
-                            ))
-                        }
-                    </View>
+                    <Text style={styles.titleStyle}>OTP Code is sent to <Text style={styles.titleNumberStyle}>{phone}</Text> number</Text>
                 </View>
-                <View style={styles.bottomView}>
-                    <View style={styles.btnResend} >
-                        <Text style={styles.textResend}>
+                <OTPInputView
+                    style={styles.containerInput}
+                    pinCount={6}
+                    // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                    // onCodeChanged = {code => { this.setState({code})}}
+                    autoFocusOnLoad
+                    codeInputFieldStyle={styles.underlineStyleBase}
+                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                    onCodeFilled = {(code) => {
+                        setOtp(code)
+                    }}
+                />
+            </View>
+
+            <View style={styles.bottomView}>
+                <View style={styles.btnResend} >
+                    <Text style={styles.textResend}>
                         Didn't receive any code?
-                        </Text>
-                    </View>
+                    </Text>
+                </View>
                 <TouchableOpacity onPress={() => {
                     const url = appUrl.OtpResend;
                     const config = {
@@ -149,11 +85,11 @@ const MobileOTP= ({navigation, route}) =>{
                         });
                 }}>
                     <View style={styles.btnChangeNumber} >
-                    <Text style={styles.textChange} >Send again</Text>
+                        <Text style={styles.textChange} >Send again</Text>
                     </View>
                 </TouchableOpacity>
-                </View>
-                <View style={styles.SubmitBtn}>
+            </View>
+            <View style={styles.SubmitBtn}>
                 <TouchableOpacity onPress={()=>{
                     const url = appUrl.OtpCheck;
                     const config = {
@@ -162,7 +98,7 @@ const MobileOTP= ({navigation, route}) =>{
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ phone:phone, otp:internalVal})
+                        body: JSON.stringify({ phone:phone, otp:otp})
                     };
 
                     fetch(url,config)
@@ -185,65 +121,36 @@ const MobileOTP= ({navigation, route}) =>{
                             //Alert.alert("Failed to registration 2");
                         });
                     //Alert.alert(url);
-                            //props.navigation.navigate("Home")
-                            }}  style={styles.otpButton}
+                    //props.navigation.navigate("Home")
+                }}  style={styles.otpButton}
                 >
-                            <Text style={styles.otpButtonView}>Verify & Continue</Text>
+                    <Text style={styles.otpButtonView}>Verify & Continue</Text>
                 </TouchableOpacity>
-                </View>
-
-            </KeyboardAvoidingView>
-          </View>
-          </ScrollView>
-          );
+            </View>
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-
-        flex: 1,
+        display:"flex",
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        marginTop: 50
-    },
-
-    containerAvoidingView:{
-        flex: 1,
-        alignItems: 'center',
-        padding: 10,
+        marginTop:'50%'
     },
     titleStyle: {
-        fontSize: 20,
+        fontSize: 15,
         textAlign: 'center',
         color: "#0f0f0f"
 
     },
-        titleNumberStyle: {
-        fontSize: 20,
+    titleNumberStyle: {
+        fontSize: 15,
         textAlign: 'center',
-        color: "#0814bf"
+        color: "#0814bf",
 
-    },
-    containerInput:{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-
-    },
-    cellView:{
-        paddingVertical: 11,
-        width: 40,
-        margin: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 1.5,
-        color: "#0f0f0f",
-    },
-    cellText:{
-        textAlign: 'center',
-        fontSize: 16
     },
     bottomView:{
         flexDirection: 'column',
@@ -253,18 +160,15 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         alignItems: 'center'
     },
-    btnChangeNumber:{
-        width: 150,
-        height: 'auto',
-        alignItems: 'center',
-        justifyContent: 'center',
-
-    },
     textChange:{
         color: '#234BB7',
         alignItems: 'center',
         fontSize: 17
 
+    },
+    SubmitBtn:{
+        textAlign:"center",
+        marginLeft:"15%"
     },
     btnResend: {
         width: 200,
@@ -272,29 +176,56 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    btnChangeNumber:{
+        width: 150,
+        height: 'auto',
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
     textResend: {
         alignItems: 'center',
         fontSize: 15,
         color: "#0f0f0f"
+    },
+    containerInput:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width:"70%",
+        marginTop:"5%",
+
     },
     otpButton:{
         backgroundColor: "#2a24c9",
         justifyContent: "center",
         alignItems: "center",
         borderWidth: 1,
-        height: 50,
-        width: "80%",
+        height: 40,
+        width: "70%",
         borderRadius: 10,
         margin: 20,
     },
     otpButtonView:{
         color: "white",
-        fontSize: 20
-
+        fontSize: 16
     },
-    SubmitBtn:{
 
+    borderStyleHighLighted: {
+        borderColor: "#10a547",
     },
-})
+
+    underlineStyleBase: {
+        width: 30,
+        height: 45,
+        borderWidth: 0,
+        borderBottomWidth: 1,
+        color:"#000"
+    },
+
+    underlineStyleHighLighted: {
+        borderColor: "#0c6fe1",
+    },
+});
 
 export default MobileOTP;
