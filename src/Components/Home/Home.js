@@ -9,7 +9,8 @@ import {
     ScrollView,
     Alert,
     Dimensions,
-    ActivityIndicator
+    ActivityIndicator,
+    RefreshControl
 } from "react-native";
 import Antibody from "../../../assets/images/battery.png";
 import AddCountry from "../../../assets/images/CAddCountry.jpeg";
@@ -33,6 +34,7 @@ const Home = ({navigation}) =>{
     const [booster, setBooster] = useState("");
     const [boosterIcon, setBoosterIcon] = useState("");
     const [boosterStatus, setBoosterStatus] = useState("");
+    const [Refreshing, setRefreshing] = useState(false);
 
     //For Slider width & hight
     const WIDTH = Dimensions.get('window').width;
@@ -136,7 +138,6 @@ const Home = ({navigation}) =>{
                 if (responseJson.status == "1")
                 {
                     setSlider(responseJson.sliders);
-                    setLoader(false)
                 }else if(responseJson.status == "0"){
                     Alert.alert(responseJson.message);
                 }
@@ -144,11 +145,25 @@ const Home = ({navigation}) =>{
             .catch((error) => {
                 //Alert.alert("Failed to registration 2");
             });
+        setLoader(false)
     }, []);
 
+    const onRefresh = () => {
+        setRefreshing(true);
+        navigation.navigate("Home");
+        setRefreshing(false);
+    }
 
     return(
-        <ScrollView>
+        <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={Refreshing}
+                    onRefresh={onRefresh}
+                    colors={['#718AEE']}
+                />
+            }
+        >
           <View style={styles.container}>
               {
                   loader ? <ActivityIndicator size="large" color="#718AEE"/> :
