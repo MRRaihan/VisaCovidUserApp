@@ -25,7 +25,7 @@ const Home = ({navigation}) =>{
     const [phone, setPhone] = useState("");
     const [userId, setUserId] = useState("");
 
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
     //For service status check
     const [vaccination, setVaccination] = useState("");
     const [vaccinationIcon, setVaccinationIcon] = useState("");
@@ -160,7 +160,7 @@ const Home = ({navigation}) =>{
                 <RefreshControl
                     refreshing={Refreshing}
                     onRefresh={onRefresh}
-                    colors={['#718AEE']}
+                    colors={['#00549F']}
                 />
             }
         >
