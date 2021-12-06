@@ -1,6 +1,17 @@
 import * as React from "react";
 import { Button, Card, Paragraph, Title } from "react-native-paper";
-import {TouchableOpacity, StyleSheet, View, Text, Image, ScrollView, Alert, Dimensions} from "react-native";
+import {
+    TouchableOpacity,
+    StyleSheet,
+    View,
+    Text,
+    Image,
+    ScrollView,
+    Alert,
+    Dimensions,
+    ActivityIndicator,
+    RefreshControl
+} from "react-native";
 import Antibody from "../../../assets/images/battery.png";
 import AddCountry from "../../../assets/images/CAddCountry.jpeg";
 import {useEffect, useState} from "react";
@@ -14,6 +25,7 @@ const Home = ({navigation}) =>{
     const [phone, setPhone] = useState("");
     const [userId, setUserId] = useState("");
 
+    const [loader, setLoader] = useState(true);
     //For service status check
     const [vaccination, setVaccination] = useState("");
     const [vaccinationIcon, setVaccinationIcon] = useState("");
@@ -22,12 +34,14 @@ const Home = ({navigation}) =>{
     const [booster, setBooster] = useState("");
     const [boosterIcon, setBoosterIcon] = useState("");
     const [boosterStatus, setBoosterStatus] = useState("");
+    const [Refreshing, setRefreshing] = useState(false);
 
     //For Slider width & hight
     const WIDTH = Dimensions.get('window').width;
     const HEIGHT = Dimensions.get('window').height;
 
     useEffect(()=>{
+        setLoader(true)
         AsyncStorage.getItem('phone').then(value =>{
             //For Vaccination Status
             const vaccineUrl = appUrl.VaccineStatus;
@@ -45,16 +59,17 @@ const Home = ({navigation}) =>{
                     setVaccination(responseJson.navigationPath);
                     setVaccinationIcon(responseJson.vaccinationIcon);
                     setBoosterStatus(responseJson.boosterStatus);
-
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
                 });
+            setLoader(false)
         });
 
     }, []);
 
     useEffect(()=>{
+        setLoader(true)
         AsyncStorage.getItem('phone').then(value =>{
             //For pcr Status
             const pcrUrl = appUrl.PcrStatus;
@@ -76,6 +91,7 @@ const Home = ({navigation}) =>{
                     //Alert.alert("Failed to registration 2");
                 });
         });
+        setLoader(false)
 
     }, []);
 
@@ -105,6 +121,7 @@ const Home = ({navigation}) =>{
     }, []);
 
     useEffect(()=>{
+        setLoader(true)
         //For slider
         const url = appUrl.Slider;
         const config = {
@@ -128,25 +145,43 @@ const Home = ({navigation}) =>{
             .catch((error) => {
                 //Alert.alert("Failed to registration 2");
             });
+        setLoader(false)
     }, []);
 
+    const onRefresh = () => {
+        setRefreshing(true);
+        navigation.navigate("Home");
+        setRefreshing(false);
+    }
 
     return(
-        <ScrollView>
+        <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={Refreshing}
+                    onRefresh={onRefresh}
+                    colors={['#00549F']}
+                />
+            }
+        >
           <View style={styles.container}>
-              <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: "60%"}}>
-                  <ScrollView horizontal={true} showsHorizontalqScrollIndicator={false}>
-                      {
-                          sliders.map((slider)=>{
-                              return (
-                                  <Image key={slider.id} source = {{uri:appUrl.BaseUrl+slider.image}}
-                                         style = {{ width: WIDTH, height: HEIGHT * 0.25 }}
-                                  />
-                              )
-                          })
-                      }
-                  </ScrollView>
-              </View>
+              {
+                  loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                      <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: "60%"}}>
+                          <ScrollView horizontal={true} showsHorizontalqScrollIndicator={false}>
+                              {
+                                  sliders.map((slider)=>{
+                                      return (
+                                          <Image key={slider.id} source = {{uri:appUrl.BaseUrl+slider.image}}
+                                                 style = {{ width: WIDTH, height: HEIGHT * 0.25 }}
+                                          />
+                                      )
+                                  })
+                              }
+                          </ScrollView>
+                      </View>
+              }
+
 
               <View style={styles.healthData}>
               <Text style={styles.HelthTitle}>Health Data</Text>
@@ -159,123 +194,132 @@ const Home = ({navigation}) =>{
                   width: "95%"
                 }}
               >
-                <Card style={styles.fDataFlex}>
-                  <View style={styles.CardInsideTitle}>
-                    <Text
-                      style={{
-                        alignItems: "center",
-                        flex: 1,
-                        justifyContent: "center",
-                        fontSize: 18,
-                        color: "#050505"
-                      }}
-                    >
-                      Vaccination
-                    </Text>
+                  {
+                      loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                          <Card style={styles.fDataFlex}>
+                              <View style={styles.CardInsideTitle}>
+                                  <Text
+                                      style={{
+                                          alignItems: "center",
+                                          flex: 1,
+                                          justifyContent: "center",
+                                          fontSize: 18,
+                                          color: "#050505"
+                                      }}
+                                  >
+                                      Vaccination
+                                  </Text>
 
-                    <TouchableOpacity>
-                      <Button
-                        style={{
-                          alignItems: "center",
-                          flex: 1,
-                          justifyContent: "space-between",
-                          marginTop: 15,
-                          marginRight: -30
-                        }}
-                        icon="information-outline"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      //props.navigation.navigate("Vaccine Registration");
-                        navigation.navigate(vaccination);
-                    }}
-                  >
-                    <Image style={styles.vSliderImage} source={{uri:appUrl.BaseUrl+vaccinationIcon}} />
-                  </TouchableOpacity>
-                  </View>
-                </Card>
+                                  <TouchableOpacity>
+                                      <Button
+                                          style={{
+                                              alignItems: "center",
+                                              flex: 1,
+                                              justifyContent: "space-between",
+                                              marginTop: 15,
+                                              marginRight: -30
+                                          }}
+                                          icon="information-outline"
+                                      />
+                                  </TouchableOpacity>
+                              </View>
+                              <View>
+                                  <TouchableOpacity
+                                      onPress={() => {
+                                          //props.navigation.navigate("Vaccine Registration");
+                                          navigation.navigate(vaccination);
+                                      }}
+                                  >
+                                      <Image style={styles.vSliderImage} source={{uri:appUrl.BaseUrl+vaccinationIcon}} />
+                                  </TouchableOpacity>
+                              </View>
+                          </Card>
+                  }
 
-                <Card style={styles.dataFlex}>
-                  <View style={styles.CardInsideTitle}>
-                    <Text
-                      style={{
-                        alignItems: "center",
-                        flex: 1,
-                        justifyContent: "center",
-                        marginTop: 9,
-                        fontSize: 18,
-                        color: "#050505"
-                      }}
-                    >
-                      Antibody
-                    </Text>
+                  {
+                      loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                          <Card style={styles.dataFlex}>
+                              <View style={styles.CardInsideTitle}>
+                                  <Text
+                                      style={{
+                                          alignItems: "center",
+                                          flex: 1,
+                                          justifyContent: "center",
+                                          marginTop: 9,
+                                          fontSize: 18,
+                                          color: "#050505"
+                                      }}
+                                  >
+                                      Antibody
+                                  </Text>
 
-                    <TouchableOpacity>
-                      <Button
-                        style={{
-                          alignItems: "center",
-                          flex: 1,
-                          justifyContent: "space-between",
-                          marginTop: 15,
-                          marginRight: -30
-                        }}
-                        icon="information-outline"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                  <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate("Antibody");
-                    }}
-                  >
-                    <Image style={styles.SliderImage} source={Antibody} />
-                  </TouchableOpacity>
-                  </View>
-                </Card>
+                                  <TouchableOpacity>
+                                      <Button
+                                          style={{
+                                              alignItems: "center",
+                                              flex: 1,
+                                              justifyContent: "space-between",
+                                              marginTop: 15,
+                                              marginRight: -30
+                                          }}
+                                          icon="information-outline"
+                                      />
+                                  </TouchableOpacity>
+                              </View>
+                              <View>
+                                  <TouchableOpacity
+                                      onPress={() => {
+                                          navigation.navigate("Antibody");
+                                      }}
+                                  >
+                                      <Image style={styles.SliderImage} source={Antibody} />
+                                  </TouchableOpacity>
+                              </View>
+                          </Card>
+                  }
 
-                <Card style={styles.dataFlex}>
-                  <View style={styles.CardInsideTitle}>
-                    <Text
-                      style={{
-                        alignItems: "center",
-                        flex: 1,
-                        justifyContent: "center",
-                        marginTop: 9,
-                        fontSize: 18,
-                        color: "#050505"
-                      }}
-                    >
-                      PCR
-                    </Text>
+                  {
+                      loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                          <Card style={styles.dataFlex}>
+                              <View style={styles.CardInsideTitle}>
+                                  <Text
+                                      style={{
+                                          alignItems: "center",
+                                          flex: 1,
+                                          justifyContent: "center",
+                                          marginTop: 9,
+                                          fontSize: 18,
+                                          color: "#050505"
+                                      }}
+                                  >
+                                      PCR
+                                  </Text>
 
-                    <TouchableOpacity>
-                      <Button
-                        style={{
-                          alignItems: "center",
-                          flex: 1,
-                          justifyContent: "space-between",
-                          marginTop: 15,
-                          marginRight: -30
-                        }}
-                        icon="information-outline"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      //navigation.navigate("PCR");
-                      navigation.navigate(pcr);
-                    }}
-                  >
-                    <Image style={styles.pSliderImage} source={{uri:appUrl.BaseUrl+pcrIcon}} />
-                  </TouchableOpacity>
-                  </View>
-                </Card>
+                                  <TouchableOpacity>
+                                      <Button
+                                          style={{
+                                              alignItems: "center",
+                                              flex: 1,
+                                              justifyContent: "space-between",
+                                              marginTop: 15,
+                                              marginRight: -30
+                                          }}
+                                          icon="information-outline"
+                                      />
+                                  </TouchableOpacity>
+                              </View>
+                              <View>
+                                  <TouchableOpacity
+                                      onPress={() => {
+                                          //navigation.navigate("PCR");
+                                          navigation.navigate(pcr);
+                                      }}
+                                  >
+                                      <Image style={styles.pSliderImage} source={{uri:appUrl.BaseUrl+pcrIcon}} />
+                                  </TouchableOpacity>
+                              </View>
+                          </Card>
+                  }
 
                   {boosterStatus == 1 &&
 
