@@ -20,6 +20,7 @@ const VaccineRegistration = ({navigation}) => {
 
     //time
     const [currentDate, setCurrentDate] = useState('');
+    const [date, setDate] = useState('');
     const [phone, setPhone] = useState("");
 
     useEffect(()=>{
@@ -207,7 +208,7 @@ const VaccineRegistration = ({navigation}) => {
                 <View style={styles.pickerAllItem}>
                     <DatePicker
                         style={{width: '100%'}}
-                        date={currentDate}
+                        date={date}
                         mode="date"
                         placeholder="select date"
                         format="YYYY-MM-DD"
@@ -229,7 +230,7 @@ const VaccineRegistration = ({navigation}) => {
                         }}
                         onDateChange={(date) => {
                             var currentMyDate = moment(date).format('YYYY-MM-DD');
-                            setCurrentDate(currentMyDate);
+                            setDate(currentMyDate);
                         }}
                     />
                 </View>
@@ -243,7 +244,7 @@ const VaccineRegistration = ({navigation}) => {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, date:currentDate })
+                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, date:date })
                     };
                     //Alert.alert(url);
 
