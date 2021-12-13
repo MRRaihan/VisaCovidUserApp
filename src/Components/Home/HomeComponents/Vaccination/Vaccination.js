@@ -11,12 +11,14 @@ const VaccineRegistration = ({navigation}) => {
     const [selectedSecondItem, setSelectedSecondItem] = useState();
     const [selectedThirdItem, setSelectedThirdItem] = useState();
     const [selectedFourItem, setSelectedFourItem] = useState();
+    const [selectedFifthItem, setSelectedFifthItem] = useState();
 
 
     const [allCountry, setCountryItem] = useState([]);
     const [allState, setStateItem] = useState([]);
     const [allCity, setCityItem] = useState([]);
     const [allCenter, setCenterItem] = useState([]);
+    const [vaccineName, setVaccineName] = useState([]);
 
     //time
     const [currentDate, setCurrentDate] = useState('');
@@ -48,6 +50,34 @@ const VaccineRegistration = ({navigation}) => {
                 if (responseJson.status == "1")
                 {
                     setCountryItem(responseJson.countries);
+                }else if(responseJson.status == "0"){
+                    Alert.alert(responseJson.message);
+                }
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
+    },[])
+
+    useEffect(()=>{
+
+        const url = appUrl.VaccineNames;
+        const config = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        };
+
+
+        fetch(url,config)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // Alert.alert(responseJson.status);
+                if (responseJson.status == "1")
+                {
+                    setVaccineName(responseJson.vaccineName);
                 }else if(responseJson.status == "0"){
                     Alert.alert(responseJson.message);
                 }
@@ -150,28 +180,7 @@ const VaccineRegistration = ({navigation}) => {
                         selectedValue={selectedThirdItem}
                         onValueChange={(itemValue, itemIndex) =>
                         {
-                            const url = appUrl.Center+"/"+itemValue;
-                            const config = {
-                                method: 'GET',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                }
-                            };
-                            fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setSelectedThirdItem(itemValue)
-                                        setCenterItem(responseJson.centers);
-                                    }else if(responseJson.status == "0"){
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
+                            setSelectedThirdItem(itemValue)
                         }
 
                     }>
@@ -180,6 +189,51 @@ const VaccineRegistration = ({navigation}) => {
                             allCity.map((city)=>{
                                 return (
                                     <Picker.Item key={city.id} label={city.name} value={city.id} />
+                                )
+                            })
+                        }
+                    </Picker>
+                </View>
+
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select Vaccine</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedFifthItem}
+                        onValueChange={(itemValue, itemIndex) =>
+                        {
+                            setSelectedFifthItem(itemValue)
+                            const url = appUrl.VaccinationCenterSelect;
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ city_id:selectedThirdItem, vaccineName:itemValue})
+                            };
+                            fetch(url,config)
+                                .then((response) => response.json())
+                                .then((responseJson) => {
+                                    if (responseJson.status == "1")
+                                    {
+                                        setCenterItem(responseJson.centers);
+                                    }else if(responseJson.status == "0"){
+                                        setCenterItem([])
+                                        Alert.alert(responseJson.message);
+                                    }
+                                })
+                                .catch((error) => {
+                                    //Alert.alert("Failed to registration 2");
+                                });
+                        }
+
+                        }>
+                        <Picker.Item key="4243789" label="Select one"/>
+                        {
+                            vaccineName.map((vaccine)=>{
+                                return (
+                                    <Picker.Item key={vaccine.id} label={vaccine.name} value={vaccine.name} />
                                 )
                             })
                         }
@@ -204,7 +258,6 @@ const VaccineRegistration = ({navigation}) => {
                         }
                     </Picker>
                 </View>
-
                 <View style={styles.pickerAllItem}>
                     <DatePicker
                         style={{width: '100%'}}
@@ -235,7 +288,6 @@ const VaccineRegistration = ({navigation}) => {
                     />
                 </View>
 
-
                 <TouchableOpacity style={styles.button} onPress={() => {
                     const url = appUrl.Vaccine;
                     const config = {
@@ -244,14 +296,15 @@ const VaccineRegistration = ({navigation}) => {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, date:date })
+                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, vaccineName: selectedFifthItem, date:date })
                     };
                     //Alert.alert(url);
+                    console.log(config.body)
 
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
-                            console.log(responseJson)
+
                             if (responseJson.status == "2")
                             {
                                 Alert.alert(responseJson.message);
