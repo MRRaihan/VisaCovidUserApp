@@ -6,7 +6,7 @@ import Welcome from "./src/Components/Welcome";
 import FaceScan from "./src/Components/FaceScan";
 import AccountsEntry from "./src/Components/AccountsEntry";
 import RegistrationHome from "./src/Components/RegistrationHome";
-import MobileOTP from './src/Components/MobileOTP';
+import MobileOTP from "./src/Components/MobileOTP";
 import NavigationTab from "./src/Components/Navigation/NavigationTab";
 import UserInfoEdit from "./src/Components/Home/UserInfoEdit";
 
