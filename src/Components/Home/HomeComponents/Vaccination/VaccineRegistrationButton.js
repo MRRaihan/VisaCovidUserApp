@@ -9,13 +9,15 @@ const VaccineRegistrationButton = ({navigation}) => {
                     <TouchableOpacity style={styles.button} onPress={()=>{
                         navigation.navigate("Already TakeVaccine");
                     }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Already Take Vaccine</Text>
+                        <Text style={{textAlign:"center", color: "white", fontSize: 16}}>Already Take Vaccine</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>New Registration</Text>
+                    <TouchableOpacity style={styles.button} onPress={()=>{
+                        navigation.navigate("Vaccine Registration");
+                    }}>
+                        <Text style={{textAlign:"center", color: "white", fontSize: 16}}>New Registration</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -42,17 +44,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         alignContent: 'center',
         margin: 20,
-        borderWidth: 1,
         height: 50,
         width: "90%",
         backgroundColor: "#00549F",
-        borderRadius: 10
+        borderRadius: 6
     },
     checkTitle:{
-        fontSize:18,
+        fontSize:15,
         color: "#050505",
         marginTop: 5,
-        fontWeight: 'bold'
     },
     checkItemColor:{
         color: "#050505"
