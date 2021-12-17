@@ -7,17 +7,17 @@ import moment from "moment";
 import AsyncStorage from "@react-native-community/async-storage";
 
 
-const AlreadyTakeVaccine = () => {
+const AlreadyTakeVaccine = ({navigation}) => {
     const [ phone, setPhone] = useState(null);
     const [ vaccineName, setVaccineName] = useState(null);
+    const [ center, setCenter] = useState(null);
     const [ firstDose, setFirstDose] = useState('');
     const [ secondDose, setSecondDose] = useState('');
     const [ description, setDescription] = useState(null);
     const [ document, setDocument] = useState(null);
+    const [ centerLocation, setCenterLocation] = useState(null);
 
     useEffect(()=>{
-
-
         AsyncStorage.getItem('phone').then(value =>{
             setPhone(value)
         });
@@ -41,7 +41,16 @@ const AlreadyTakeVaccine = () => {
                     <TextInput
                         placeholder="Enter center name"
                         placeholderTextColor="#003f5c"
-                        onChangeText={(vaccine) => setVaccineName(vaccine)}
+                        onChangeText={(center) => setCenter(center)}
+                    />
+                </View>
+
+                <Text style={styles.inputTitle}>Center location</Text>
+                <View style={styles.inputView}>
+                    <TextInput
+                        placeholder="Enter center location"
+                        placeholderTextColor="#003f5c"
+                        onChangeText={(location) => setCenterLocation(location)}
                     />
                 </View>
 
@@ -128,30 +137,30 @@ const AlreadyTakeVaccine = () => {
 
 
                 <TouchableOpacity style={styles.button} onPress={() => {
-                    const url = appUrl.Vaccine;
+                    const url = appUrl.ExternalVaccination;
                     const config = {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, vaccineName: selectedFifthItem, date:date })
+                        body: JSON.stringify({ phone:phone, vaccineName:vaccineName, firstDose: firstDose, secondDose:secondDose, description:description, document:document, center:center, centerLocation:centerLocation })
                     };
                     //Alert.alert(url);
-                    console.log(config.body)
+                    console.log(url)
 
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
 
+                            console.log(responseJson)
                             if (responseJson.status == "2")
                             {
                                 Alert.alert(responseJson.message);
-                                navigation.navigate("Vaccine Date Status");
                             } else if (responseJson.status == "1")
                             {
                                 Alert.alert(responseJson.message);
-                                navigation.navigate("Vaccine Date Status");
+                                navigation.navigate("Home");
                             }else if(responseJson.status == "0"){
                                 Alert.alert(responseJson.message);
                             }

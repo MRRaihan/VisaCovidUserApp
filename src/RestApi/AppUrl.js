@@ -22,6 +22,7 @@ class AppUrl{
     static VaccinationCenterSelect = this.BaseUrl+'api/home/vaccine/vaccinationCenterSelect';
 
     static Vaccine = this.BaseUrl+'api/home/vaccine/registration';
+    static ExternalVaccination = this.BaseUrl+'api/home/vaccine/externalVaccination';
     static PCR = this.BaseUrl+'api/home/prc/registration';
     static Booster = this.BaseUrl+'api/home/booster/registration';
 
