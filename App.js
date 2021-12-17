@@ -30,6 +30,8 @@ import BoosterDateLeft from "./src/Components/Home/HomeComponents/Booster/Booste
 import BoosterPaymentMethod from "./src/Components/Home/HomeComponents/Booster/BoosterPaymentMethod";
 import BoosterStatus from './src/Components/Home/HomeComponents/Booster/BoosterStatus';
 import Artboard from "./src/Components/Home/Artboard";
+import VaccineRegistrationButton from "./src/Components/Home/HomeComponents/Vaccination/VaccineRegistrationButton";
+import AlreadyTakeVaccine from "./src/Components/Home/HomeComponents/Vaccination/AlreadyTakeVaccine";
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +62,8 @@ const App = () => {
         {/* <Stack.Screen name="Vaccine Payment Method" component={VaccinePaymentMethod} /> */}
         <Stack.Screen name="Vaccine Date Status" component={VaccineDateLeft} />
         <Stack.Screen name="Vaccination Status" component={VaccinationStatus} />
+        <Stack.Screen name="Vaccine Registration Button" options={{ title: 'Vaccine Registration' }} component={VaccineRegistrationButton} />
+        <Stack.Screen name="Already TakeVaccine" options={{ title: 'About Your Health Record' }} component={AlreadyTakeVaccine} />
 
         <Stack.Screen name="Add Country" component={AddCountry} />
         <Stack.Screen name="Synchronise" component={Synchronise} />
