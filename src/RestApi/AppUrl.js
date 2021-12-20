@@ -50,7 +50,7 @@ class AppUrl{
     static boosterInformation = this.BaseUrl+'api/home/boosterInformation';
 
     // Synchronize data
-    static synchronize = this.BaseUrl+'api/home/synchronizeInformation';
+    static Synchronize = this.BaseUrl+'api/home/synchronizeInformation';
 
 }
 

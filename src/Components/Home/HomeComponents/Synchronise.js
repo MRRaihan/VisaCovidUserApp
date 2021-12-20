@@ -16,12 +16,15 @@ const Synchronise = ({navigation, route}) => {
     const [biometricDataChecked, setBiometricDataChecked] = React.useState(false);
 
     const [allRules, setAllRules] = useState([]);
+    const [countryName, setCountryName] = useState('');
+    const [errorRules, setErrorRules] = useState('');
+    const [errorStatus, setErrorStatus] = useState(null);
 
     useEffect(()=>{
 
-        const url = appUrl.synchronize+'/'+route.params.toAddress;
+        const url = appUrl.Synchronize+'/'+route.params.toAddressId;
         const config = {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -31,12 +34,13 @@ const Synchronise = ({navigation, route}) => {
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
-                // Alert.alert(responseJson.status);
+                console.log(responseJson)
                 if (responseJson.status == "1")
                 {
-                    setCountryItem(responseJson.countries);
+                    setAllRules(responseJson.rules);
+                    setCountryName(responseJson.country_name);
                 }else if(responseJson.status == "0"){
-                    Alert.alert(responseJson.message);
+                   Alert.alert(responseJson.message)
                 }
             })
             .catch((error) => {
@@ -49,41 +53,11 @@ const Synchronise = ({navigation, route}) => {
             <View style={StyleSheet.container}>
 
             <View>
-            <Text style={styles.mainTitle}>Trusted app for Bahrain</Text>
-            <Card style={styles.cardStyleCovidVisa}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 20}}>
-                    <View style={{flexDirection:"column", justifyContent: "flex-start", padding: 10}}>
-                        <Text style={{fontSize: 30, fontWeight: 'bold', color: "#050505" }}>Be Aware</Text>
-                        <Text style={{ color: "#050505" }}>United against COVID-19</Text>
-                    </View>
-                    <View style={{justifyContent: "flex-end", height: 100}}>
-                        <Image style={styles.ImageShow} source={BeAware} />
-                    </View>
-                </View>
-            </Card>
-            </View>
-                {/*<View>
-                    <Text>This is {route.params.fromAddress}'s from</Text>
-                    <Text>This is {route.params.toAddress}'s to</Text>
-                </View>*/}
-
-            <View>
-            <Text style={styles.mainTitle}>Trusted app for Bangladesh</Text>
-            <Card style={styles.cardStyleSurokkha}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 20}}>
-                    <View style={{flexDirection:"column", justifyContent: "flex-start", padding: 10}}>
-                        <Text style={{fontSize: 30, fontWeight: 'bold', color: "#050505" }}>Surokkha</Text>
-                        <Text style={{ color: "#050505" }}>United against COVID-19</Text>
-                    </View>
-                    <View style={{justifyContent: "flex-end", height: 100}}>
-                        <Image style={styles.ImageShow} source={BeAware} />
-                    </View>
-                </View>
-            </Card>
+                <Text style={styles.address}>To Address: {countryName}</Text>
             </View>
 
             <View style={styles.checkboxViewStyle}>
-            <Text style={styles.mainTitle}>Synchronise</Text>
+            <Text style={styles.mainTitle}>Rules for movement</Text>
                 <View
                     style={{
                     borderBottomColor: "#e8e2e1",
@@ -91,60 +65,33 @@ const Synchronise = ({navigation, route}) => {
                     marginTop: 13,
                     }}
                 />
-                <View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
-                    <Checkbox
-                        status={personalDataChecked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setPersonalDataChecked(!personalDataChecked);
-                        }}
-                    /><Text style={styles.checkData}>Personal Data</Text>
-                </View>
 
-                <View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 2}}>
-                    <Checkbox
-                        status={diagnosisDataChecked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setDiagnosisDataChecked(!diagnosisDataChecked);
-                        }}
-                    /><Text style={styles.checkData}>Diagnosis Data</Text>
-                </View>
+                {
+                    allRules.length < 1 && (<View style={{flexDirection: "row", width:"80%", marginLeft: 5, padding: 5, marginTop: 5}}>
+                       <Text style={styles.checkData}>No data found</Text>
+                    </View>)
+                }
 
-                <View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 2}}>
-                    <Checkbox
-                        status={PCRDataChecked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setPCRDataChecked(!PCRDataChecked);
-                        }}
-                    /><Text style={styles.checkData}>PCR Data</Text>
-                </View>
+                {
+                    allRules && allRules.length > 0 && allRules.map((rule) =>{
+                        return (<View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
+                            <Checkbox
+                                status={personalDataChecked ? 'checked' : 'unchecked'}
+                                onPress={() => {
 
-                <View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 2}}>
-                    <Checkbox
-                        status={vaccinationDataChecked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setVaccinationDataChecked(!vaccinationDataChecked);
-                        }}
-                    /><Text style={styles.checkData}>Vaccination Data</Text>
-                </View>
-
-                <View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 2}}>
-                    <Checkbox
-                        status={biometricDataChecked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setBiometricDataChecked(!biometricDataChecked);
-                        }}
-                    /><Text style={styles.checkData}>Biometric Data</Text>
-                </View>
-
+                                }}
+                            /><Text style={styles.checkData}>{rule.synchronize_rule}</Text>
+                        </View>)
+                    })
+                }
             </View>
 
             <View>
-                <Text style={styles.downloadInstallStyle}>N.B- Download & Install be Aware app</Text>
                 <View style={{ justifyContent: 'center', alignItems: 'center', width:"100%"}}>
                     <TouchableOpacity style={styles.button} onPress={() => {
                         props.navigation.navigate("Home");
                     }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Synchronize & Exit</Text>
+                        <Text style={{textAlign:"center", color: "white", fontSize: 16}}>Synchronize & Exit</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -173,12 +120,20 @@ const styles = StyleSheet.create({
         width: "90%",
         backgroundColor: "#bb44eb",
     },
-    mainTitle:{
+    address:{
         fontSize: 20,
         paddingTop:10,
         marginTop: 15,
         marginBottom: -10,
         marginLeft: 20,
+        color: "gray"
+    },
+    mainTitle:{
+        fontSize: 20,
+        paddingTop:10,
+        marginTop: 15,
+        marginBottom: -10,
+        marginLeft: 6,
         color: "gray"
     },
     ImageShow:{
@@ -211,11 +166,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         alignContent: 'center',
         margin: 20,
-        borderWidth: 1,
-        height: 50,
+        height: 40,
         width: "90%",
-        backgroundColor: "#2e47e8",
-        borderRadius: 10
+        backgroundColor: "#00549F",
+        borderRadius: 6
     },
 })
 
