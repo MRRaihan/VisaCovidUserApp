@@ -47,7 +47,7 @@ const App = () => {
         <Stack.Screen name="Login" component={AccountsEntry} />
         <Stack.Screen name="Registration" component={RegistrationHome} />
         <Stack.Screen name="Mobile OTP" component={MobileOTP} />
-        <Stack.Screen name="Home" options={{title:""}} component={NavigationTab} />
+        <Stack.Screen name="Home" options={{title:"Home"}} component={NavigationTab} />
         <Stack.Screen name="Face Scan" component={FaceScan} />
         <Stack.Screen name="Personal Information" component={UserInfoEdit} />
 

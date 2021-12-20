@@ -10,7 +10,7 @@ const UserProfile = ({navigation}) => {
   const [userId, setUserId] = useState();
   const [lastEffected, setLastEffected] = useState('');
   const [recovered, setRecovered] = useState('');
-  // const [antibodyRemaining, setAntibodyRemaining] = useState('');
+  const [antibodyRemaining, setAntibodyRemaining] = useState('');
 
   //Profile
   const [userProfileImage, setUserProfileImage] = useState('');
@@ -33,7 +33,8 @@ const UserProfile = ({navigation}) => {
   const [boosterCenter, setBoosterCenter] = useState('');
   const [boosterCenterLocation, setBoosterCenterLocation] = useState('');
   const [boosterDate, setBoosterDate] = useState('');
-  const [antibodyRemaining, setAntibodyRemaining] = useState('');
+  const [boosterAntibodyRemaining, setBoosterAntibodyRemaining] = useState('');
+
 
 
   useEffect(()=>{
@@ -52,6 +53,7 @@ const UserProfile = ({navigation}) => {
       fetch(boosterUrl,postConfig)
           .then((response) => response.json())
           .then((responseJson) => {
+            console.log(responseJson)
             //Profiles
             setUserProfileImage(responseJson.userImage);
             setUserProfileId(responseJson.userId);
@@ -68,12 +70,13 @@ const UserProfile = ({navigation}) => {
             setVaccinationName(responseJson.myVaccinationName);
             setVaccinationCenter(responseJson.myVaccinationCenter);
             setVaccinationCenterLocation(responseJson.myVaccinationCenterLocation);
+            setAntibodyRemaining(responseJson.myAntibodyRemaining);
 
             //Booster
             setBoosterCenter(responseJson.myBoosterCenter);
             setBoosterCenterLocation(responseJson.myBoosterCenterLocation);
             setBoosterDate(responseJson.myBoosterDate);
-            setAntibodyRemaining(responseJson.myAntibodyRemaining);
+            setBoosterAntibodyRemaining(responseJson.mybBoosterAntibodyRemaining);
 
           })
           .catch((error) => {
@@ -201,7 +204,7 @@ const UserProfile = ({navigation}) => {
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Antibody Remaining</Text>
-              <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
+              <Text style={styles.testEndItem}>{boosterAntibodyRemaining}</Text>
             </View>
           </View>
 
