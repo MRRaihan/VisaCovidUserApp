@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AntibodyLogo from "../../../assets/images/userProfileLogoImg.jpg";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../RestApi/AppUrl";
+import ProfileEdit from '../../../assets/Icons/profileEdit.png';
 
 const UserProfile = ({navigation}) => {
   const [userId, setUserId] = useState();
@@ -92,6 +93,11 @@ const UserProfile = ({navigation}) => {
       <View style={styles.container}>
         <View style={styles.AntibodyLogo}>
           <Image style={styles.AntibodyLogoImg} source = {{uri:appUrl.BaseUrl+userProfileImage}} />
+
+            <TouchableOpacity style={styles.profileEditSection} onPress={()=> alert('hi')}>
+                <Image style={styles.profileEditButton} source={ProfileEdit}/>
+            </TouchableOpacity>
+
           <View style={styles.UserID}>
             <Text style={{ width: "100%", marginLeft: "27%",color: "#050505" }}>ID: <Text style={{fontWeight: "bold", padding: 10}}>{userProfileId}</Text> </Text>
           </View>
@@ -250,6 +256,16 @@ const styles = StyleSheet.create({
     width: "70%",
     padding: 10,
     margin: 10,
+  },
+  profileEditButton:{
+  },
+  profileEditSection:{
+    backgroundColor:'#ddd',
+    padding: 6,
+    borderRadius: 50,
+    marginTop:-30,
+    marginLeft: 90,
+
   },
   AntibodyLogoImg: {
     justifyContent: "center",
