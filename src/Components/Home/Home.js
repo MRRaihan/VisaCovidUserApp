@@ -117,6 +117,7 @@ const Home = ({navigation}) =>{
             fetch(rtpcrUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
+                    console.log(responseJson)
                     setRtpcr(responseJson.navigationPath);
                     setRtpcrStatusIcon(responseJson.rtpcrIcon);
                 })
@@ -218,7 +219,6 @@ const Home = ({navigation}) =>{
 
                 <View style={styles.healthData}>
                     <Text style={styles.HelthTitle}>Health Data</Text>
-                    <Text style={styles.HelthTitle}>{rtpcr}</Text>
                     <View
                         style={{
                             flex: 1,
@@ -305,8 +305,7 @@ const Home = ({navigation}) =>{
                                                 //navigation.navigate("PCR");
                                                 navigation.navigate(rtpcr);
                                             }}
-                                        >
-                                            <Image style={styles.RSliderImage} source={{uri:appUrl.BaseUrl+rtpcrIcon}} />
+                                        ><Image style={styles.RSliderImage} source={{uri:appUrl.BaseUrl+rtpcrIcon}} />
                                         </TouchableOpacity>
                                     </View>
                                 </Card>
@@ -557,12 +556,12 @@ const styles = StyleSheet.create({
         marginLeft: 50
     },
     RSliderImage:{
-        height: 165,
-        width: "56%",
+        height: 100,
+        width: "40%",
         alignItems: "center",
         justifyContent: "center",
         marginTop: 5,
-        marginLeft: 50
+        marginLeft: 80
     },
     bSliderImage:{
         height: 140,
