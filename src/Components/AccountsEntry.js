@@ -67,9 +67,14 @@ export default function App({navigation}) {
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
-
+              console.log(responseJson)
               if (responseJson.status == "1")
               {
+                Alert.alert(responseJson.message);
+                AsyncStorage.setItem('phone', responseJson.phone);
+                AsyncStorage.setItem('password', responseJson.password);
+                navigation.navigate("Mobile OTP")
+              }else if(responseJson.status == "2"){
                 Alert.alert(responseJson.message);
                 AsyncStorage.setItem('phone', responseJson.phone);
                 AsyncStorage.setItem('password', responseJson.password);
@@ -140,7 +145,6 @@ const styles = StyleSheet.create({
 
   forgot_button: {
     height: 30,
-    marginBottom: 10,
   },
   loginSignBtn2:{
     width: "85%",
@@ -167,7 +171,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 30,
+    marginTop: 10,
     backgroundColor: "#021078",
   },
   textLogin:{

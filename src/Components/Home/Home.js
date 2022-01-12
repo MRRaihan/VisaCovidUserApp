@@ -17,6 +17,7 @@ import AddCountry from "../../../assets/images/CAddCountry.jpeg";
 import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../RestApi/AppUrl";
+import Rtpcr from "./HomeComponents/Rtpcr/Rtpcr";
 
 
 
@@ -26,11 +27,14 @@ const Home = ({navigation}) =>{
     const [userId, setUserId] = useState("");
 
     const [loader, setLoader] = useState(true);
+    const [loaderTwo, setLoaderTwo] = useState(false);
     //For service status check
     const [vaccination, setVaccination] = useState("");
+    const [rtpcr, setRtpcr] = useState("");
     const [vaccinationIcon, setVaccinationIcon] = useState("");
     const [pcr, setPcrStatus] = useState("");
     const [pcrIcon, setPcrStatusIcon] = useState("");
+    const [rtpcrIcon, setRtpcrStatusIcon] = useState("");
     const [booster, setBooster] = useState("");
     const [boosterIcon, setBoosterIcon] = useState("");
     const [boosterStatus, setBoosterStatus] = useState("");
@@ -88,6 +92,33 @@ const Home = ({navigation}) =>{
                 .then((responseJson) => {
                     setPcrStatus(responseJson.navigationPath);
                     setPcrStatusIcon(responseJson.pcrIcon);
+                })
+                .catch((error) => {
+                    //Alert.alert("Failed to registration 2");
+                });
+        });
+        setLoader(false)
+
+    }, []);
+
+    useEffect(()=>{
+        setLoader(true)
+        AsyncStorage.getItem('phone').then(value =>{
+            //For pcr Status
+            const rtpcrUrl = appUrl.rtpcrStatus;
+            const postConfig = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({phone:value})
+            };
+            fetch(rtpcrUrl,postConfig)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    setRtpcr(responseJson.navigationPath);
+                    setRtpcrStatusIcon(responseJson.rtpcrIcon);
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
@@ -187,6 +218,7 @@ const Home = ({navigation}) =>{
 
                 <View style={styles.healthData}>
                     <Text style={styles.HelthTitle}>Health Data</Text>
+                    <Text style={styles.HelthTitle}>{rtpcr}</Text>
                     <View
                         style={{
                             flex: 1,
@@ -205,6 +237,92 @@ const Home = ({navigation}) =>{
                                                 alignItems: "center",
                                                 flex: 1,
                                                 justifyContent: "center",
+                                                fontSize: 18,
+                                                color: "#050505"
+                                            }}
+                                        >
+                                            PCR
+                                        </Text>
+
+                                        <TouchableOpacity>
+                                            <Button
+                                                style={{
+                                                    alignItems: "center",
+                                                    flex: 1,
+                                                    justifyContent: "space-between",
+                                                    marginTop: 15,
+                                                    marginRight: -30
+                                                }}
+                                                icon="information-outline"
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                //props.navigation.navigate("Vaccine Registration");
+                                                navigation.navigate(pcr);
+                                            }}
+                                        >
+                                            <Image style={styles.pSliderImage} source={{uri:appUrl.BaseUrl+pcrIcon}} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </Card>
+                        }
+                        {
+                            loaderTwo ? <ActivityIndicator size="large" color="#718AEE"/> :
+                                <Card style={styles.dataFlex}>
+                                    <View style={styles.CardInsideTitle}>
+                                        <Text
+                                            style={{
+                                                alignItems: "center",
+                                                flex: 1,
+                                                justifyContent: "center",
+                                                marginTop: 9,
+                                                fontSize: 18,
+                                                color: "#050505"
+                                            }}
+                                        >
+                                            RT-PCR
+                                        </Text>
+
+                                        <TouchableOpacity>
+                                            <Button
+                                                style={{
+                                                    alignItems: "center",
+                                                    flex: 1,
+                                                    justifyContent: "space-between",
+                                                    marginTop: 15,
+                                                    marginRight: -30
+                                                }}
+                                                icon="information-outline"
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                //navigation.navigate("PCR");
+                                                navigation.navigate(rtpcr);
+                                            }}
+                                        >
+                                            <Image style={styles.RSliderImage} source={{uri:appUrl.BaseUrl+rtpcrIcon}} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </Card>
+
+                        }
+
+                        {
+                            loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                                <Card style={styles.dataFlex}>
+                                    <View style={styles.CardInsideTitle}>
+                                        <Text
+                                            style={{
+                                                alignItems: "center",
+                                                flex: 1,
+                                                justifyContent: "center",
+                                                marginTop: 9,
                                                 fontSize: 18,
                                                 color: "#050505"
                                             }}
@@ -228,7 +346,7 @@ const Home = ({navigation}) =>{
                                     <View>
                                         <TouchableOpacity
                                             onPress={() => {
-                                                //props.navigation.navigate("Vaccine Registration");
+                                                //navigation.navigate("PCR");
                                                 navigation.navigate(vaccination);
                                             }}
                                         >
@@ -236,6 +354,7 @@ const Home = ({navigation}) =>{
                                         </TouchableOpacity>
                                     </View>
                                 </Card>
+
                         }
 
                         {
@@ -275,49 +394,6 @@ const Home = ({navigation}) =>{
                                             }}
                                         >
                                             <Image style={styles.SliderImage} source={Antibody} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </Card>
-                        }
-
-                        {
-                            loader ? <ActivityIndicator size="large" color="#718AEE"/> :
-                                <Card style={styles.dataFlex}>
-                                    <View style={styles.CardInsideTitle}>
-                                        <Text
-                                            style={{
-                                                alignItems: "center",
-                                                flex: 1,
-                                                justifyContent: "center",
-                                                marginTop: 9,
-                                                fontSize: 18,
-                                                color: "#050505"
-                                            }}
-                                        >
-                                            PCR
-                                        </Text>
-
-                                        <TouchableOpacity>
-                                            <Button
-                                                style={{
-                                                    alignItems: "center",
-                                                    flex: 1,
-                                                    justifyContent: "space-between",
-                                                    marginTop: 15,
-                                                    marginRight: -30
-                                                }}
-                                                icon="information-outline"
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                //navigation.navigate("PCR");
-                                                navigation.navigate(pcr);
-                                            }}
-                                        >
-                                            <Image style={styles.pSliderImage} source={{uri:appUrl.BaseUrl+pcrIcon}} />
                                         </TouchableOpacity>
                                     </View>
                                 </Card>
@@ -473,6 +549,14 @@ const styles = StyleSheet.create({
         marginLeft: 40
     },
     vSliderImage:{
+        height: 165,
+        width: "56%",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 5,
+        marginLeft: 50
+    },
+    RSliderImage:{
         height: 165,
         width: "56%",
         alignItems: "center",

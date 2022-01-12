@@ -32,6 +32,9 @@ import BoosterStatus from './src/Components/Home/HomeComponents/Booster/BoosterS
 import Artboard from "./src/Components/Home/Artboard";
 import VaccineRegistrationButton from "./src/Components/Home/HomeComponents/Vaccination/VaccineRegistrationButton";
 import AlreadyTakeVaccine from "./src/Components/Home/HomeComponents/Vaccination/AlreadyTakeVaccine";
+import Rtpcr from "./src/Components/Home/HomeComponents/Rtpcr/Rtpcr";
+import RtpcrData from "./src/Components/Home/HomeComponents/Rtpcr/RtpcrData";
+import RtpcLeftDate from "./src/Components/Home/HomeComponents/Rtpcr/RtpcLeftDate";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +60,10 @@ const App = () => {
         {/* <Stack.Screen name="PCR Payment Method" component={PCRPaymentMethod} /> */}
         <Stack.Screen name="PCR Date Status" component={PCRLeftDate} />
         <Stack.Screen name="PCR Test Status" component={PCRTestStatus} />
+
+        <Stack.Screen name="Rtpcr Status" options={{ title: 'Rtpcr' }} component={RtpcLeftDate} />
+        <Stack.Screen name="Rtpcr Date" component={RtpcrData} />
+        <Stack.Screen name="Rtpcr Registration Button" options={{ title: 'Rtpcr Registration' }} component={Rtpcr} />
 
         <Stack.Screen name="Vaccine Registration" component={VaccineRegistration} />
         {/* <Stack.Screen name="Vaccine Payment Method" component={VaccinePaymentMethod} /> */}

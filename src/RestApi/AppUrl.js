@@ -52,6 +52,14 @@ class AppUrl{
     // Synchronize data
     static Synchronize = this.BaseUrl+'api/home/synchronizeInformation';
 
+    //RT-PCR
+    static rtpcrStatus = this.BaseUrl+'api/rtpcrStatus';
+    static rtpcrCenter = this.BaseUrl+'api/rtpcrCenter';
+    static rtpcrRegistration = this.BaseUrl+'api/rtpcrRegistration';
+    static rtpcrResult = this.BaseUrl+'api/rtpcrResult';
+    static rtpcrTimeLeftForPcr = this.BaseUrl+'api/rtpcrTimeLeftForPcr';
+
+
 }
 
 export default AppUrl;

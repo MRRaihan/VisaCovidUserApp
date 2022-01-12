@@ -54,7 +54,6 @@ const UserProfile = ({navigation}) => {
       fetch(boosterUrl,postConfig)
           .then((response) => response.json())
           .then((responseJson) => {
-            console.log(responseJson)
             //Profiles
             setUserProfileImage(responseJson.userImage);
             setUserProfileId(responseJson.userId);
