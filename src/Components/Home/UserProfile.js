@@ -5,12 +5,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AntibodyLogo from "../../../assets/images/userProfileLogoImg.jpg";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../RestApi/AppUrl";
+import ProfileEdit from '../../../assets/Icons/profileEdit.png';
 
 const UserProfile = ({navigation}) => {
   const [userId, setUserId] = useState();
   const [lastEffected, setLastEffected] = useState('');
   const [recovered, setRecovered] = useState('');
-  // const [antibodyRemaining, setAntibodyRemaining] = useState('');
+  const [antibodyRemaining, setAntibodyRemaining] = useState('');
 
   //Profile
   const [userProfileImage, setUserProfileImage] = useState('');
@@ -33,7 +34,8 @@ const UserProfile = ({navigation}) => {
   const [boosterCenter, setBoosterCenter] = useState('');
   const [boosterCenterLocation, setBoosterCenterLocation] = useState('');
   const [boosterDate, setBoosterDate] = useState('');
-  const [antibodyRemaining, setAntibodyRemaining] = useState('');
+  const [boosterAntibodyRemaining, setBoosterAntibodyRemaining] = useState('');
+
 
 
   useEffect(()=>{
@@ -52,6 +54,7 @@ const UserProfile = ({navigation}) => {
       fetch(boosterUrl,postConfig)
           .then((response) => response.json())
           .then((responseJson) => {
+
             //Profiles
             setUserProfileImage(responseJson.userImage);
             setUserProfileId(responseJson.userId);
@@ -68,12 +71,13 @@ const UserProfile = ({navigation}) => {
             setVaccinationName(responseJson.myVaccinationName);
             setVaccinationCenter(responseJson.myVaccinationCenter);
             setVaccinationCenterLocation(responseJson.myVaccinationCenterLocation);
+            setAntibodyRemaining(responseJson.myAntibodyRemaining);
 
             //Booster
             setBoosterCenter(responseJson.myBoosterCenter);
             setBoosterCenterLocation(responseJson.myBoosterCenterLocation);
             setBoosterDate(responseJson.myBoosterDate);
-            setAntibodyRemaining(responseJson.myAntibodyRemaining);
+            setBoosterAntibodyRemaining(responseJson.mybBoosterAntibodyRemaining);
 
           })
           .catch((error) => {
@@ -89,6 +93,11 @@ const UserProfile = ({navigation}) => {
       <View style={styles.container}>
         <View style={styles.AntibodyLogo}>
           <Image style={styles.AntibodyLogoImg} source = {{uri:appUrl.BaseUrl+userProfileImage}} />
+
+            <TouchableOpacity style={styles.profileEditSection} onPress={()=> alert('hi')}>
+                <Image style={styles.profileEditButton} source={ProfileEdit}/>
+            </TouchableOpacity>
+
           <View style={styles.UserID}>
             <Text style={{ width: "100%", marginLeft: "27%",color: "#050505" }}>ID: <Text style={{fontWeight: "bold", padding: 10}}>{userProfileId}</Text> </Text>
           </View>
@@ -201,7 +210,7 @@ const UserProfile = ({navigation}) => {
             </View>
             <View style={styles.testContents}>
               <Text style={styles.testStartItem}>Antibody Remaining</Text>
-              <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
+              <Text style={styles.testEndItem}>{boosterAntibodyRemaining}</Text>
             </View>
           </View>
 
@@ -247,6 +256,16 @@ const styles = StyleSheet.create({
     width: "70%",
     padding: 10,
     margin: 10,
+  },
+  profileEditButton:{
+  },
+  profileEditSection:{
+    backgroundColor:'#ddd',
+    padding: 6,
+    borderRadius: 50,
+    marginTop:-30,
+    marginLeft: 90,
+
   },
   AntibodyLogoImg: {
     justifyContent: "center",

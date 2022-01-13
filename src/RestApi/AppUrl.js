@@ -50,7 +50,15 @@ class AppUrl{
     static boosterInformation = this.BaseUrl+'api/home/boosterInformation';
 
     // Synchronize data
-    static synchronize = this.BaseUrl+'api/home/synchronizeInformation';
+    static Synchronize = this.BaseUrl+'api/home/synchronizeInformation';
+
+    //RT-PCR
+    static rtpcrStatus = this.BaseUrl+'api/rtpcrStatus';
+    static rtpcrCenter = this.BaseUrl+'api/rtpcrCenter';
+    static rtpcrRegistration = this.BaseUrl+'api/rtpcrRegistration';
+    static rtpcrResult = this.BaseUrl+'api/rtpcrResult';
+    static rtpcrTimeLeft = this.BaseUrl+'api/rtpcrTimeLeft';
+
 
 }
 

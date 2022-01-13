@@ -80,7 +80,7 @@ const AddCountry = ({navigation}) => {
 
                 <View style={{ justifyContent: 'center', alignItems: 'center', width:"100%"}}>
                     <TouchableOpacity style={styles.button} onPress={() => {
-                        navigation.navigate("Synchronise", { fromAddress: fromAddress, toAddress:toAddress });
+                        navigation.navigate("Synchronise", { fromAddressId: fromAddress, toAddressId:toAddress });
                     }}>
                         <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Select</Text>
                     </TouchableOpacity>
