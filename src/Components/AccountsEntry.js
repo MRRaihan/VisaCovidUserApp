@@ -67,8 +67,13 @@ export default function App({navigation}) {
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
-              console.log(responseJson)
-              if (responseJson.status == "1")
+
+              if (responseJson.status == "2"){
+                AsyncStorage.setItem('phone', responseJson.phone);
+                AsyncStorage.setItem('password', responseJson.password);
+                Alert.alert(responseJson.message)
+                navigation.navigate("Mobile OTP")
+              } else if (responseJson.status == "1")
               {
                 Alert.alert(responseJson.message);
                 AsyncStorage.setItem('phone', responseJson.phone);

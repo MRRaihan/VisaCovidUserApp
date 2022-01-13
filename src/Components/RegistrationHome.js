@@ -87,13 +87,23 @@ export default function App({navigation}) {
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
-              if (responseJson.status == "1")
+              console.log(responseJson)
+              if(responseJson.status == "0"){
+                Alert.alert(responseJson.message)
+              }
+              else if (responseJson.status == "1")
               {
                 Alert.alert(responseJson.message);
                 AsyncStorage.setItem('phone', responseJson.phone);
                 navigation.navigate("Mobile OTP");
-              }else if(responseJson.status == "0"){
+              }else if(responseJson.status == "2"){
                 Alert.alert(responseJson.message);
+                AsyncStorage.setItem('phone', responseJson.phone);
+                navigation.navigate("Login");
+              }else if(responseJson.status == "3") {
+                Alert.alert(responseJson.message);
+                AsyncStorage.setItem('phone', responseJson.phone);
+                navigation.navigate("Mobile OTP");
               }
             })
             .catch((error) => {

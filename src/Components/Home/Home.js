@@ -27,6 +27,7 @@ const Home = ({navigation}) =>{
     const [userId, setUserId] = useState("");
 
     const [loader, setLoader] = useState(true);
+
     const [loaderTwo, setLoaderTwo] = useState(false);
     //For service status check
     const [vaccination, setVaccination] = useState("");
@@ -63,13 +64,14 @@ const Home = ({navigation}) =>{
                     setVaccination(responseJson.navigationPath);
                     setVaccinationIcon(responseJson.vaccinationIcon);
                     setBoosterStatus(responseJson.boosterStatus);
+
                     setLoader(false)
                 })
                 .catch((error) => {
                     //Alert.alert("Failed to registration 2");
                     setLoader(false)
                 });
-
+            setLoader(false)
         });
 
     }, []);
@@ -98,7 +100,6 @@ const Home = ({navigation}) =>{
                 });
         });
         setLoader(false)
-
     }, []);
 
     useEffect(()=>{
@@ -126,7 +127,6 @@ const Home = ({navigation}) =>{
                 });
         });
         setLoader(false)
-
     }, []);
 
     useEffect(()=>{
@@ -227,192 +227,24 @@ const Home = ({navigation}) =>{
                             justifyContent: "center",
                             width: "95%"
                         }}
+                        
                     >
-                        {
-                            loader ? <ActivityIndicator size="large" color="#718AEE"/> :
-                                <Card style={styles.fDataFlex}>
-                                    <View style={styles.CardInsideTitle}>
-                                        <Text
-                                            style={{
-                                                alignItems: "center",
-                                                flex: 1,
-                                                justifyContent: "center",
-                                                fontSize: 18,
-                                                color: "#050505"
-                                            }}
-                                        >
-                                            PCR
-                                        </Text>
 
-                                        <TouchableOpacity>
-                                            <Button
-                                                style={{
-                                                    alignItems: "center",
-                                                    flex: 1,
-                                                    justifyContent: "space-between",
-                                                    marginTop: 15,
-                                                    marginRight: -30
-                                                }}
-                                                icon="information-outline"
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                //props.navigation.navigate("Vaccine Registration");
-                                                navigation.navigate(pcr);
-                                            }}
-                                        >
-                                            <Image style={styles.pSliderImage} source={{uri:appUrl.BaseUrl+pcrIcon}} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </Card>
-                        }
-                        {
-                            loaderTwo ? <ActivityIndicator size="large" color="#718AEE"/> :
-                                <Card style={styles.dataFlex}>
-                                    <View style={styles.CardInsideTitle}>
-                                        <Text
-                                            style={{
-                                                alignItems: "center",
-                                                flex: 1,
-                                                justifyContent: "center",
-                                                marginTop: 9,
-                                                fontSize: 18,
-                                                color: "#050505"
-                                            }}
-                                        >
-                                            RT-PCR
-                                        </Text>
-
-                                        <TouchableOpacity>
-                                            <Button
-                                                style={{
-                                                    alignItems: "center",
-                                                    flex: 1,
-                                                    justifyContent: "space-between",
-                                                    marginTop: 15,
-                                                    marginRight: -30
-                                                }}
-                                                icon="information-outline"
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                //navigation.navigate("PCR");
-                                                navigation.navigate(rtpcr);
-                                            }}
-                                        ><Image style={styles.RSliderImage} source={{uri:appUrl.BaseUrl+rtpcrIcon}} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </Card>
-
-                        }
-
-                        {
-                            loader ? <ActivityIndicator size="large" color="#718AEE"/> :
-                                <Card style={styles.dataFlex}>
-                                    <View style={styles.CardInsideTitle}>
-                                        <Text
-                                            style={{
-                                                alignItems: "center",
-                                                flex: 1,
-                                                justifyContent: "center",
-                                                marginTop: 9,
-                                                fontSize: 18,
-                                                color: "#050505"
-                                            }}
-                                        >
-                                            Vaccination
-                                        </Text>
-
-                                        <TouchableOpacity>
-                                            <Button
-                                                style={{
-                                                    alignItems: "center",
-                                                    flex: 1,
-                                                    justifyContent: "space-between",
-                                                    marginTop: 15,
-                                                    marginRight: -30
-                                                }}
-                                                icon="information-outline"
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                //navigation.navigate("PCR");
-                                                navigation.navigate(vaccination);
-                                            }}
-                                        >
-                                            <Image style={styles.vSliderImage} source={{uri:appUrl.BaseUrl+vaccinationIcon}} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </Card>
-
-                        }
-
-                        {
-                            loader ? <ActivityIndicator size="large" color="#718AEE"/> :
-                                <Card style={styles.dataFlex}>
-                                    <View style={styles.CardInsideTitle}>
-                                        <Text
-                                            style={{
-                                                alignItems: "center",
-                                                flex: 1,
-                                                justifyContent: "center",
-                                                marginTop: 9,
-                                                fontSize: 18,
-                                                color: "#050505"
-                                            }}
-                                        >
-                                            Antibody
-                                        </Text>
-
-                                        <TouchableOpacity>
-                                            <Button
-                                                style={{
-                                                    alignItems: "center",
-                                                    flex: 1,
-                                                    justifyContent: "space-between",
-                                                    marginTop: 15,
-                                                    marginRight: -30
-                                                }}
-                                                icon="information-outline"
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                navigation.navigate("Antibody");
-                                            }}
-                                        >
-                                            <Image style={styles.SliderImage} source={Antibody} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </Card>
-                        }
-
-                        {boosterStatus == 1 &&
-
-                        <Card style={styles.dataFlex}>
+                {/* vaccination */}
+                {
+                    loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                        <Card style={styles.fDataFlex}>
                             <View style={styles.CardInsideTitle}>
                                 <Text
                                     style={{
                                         alignItems: "center",
                                         flex: 1,
                                         justifyContent: "center",
-                                        marginTop: 9,
                                         fontSize: 18,
                                         color: "#050505"
                                     }}
                                 >
-                                    Booster
+                                    PCR
                                 </Text>
 
                                 <TouchableOpacity>
@@ -431,15 +263,19 @@ const Home = ({navigation}) =>{
                             <View>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        //navigation.navigate("Booster");
-                                        navigation.navigate(booster);
+                                        //props.navigation.navigate("Vaccine Registration");
+                                        navigation.navigate(pcr);
                                     }}
                                 >
-                                    <Image style={styles.bSliderImage} source={{uri:appUrl.BaseUrl+boosterIcon}} />
+                                    <Image style={styles.pSliderImage} source={{uri:appUrl.BaseUrl+pcrIcon}} />
                                 </TouchableOpacity>
                             </View>
                         </Card>
-                        }
+                }
+
+                {/* rtpcr */}
+                {
+                    loaderTwo ? <ActivityIndicator size="large" color="#718AEE"/> :
                         <Card style={styles.dataFlex}>
                             <View style={styles.CardInsideTitle}>
                                 <Text
@@ -452,9 +288,8 @@ const Home = ({navigation}) =>{
                                         color: "#050505"
                                     }}
                                 >
-                                    Add Country
+                                    RT-PCR
                                 </Text>
-
                                 <TouchableOpacity>
                                     <Button
                                         style={{
@@ -462,7 +297,7 @@ const Home = ({navigation}) =>{
                                             flex: 1,
                                             justifyContent: "space-between",
                                             marginTop: 15,
-                                            marginRight: -25,
+                                            marginRight: -30
                                         }}
                                         icon="information-outline"
                                     />
@@ -471,13 +306,184 @@ const Home = ({navigation}) =>{
                             <View>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        navigation.navigate("Add Country");
+                                        //navigation.navigate("PCR");
+                                        navigation.navigate(rtpcr);
                                     }}
-                                >
-                                    <Image style={styles.adSliderImage} source={AddCountry} />
+                                ><Image style={styles.RSliderImage} source={{uri:appUrl.BaseUrl+rtpcrIcon}} />
                                 </TouchableOpacity>
                             </View>
                         </Card>
+                }
+
+                  {/* vaccination */}
+        
+                  {
+                      loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                          <Card style={styles.fDataFlex}>
+                              <View style={styles.CardInsideTitle}>
+                                  <Text
+                                      style={{
+                                          alignItems: "center",
+                                          flex: 1,
+                                          justifyContent: "center",
+                                          fontSize: 18,
+                                          color: "#050505"
+                                      }}
+                                  >
+                                      Vaccination
+                                  </Text>
+
+                                  <TouchableOpacity>
+                                      <Button
+                                          style={{
+                                              alignItems: "center",
+                                              flex: 1,
+                                              justifyContent: "space-between",
+                                              marginTop: 15,
+                                              marginRight: -30
+                                          }}
+                                          icon="information-outline"
+                                      />
+                                  </TouchableOpacity>
+                              </View>
+                              <View>
+                                  <TouchableOpacity
+                                      onPress={() => {
+                                          //props.navigation.navigate("Vaccine Registration");
+                                          navigation.navigate(vaccination);
+                                      }}
+                                  >
+                                      <Image style={styles.vSliderImage} source={{uri:appUrl.BaseUrl+vaccinationIcon}} />
+                                  </TouchableOpacity>
+                              </View>
+                          </Card>
+                  }
+
+                  {/* antibody */}
+                  {
+                      loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                          <Card style={styles.dataFlex}>
+                              <View style={styles.CardInsideTitle}>
+                                  <Text
+                                      style={{
+                                          alignItems: "center",
+                                          flex: 1,
+                                          justifyContent: "center",
+                                          marginTop: 9,
+                                          fontSize: 18,
+                                          color: "#050505"
+                                      }}
+                                  >
+                                      Antibody
+                                  </Text>
+
+                                  <TouchableOpacity>
+                                      <Button
+                                          style={{
+                                              alignItems: "center",
+                                              flex: 1,
+                                              justifyContent: "space-between",
+                                              marginTop: 15,
+                                              marginRight: -30
+                                          }}
+                                          icon="information-outline"
+                                      />
+                                  </TouchableOpacity>
+                              </View>
+                              <View>
+                                  <TouchableOpacity
+                                      onPress={() => {
+                                          navigation.navigate("Antibody");
+                                      }}
+                                  >
+                                      <Image style={styles.SliderImage} source={Antibody} />
+                                  </TouchableOpacity>
+                              </View>
+                          </Card>
+                  }
+
+                  {/* booster */}
+                  {boosterStatus == 1 &&
+
+                      <Card style={styles.dataFlex}>
+                          <View style={styles.CardInsideTitle}>
+                              <Text
+                                  style={{
+                                      alignItems: "center",
+                                      flex: 1,
+                                      justifyContent: "center",
+                                      marginTop: 9,
+                                      fontSize: 18,
+                                      color: "#050505"
+                                  }}
+                              >
+                                  Booster
+                              </Text>
+
+                              <TouchableOpacity>
+                                  <Button
+                                      style={{
+                                          alignItems: "center",
+                                          flex: 1,
+                                          justifyContent: "space-between",
+                                          marginTop: 15,
+                                          marginRight: -30
+                                      }}
+                                      icon="information-outline"
+                                  />
+                              </TouchableOpacity>
+                          </View>
+                          <View>
+                              <TouchableOpacity
+                                  onPress={() => {
+                                      //navigation.navigate("Booster");
+                                      navigation.navigate(booster);
+                                  }}
+                              >
+                                  <Image style={styles.bSliderImage} source={{uri:appUrl.BaseUrl+boosterIcon}} />
+                              </TouchableOpacity>
+                          </View>
+                      </Card>
+                  }
+
+                    <Card style={styles.dataFlex}>
+                        <View style={styles.CardInsideTitle}>
+                            <Text
+                                style={{
+                                    alignItems: "center",
+                                    flex: 1,
+                                    justifyContent: "center",
+                                    marginTop: 9,
+                                    fontSize: 18,
+                                    color: "#050505"
+                                }}
+                            >
+                                Add Country
+                            </Text>
+
+                            <TouchableOpacity>
+                                <Button
+                                    style={{
+                                        alignItems: "center",
+                                        flex: 1,
+                                        justifyContent: "space-between",
+                                        marginTop: 15,
+                                        marginRight: -25,
+                                    }}
+                                    icon="information-outline"
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("Add Country");
+                                }}
+                            >
+                                <Image style={styles.adSliderImage} source={AddCountry} />
+                            </TouchableOpacity>
+                        </View>
+                    </Card>
                     </View>
                 </View>
             </View>
