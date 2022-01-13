@@ -58,8 +58,6 @@ class AppUrl{
     static rtpcrRegistration = this.BaseUrl+'api/rtpcrRegistration';
     static rtpcrResult = this.BaseUrl+'api/rtpcrResult';
     static rtpcrTimeLeft = this.BaseUrl+'api/rtpcrTimeLeft';
-
-
 }
 
 export default AppUrl;
