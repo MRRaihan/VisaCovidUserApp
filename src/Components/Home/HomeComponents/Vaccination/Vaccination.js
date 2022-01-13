@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Image, ActivityIndicator} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import appUrl from "../../../../RestApi/AppUrl";
 import DatePicker from 'react-native-datepicker';
@@ -11,6 +11,9 @@ const VaccineRegistration = ({navigation}) => {
     const [selectedSecondItem, setSelectedSecondItem] = useState();
     const [selectedThirdItem, setSelectedThirdItem] = useState();
     const [selectedFourItem, setSelectedFourItem] = useState();
+
+    //loader
+    const [loader, setLoader] = useState(true);
 
 
     const [allCountry, setCountryItem] = useState([]);
@@ -40,6 +43,7 @@ const VaccineRegistration = ({navigation}) => {
             }
         };
 
+        setLoader(true)
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
