@@ -4,6 +4,7 @@ class AppUrl{
     static BaseUrl = 'http://192.168.31.150/VisaCovidCenterDevelopment/public/';
     //static BaseUrl = 'https://visacovid.com/';
     //static BaseUrl = 'http://visacovid.xyz/';
+
     static UserCreate = this.BaseUrl+'api/user/create';
     static UserLogin = this.BaseUrl+'api/user/login';
     static OtpCheck = this.BaseUrl+'api/user/otpCheck';
@@ -58,8 +59,6 @@ class AppUrl{
     static rtpcrRegistration = this.BaseUrl+'api/rtpcrRegistration';
     static rtpcrResult = this.BaseUrl+'api/rtpcrResult';
     static rtpcrTimeLeft = this.BaseUrl+'api/rtpcrTimeLeft';
-
-
 }
 
 export default AppUrl;
