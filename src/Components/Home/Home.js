@@ -248,7 +248,7 @@ const Home = ({navigation}) =>{
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate("pcr");
+                                    navigation.navigate(pcr);
                                 }}
                             >
                                 <Image style={styles.pSliderImage} source={{uri:appUrl.BaseUrl+pcrIcon}} />
@@ -289,7 +289,7 @@ const Home = ({navigation}) =>{
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate("(rtpcr);");
+                                    navigation.navigate(rtpcr);
                                 }}
                             >
                                 <Image style={styles.RSliderImage} source={{uri:appUrl.BaseUrl+rtpcrIcon}} />
@@ -330,7 +330,7 @@ const Home = ({navigation}) =>{
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate("vaccination");
+                                    navigation.navigate(vaccination);
                                 }}
                             >
                                 <Image style={styles.vSliderImage} source={{uri:appUrl.BaseUrl+vaccinationIcon}} />
@@ -371,7 +371,7 @@ const Home = ({navigation}) =>{
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate("booster");
+                                    navigation.navigate(booster);
                                 }}
                             >
                                 <Image style={styles.bliderImage} source={{uri:appUrl.BaseUrl+boosterIcon}} />
@@ -412,7 +412,7 @@ const Home = ({navigation}) =>{
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate("Antibody");
+                                    navigation.navigate(Antibody);
                                 }}
                             >
                                 <Image style={styles.SliderImage} source={Antibody} />
