@@ -412,7 +412,7 @@ const Home = ({navigation}) =>{
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate(Antibody);
+                                    navigation.navigate("Antibody");
                                 }}
                             >
                                 <Image style={styles.SliderImage} source={Antibody} />
