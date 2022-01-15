@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { View, Text, StyleSheet, Image, ScrollView} from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator} from "react-native";
 import { Card } from "react-native-paper";
 
 import AntibodyLogo from "../../../assets/images/faceRecognition.png";
@@ -12,6 +12,7 @@ const UserProfile = (props) => {
   //Profile
   const [userProfileImage, setUserProfileImage] = useState('');
   const [userProfileId, setUserProfileId] = useState('');
+  const [loader, setLoader] = useState(true);
 
   //PCR
   const [pcrLastTest, setPcrLastTest] = useState('');
@@ -77,7 +78,7 @@ const UserProfile = (props) => {
             setBoosterCenterLocation(responseJson.myBoosterCenterLocation);
             setBoosterDate(responseJson.myBoosterDate);
             setAntibodyRemaining(responseJson.myAntibodyRemaining);
-
+            setLoader(false)
           })
           .catch((error) => {
             //Alert.alert("Failed to registration 2");
@@ -87,118 +88,121 @@ const UserProfile = (props) => {
 
   return (
     <ScrollView>
-    <View style={styles.container}>
-      <View style={styles.AntibodyLogo}>
-        <Image style={styles.AntibodyLogoImg} source={{uri:appUrl.BaseUrl+userProfileImage}} />
-        <View style={styles.UserID}>
-          <View style={styles.UserIdStart}>
-          <Text style={{ width: "100%", marginLeft: "27%", color: "#050505"}}>ID: <Text style={{fontWeight: "bold", padding: 10}}>{userProfileId}</Text> </Text>
-          </View>
-        </View>
-      </View>
+      {
+          loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+              <View style={styles.container}>
+                <View style={styles.AntibodyLogo}>
+                  <Image style={styles.AntibodyLogoImg} source={{uri:appUrl.BaseUrl+userProfileImage}} />
+                  <View style={styles.UserID}>
+                    <View style={styles.UserIdStart}>
+                      <Text style={{ width: "100%", marginLeft: "27%", color: "#050505"}}>ID: <Text style={{fontWeight: "bold", padding: 10}}>{userProfileId}</Text> </Text>
+                    </View>
+                  </View>
+                </View>
 
-      <Card style={styles.cardStyle}>
-        <View style={{ paddingTop: 10 }}>
-          <Text style={styles.testStyle}>Antibody Last Date</Text>
-          <View
-            style={{
-              borderBottomColor: "#e8e2e1",
-              borderBottomWidth: 2,
-              marginBottom: 10,
-            }}
-          />
-          <View style={styles.testContents}>
-            <Text style={styles.testAntibodyRemaining}>{antibodyRemaining}</Text>
-          </View>
-        </View>
+                <Card style={styles.cardStyle}>
+                  <View style={{ paddingTop: 10 }}>
+                    <Text style={styles.testStyle}>Antibody Last Date</Text>
+                    <View
+                        style={{
+                          borderBottomColor: "#e8e2e1",
+                          borderBottomWidth: 2,
+                          marginBottom: 10,
+                        }}
+                    />
+                    <View style={styles.testContents}>
+                      <Text style={styles.testAntibodyRemaining}>{antibodyRemaining}</Text>
+                    </View>
+                  </View>
 
-        <View style={{ paddingTop: 10 }}>
-          <Text style={styles.testStyle}>PCR Test</Text>
-          <View
-            style={{
-              borderBottomColor: "#e8e2e1",
-              borderBottomWidth: 2,
-              marginBottom: 10,
-            }}
-          />
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Last Test</Text>
-            <Text style={styles.testEndItem}>{pcrLastTest}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Last result</Text>
-            <Text style={styles.testEndItem}>{lastPcrResult}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Test Center</Text>
-            <Text style={styles.testEndItem}>{pcrTestCenter}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Test Location</Text>
-            <Text style={styles.testEndItem}>{pcrCenterLocation}</Text>
-          </View>
-        </View>
+                  <View style={{ paddingTop: 10 }}>
+                    <Text style={styles.testStyle}>PCR Test</Text>
+                    <View
+                        style={{
+                          borderBottomColor: "#e8e2e1",
+                          borderBottomWidth: 2,
+                          marginBottom: 10,
+                        }}
+                    />
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Last Test</Text>
+                      <Text style={styles.testEndItem}>{pcrLastTest}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Last result</Text>
+                      <Text style={styles.testEndItem}>{lastPcrResult}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Test Center</Text>
+                      <Text style={styles.testEndItem}>{pcrTestCenter}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Test Location</Text>
+                      <Text style={styles.testEndItem}>{pcrCenterLocation}</Text>
+                    </View>
+                  </View>
 
-        <View style={{ paddingTop: 10 }}>
-          <Text style={styles.testStyle}>Vaccine</Text>
-          <View
-              style={{
-                borderBottomColor: "#e8e2e1",
-                borderBottomWidth: 2,
-                marginBottom: 10,
-              }}
-          />
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Dose 1</Text>
-            <Text style={styles.testEndItem}>{vaccinationDoseOne}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Dose 2</Text>
-            <Text style={styles.testEndItem}>{vaccinationDoseTwo}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Vaccine name</Text>
-            <Text style={styles.testEndItem}>{vaccinationName}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Vaccine center</Text>
-            <Text style={styles.testEndItem}>{vaccinationCenter}</Text>
-          </View>
+                  <View style={{ paddingTop: 10 }}>
+                    <Text style={styles.testStyle}>Vaccine</Text>
+                    <View
+                        style={{
+                          borderBottomColor: "#e8e2e1",
+                          borderBottomWidth: 2,
+                          marginBottom: 10,
+                        }}
+                    />
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Dose 1</Text>
+                      <Text style={styles.testEndItem}>{vaccinationDoseOne}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Dose 2</Text>
+                      <Text style={styles.testEndItem}>{vaccinationDoseTwo}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Vaccine name</Text>
+                      <Text style={styles.testEndItem}>{vaccinationName}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Vaccine center</Text>
+                      <Text style={styles.testEndItem}>{vaccinationCenter}</Text>
+                    </View>
 
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Center Location</Text>
-            <Text style={styles.testEndItem}>{vaccinationCenterLocation}</Text>
-          </View>
-        </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Center Location</Text>
+                      <Text style={styles.testEndItem}>{vaccinationCenterLocation}</Text>
+                    </View>
+                  </View>
 
-        <View style={{ paddingTop: 20, paddingBottom:15  }}>
-          <Text style={styles.testStyle}>Booster</Text>
-          <View
-              style={{
-                borderBottomColor: "#e8e2e1",
-                borderBottomWidth: 2,
-                marginBottom: 10,
-              }}
-          />
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Center</Text>
-            <Text style={styles.testEndItem}>{boosterCenter}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Center Location</Text>
-            <Text style={styles.testEndItem}>{boosterCenterLocation}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Booster Date</Text>
-            <Text style={styles.testEndItem}>{boosterDate}</Text>
-          </View>
-          <View style={styles.testContents}>
-            <Text style={styles.testStartItem}>Antibody Remaining</Text>
-            <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
-          </View>
-        </View>
-      </Card>
-    </View>
+                  <View style={{ paddingTop: 20, paddingBottom:15  }}>
+                    <Text style={styles.testStyle}>Booster</Text>
+                    <View
+                        style={{
+                          borderBottomColor: "#e8e2e1",
+                          borderBottomWidth: 2,
+                          marginBottom: 10,
+                        }}
+                    />
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Center</Text>
+                      <Text style={styles.testEndItem}>{boosterCenter}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Center Location</Text>
+                      <Text style={styles.testEndItem}>{boosterCenterLocation}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Booster Date</Text>
+                      <Text style={styles.testEndItem}>{boosterDate}</Text>
+                    </View>
+                    <View style={styles.testContents}>
+                      <Text style={styles.testStartItem}>Antibody Remaining</Text>
+                      <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
+                    </View>
+                  </View>
+                </Card>
+              </View>
+      }
     </ScrollView>
   );
 };

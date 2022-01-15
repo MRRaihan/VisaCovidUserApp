@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View, StyleSheet, ScrollView, Image, TouchableOpacity, Text } from 'react-native';
+import {View, StyleSheet, ScrollView, Image, TouchableOpacity, Text, ActivityIndicator} from 'react-native';
 import {Card, Paragraph, Title} from "react-native-paper";
 import PCRImage from "../../../../../assets/images/done.png";
 import PCRData from "./PCRStatusData";
@@ -11,12 +11,15 @@ const PCRTestStatus = ({route}) => {
     const [lastPcrResult, setLastPcrResult] = useState('');
     const [pcrTestCenter, setPcrTestCenter] = useState('');
     const [pcrCenterLocation, setPcrCenterLocation] = useState('');
+    const [loader, setLoader] = useState(true);
+
 
     const [serveById, setServeById] = useState('');
     const [serveByName, setServeByName] = useState('');
 
     useEffect(()=>{
 
+        setLoader(true)
         AsyncStorage.getItem('phone').then(value =>{
             //For pcr Status
             const boosterUrl = appUrl.pcrInformation;
@@ -37,8 +40,10 @@ const PCRTestStatus = ({route}) => {
                     setPcrCenterLocation(responseJson.myPcrCenterLocation);
                     setServeById(responseJson.myServeById);
                     setServeByName(responseJson.myServeByName);
+                    setLoader(false)
                 })
                 .catch((error) => {
+                    setLoader(false)
                     //Alert.alert("Failed to registration 2");
                 });
         });
@@ -46,53 +51,56 @@ const PCRTestStatus = ({route}) => {
 
     return (
         <ScrollView>
-            <View style={styles.container}>
-                <View style={{width: "100%", height: 200, alignItems: 'center', backgroundColor: "#fff"}}>
-                    <Image style={styles.PCRLogo} source={PCRImage} />
-                </View>
-                <Card style={styles.LivenessVideo}>
-                    <TouchableOpacity>
-                        <Text style={styles.video}>Liveness video!</Text>
-                    </TouchableOpacity>
-                </Card>
+            {
+                loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                    <View style={styles.container}>
+                        <View style={{width: "100%", height: 200, alignItems: 'center', backgroundColor: "#fff"}}>
+                            <Image style={styles.PCRLogo} source={PCRImage} />
+                        </View>
+                        <Card style={styles.LivenessVideo}>
+                            <TouchableOpacity>
+                                <Text style={styles.video}>Liveness video!</Text>
+                            </TouchableOpacity>
+                        </Card>
 
-                <Card style={styles.cardStyle}>
-                    <Card.Content>
-                        <Title>First Dose</Title>
-                        <View
-                            style={{
-                                borderBottomColor: "#e8e2e1",
-                                borderBottomWidth: 2,
-                                marginTop: 2,
-                            }}
-                        />
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>PCR Test Date</Text>
-                            <Text style={styles.testEndItem}>{pcrLastTest}he</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>PCR Test Result</Text>
-                            <Text style={styles.testEndItem}>{lastPcrResult}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>Center Name</Text>
-                            <Text style={styles.testEndItem}>{pcrTestCenter}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>Center Address</Text>
-                            <Text style={styles.testEndItem}>{pcrCenterLocation}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>ServedBy</Text>
-                            <Text style={styles.testEndItem}>{serveById}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>ServedById</Text>
-                            <Text style={styles.testEndItem}>{serveByName}</Text>
-                        </View>
-                    </Card.Content>
-                </Card>
-            </View>
+                        <Card style={styles.cardStyle}>
+                            <Card.Content>
+                                <Title>First Dose</Title>
+                                <View
+                                    style={{
+                                        borderBottomColor: "#e8e2e1",
+                                        borderBottomWidth: 2,
+                                        marginTop: 2,
+                                    }}
+                                />
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>PCR Test Date</Text>
+                                    <Text style={styles.testEndItem}>{pcrLastTest}he</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>PCR Test Result</Text>
+                                    <Text style={styles.testEndItem}>{lastPcrResult}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>Center Name</Text>
+                                    <Text style={styles.testEndItem}>{pcrTestCenter}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>Center Address</Text>
+                                    <Text style={styles.testEndItem}>{pcrCenterLocation}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>ServedBy</Text>
+                                    <Text style={styles.testEndItem}>{serveById}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>ServedById</Text>
+                                    <Text style={styles.testEndItem}>{serveByName}</Text>
+                                </View>
+                            </Card.Content>
+                        </Card>
+                    </View>
+            }
         </ScrollView>
     )
 }

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View, StyleSheet, ScrollView, Image, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { Card, Title, Paragraph } from "react-native-paper";
 import BoosterImage from "../../../../../assets/images/Booster.png";
 import BoosterData from "./BoosterStatusData";
@@ -12,6 +12,8 @@ const BoosterStatus = ({route}) => {
     const [boosterDate, setBoosterDate] = useState('');
     const [antibodyRemaining, setAntibodyRemaining] = useState('');
     const [vaccineName, setVaccineName] = useState('');
+    const [loader, setLoader] = useState(true);
+
 
     const [serveById, setServeById] = useState('');
     const [serveByName, setServeByName] = useState('');
@@ -20,6 +22,7 @@ const BoosterStatus = ({route}) => {
 
         AsyncStorage.getItem('phone').then(value =>{
             //For pcr Status
+            setLoader(true)
             const boosterUrl = appUrl.boosterInformation;
             const postConfig = {
                 method: 'POST',
@@ -40,8 +43,10 @@ const BoosterStatus = ({route}) => {
                     setVaccineName(responseJson.myNameOfVaccine);
                     setServeById(responseJson.myServeById);
                     setServeByName(responseJson.myServeByName);
+                    setLoader(false)
                 })
                 .catch((error) => {
+                    setLoader(false)
                     //Alert.alert("Failed to registration 2");
                 });
         });
@@ -49,57 +54,60 @@ const BoosterStatus = ({route}) => {
 
     return (
         <ScrollView>
-            <View style={styles.container}>
-                <View style={{width: "100%", height: 200, alignItems: 'center', backgroundColor: "#fff"}}>
-                <Image style={styles.VaccineLogo} source={BoosterImage} />
-                </View>
-                <Card style={styles.LivenessVideo}>
-                    <TouchableOpacity>
-                        <Text style={styles.video}>Liveness video!</Text>
-                    </TouchableOpacity>
-                </Card>
+            {
+                loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                    <View style={styles.container}>
+                        <View style={{width: "100%", height: 200, alignItems: 'center', backgroundColor: "#fff"}}>
+                            <Image style={styles.VaccineLogo} source={BoosterImage} />
+                        </View>
+                        <Card style={styles.LivenessVideo}>
+                            <TouchableOpacity>
+                                <Text style={styles.video}>Liveness video!</Text>
+                            </TouchableOpacity>
+                        </Card>
 
-                <Card style={styles.cardStyle}>
-                    <Card.Content>
-                        <Title>Booster</Title>
-                        <View
-                            style={{
-                                borderBottomColor: "#e8e2e1",
-                                borderBottomWidth: 2,
-                                marginTop: 2,
-                            }}
-                        />
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>Vaccine Name</Text>
-                            <Text style={styles.testEndItem}>{vaccineName}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>Center Name</Text>
-                            <Text style={styles.testEndItem}>{boosterCenter}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>Center Location</Text>
-                            <Text style={styles.testEndItem}>{boosterCenterLocation}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>Booster Date</Text>
-                            <Text style={styles.testEndItem}>{boosterDate}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>Antibody Remaining</Text>
-                            <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>ServedBy</Text>
-                            <Text style={styles.testEndItem}>{serveByName}</Text>
-                        </View>
-                        <View style={styles.testContents}>
-                            <Text style={styles.testStartItem}>ServedById</Text>
-                            <Text style={styles.testEndItem}>{serveById}</Text>
-                        </View>
-                    </Card.Content>
-                </Card>
-            </View>
+                        <Card style={styles.cardStyle}>
+                            <Card.Content>
+                                <Title>Booster</Title>
+                                <View
+                                    style={{
+                                        borderBottomColor: "#e8e2e1",
+                                        borderBottomWidth: 2,
+                                        marginTop: 2,
+                                    }}
+                                />
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>Vaccine Name</Text>
+                                    <Text style={styles.testEndItem}>{vaccineName}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>Center Name</Text>
+                                    <Text style={styles.testEndItem}>{boosterCenter}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>Center Location</Text>
+                                    <Text style={styles.testEndItem}>{boosterCenterLocation}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>Booster Date</Text>
+                                    <Text style={styles.testEndItem}>{boosterDate}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>Antibody Remaining</Text>
+                                    <Text style={styles.testEndItem}>{antibodyRemaining}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>ServedBy</Text>
+                                    <Text style={styles.testEndItem}>{serveByName}</Text>
+                                </View>
+                                <View style={styles.testContents}>
+                                    <Text style={styles.testStartItem}>ServedById</Text>
+                                    <Text style={styles.testEndItem}>{serveById}</Text>
+                                </View>
+                            </Card.Content>
+                        </Card>
+                    </View>
+            }
         </ScrollView>
     )
 }
