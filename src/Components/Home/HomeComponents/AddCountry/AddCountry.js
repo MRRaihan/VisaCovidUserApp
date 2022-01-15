@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { Card } from 'react-native-elements';
 import appUrl from "../../../../RestApi/AppUrl";
@@ -7,11 +7,13 @@ import appUrl from "../../../../RestApi/AppUrl";
 const AddCountry = ({navigation}) => {
     const [fromAddress, setfromAddress] = useState();
     const [toAddress, settoAddress] = useState();
+    const [loader, setLoader] = useState(true);
 
     const [allCountry, setCountryItem] = useState([]);
 
 
     useEffect(()=>{
+        setLoader(true)
         const url = appUrl.Country;
         const config = {
             method: 'GET',
@@ -35,48 +37,55 @@ const AddCountry = ({navigation}) => {
             .catch((error) => {
                 //Alert.alert("Failed to registration 2");
             });
+        setLoader(false)
 
     }, []);
 
     return (
             <Card style={styles.container}>
-                <View style={styles.itemView}>
-                    <Text style={{fontSize: 19, fontWeight: 'bold', color: "#050505"}}>From</Text>
-                    <Picker
-                    itemStyle={{color:'#050505'}}
-                    style={{color: "#050505", backgroundColor: '#e1e8eb'}}
-                        selectedValue={fromAddress}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setfromAddress(itemValue)
-                    }>
-                        {
-                            allCountry.map((country)=>{
-                                return (
-                                    <Picker.Item key={country.id} label={country.name} value={country.id} />
-                                )
-                            })
-                        }
-                    </Picker>
-                </View>
+                {
+                    loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                        <View style={styles.itemView}>
+                            <Text style={{fontSize: 19, fontWeight: 'bold', color: "#050505"}}>From</Text>
+                            <Picker
+                                itemStyle={{color:'#050505'}}
+                                style={{color: "#050505", backgroundColor: '#e1e8eb'}}
+                                selectedValue={fromAddress}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setfromAddress(itemValue)
+                                }>
+                                {
+                                    allCountry.map((country)=>{
+                                        return (
+                                            <Picker.Item key={country.id} label={country.name} value={country.id} />
+                                        )
+                                    })
+                                }
+                            </Picker>
+                        </View>
+                }
 
-                <View style={styles.itemView}>
-                    <Text style={{fontSize: 19, fontWeight: 'bold', color: "#050505"}}>To</Text>
-                    <Picker
-                        style={{color: "#050505", backgroundColor: '#e1e8eb'}}
-                        selectedValue={toAddress}
-                        onValueChange={(itemValue, itemIndex) =>
-                            settoAddress(itemValue)
-                    }>
+                {
+                    loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                        <View style={styles.itemView}>
+                            <Text style={{fontSize: 19, fontWeight: 'bold', color: "#050505"}}>To</Text>
+                            <Picker
+                                style={{color: "#050505", backgroundColor: '#e1e8eb'}}
+                                selectedValue={toAddress}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    settoAddress(itemValue)
+                                }>
 
-                        {
-                            allCountry.map((country)=>{
-                                return (
-                                    <Picker.Item key={country.id} label={country.name} value={country.id} />
-                                )
-                            })
-                        }
-                    </Picker>
-                </View>
+                                {
+                                    allCountry.map((country)=>{
+                                        return (
+                                            <Picker.Item key={country.id} label={country.name} value={country.id} />
+                                        )
+                                    })
+                                }
+                            </Picker>
+                        </View>
+                }
 
                 <View style={{ justifyContent: 'center', alignItems: 'center', width:"100%"}}>
                     <TouchableOpacity style={styles.button} onPress={() => {

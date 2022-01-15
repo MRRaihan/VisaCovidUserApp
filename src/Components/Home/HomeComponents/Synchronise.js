@@ -14,6 +14,8 @@ const Synchronise = ({navigation, route}) => {
     const [PCRDataChecked, setPCRDataChecked] = React.useState(false);
     const [vaccinationDataChecked, setVaccinationDataChecked] = React.useState(false);
     const [biometricDataChecked, setBiometricDataChecked] = React.useState(false);
+    const [loader, setLoader] = useState(true);
+
 
     const [allRules, setAllRules] = useState([]);
     const [countryName, setCountryName] = useState('');
@@ -21,7 +23,7 @@ const Synchronise = ({navigation, route}) => {
     const [errorStatus, setErrorStatus] = useState(null);
 
     useEffect(()=>{
-
+        setLoader(true)
         const url = appUrl.Synchronize+'/'+route.params.toAddressId;
         const config = {
             method: 'GET',
@@ -39,11 +41,14 @@ const Synchronise = ({navigation, route}) => {
                 {
                     setAllRules(responseJson.rules);
                     setCountryName(responseJson.country_name);
+                    setLoader(false)
                 }else if(responseJson.status == "0"){
                    Alert.alert(responseJson.message)
                 }
+                setLoader(false)
             })
             .catch((error) => {
+                setLoader(false)
                 //Alert.alert("Failed to registration 2");
             });
     },[])
@@ -56,35 +61,38 @@ const Synchronise = ({navigation, route}) => {
                 <Text style={styles.address}>To Address: {countryName}</Text>
             </View>
 
-            <View style={styles.checkboxViewStyle}>
-            <Text style={styles.mainTitle}>Rules for movement</Text>
-                <View
-                    style={{
-                    borderBottomColor: "#e8e2e1",
-                    borderBottomWidth: 2,
-                    marginTop: 13,
-                    }}
-                />
-
                 {
-                    allRules.length < 1 && (<View style={{flexDirection: "row", width:"80%", marginLeft: 5, padding: 5, marginTop: 5}}>
-                       <Text style={styles.checkData}>No data found</Text>
-                    </View>)
-                }
-
-                {
-                    allRules && allRules.length > 0 && allRules.map((rule) =>{
-                        return (<View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
-                            <Checkbox
-                                status={personalDataChecked ? 'checked' : 'unchecked'}
-                                onPress={() => {
-
+                    loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                        <View style={styles.checkboxViewStyle}>
+                            <Text style={styles.mainTitle}>Rules for movement</Text>
+                            <View
+                                style={{
+                                    borderBottomColor: "#e8e2e1",
+                                    borderBottomWidth: 2,
+                                    marginTop: 13,
                                 }}
-                            /><Text style={styles.checkData}>{rule.synchronize_rule}</Text>
-                        </View>)
-                    })
+                            />
+
+                            {
+                                allRules.length < 1 && (<View style={{flexDirection: "row", width:"80%", marginLeft: 5, padding: 5, marginTop: 5}}>
+                                    <Text style={styles.checkData}>No data found</Text>
+                                </View>)
+                            }
+
+                            {
+                                allRules && allRules.length > 0 && allRules.map((rule) =>{
+                                    return (<View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
+                                        <Checkbox
+                                            status={personalDataChecked ? 'checked' : 'unchecked'}
+                                            onPress={() => {
+
+                                            }}
+                                        /><Text style={styles.checkData}>{rule.synchronize_rule}</Text>
+                                    </View>)
+                                })
+                            }
+                        </View>
                 }
-            </View>
 
             <View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', width:"100%"}}>
