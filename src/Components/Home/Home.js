@@ -225,7 +225,6 @@ const Home = ({navigation}) =>{
                         </ScrollView>
                     </View>
                 }
-
                 <View>
                     {
                         pcrLoader ?  <ActivityIndicator size="large" color="#718AEE"/> :
@@ -358,49 +357,53 @@ const Home = ({navigation}) =>{
                     }
                 </View>
 
-                <View>
-                    {
-                        boosterLoader ? <ActivityIndicator size="large" color="#718AEE"/> :
-                            <Card style={styles.dataFlex}>
-                                <View style={styles.CardInsideTitle}>
-                                    <Text
-                                        style={{
-                                            alignItems: "center",
-                                            flex: 1,
-                                            justifyContent: "center",
-                                            marginTop: 9,
-                                            fontSize: 18,
-                                            color: "#050505"
-                                        }}
-                                    >
-                                        Booster
-                                    </Text>
 
-                                    <TouchableOpacity>
-                                        <Button
-                                            style={{
-                                                alignItems: "center",
-                                                flex: 1,
-                                                justifyContent: "space-between",
-                                                marginTop: 15,
-                                                marginRight: -30
-                                            }}
-                                            icon="information-outline"
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                                <View>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            navigation.navigate(booster);
-                                        }}
-                                    >
-                                        <Image style={styles.bliderImage} source={{uri:appUrl.BaseUrl+boosterIcon}} />
-                                    </TouchableOpacity>
-                                </View>
-                            </Card>
-                    }
-                </View>
+                {
+                    boosterStatus ?
+                        (<Card style={styles.dataFlex}><Text style={styles.boosterStatus}>Booster Not Available</Text></Card>) : (<View>
+                            {
+                                boosterLoader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                                    <Card style={styles.dataFlex}>
+                                        <View style={styles.CardInsideTitle}>
+                                            <Text
+                                                style={{
+                                                    alignItems: "center",
+                                                    flex: 1,
+                                                    justifyContent: "center",
+                                                    marginTop: 9,
+                                                    fontSize: 18,
+                                                    color: "#050505"
+                                                }}
+                                            >
+                                                Booster
+                                            </Text>
+
+                                            <TouchableOpacity>
+                                                <Button
+                                                    style={{
+                                                        alignItems: "center",
+                                                        flex: 1,
+                                                        justifyContent: "space-between",
+                                                        marginTop: 15,
+                                                        marginRight: -30
+                                                    }}
+                                                    icon="information-outline"
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    navigation.navigate(booster);
+                                                }}
+                                            >
+                                                <Image style={styles.bliderImage} source={{uri:appUrl.BaseUrl+boosterIcon}} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </Card>
+                            }
+                        </View>)
+                }
 
                 <View>
                     <Card style={styles.dataFlex}>
@@ -537,6 +540,13 @@ const styles = StyleSheet.create({
         height: 250
 
     },
+    boosterStatus:{
+        color: '#eece05',
+        textAlign:"center",
+        marginTop: 100,
+        fontWeight:"bold",
+    },
+
     CardInsideTitle: {
         flexDirection: "row",
         padding: 2,
