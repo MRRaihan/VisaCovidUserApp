@@ -91,7 +91,7 @@ const AddCountry = ({navigation}) => {
                     <TouchableOpacity style={styles.button} onPress={() => {
                         navigation.navigate("Synchronise", { fromAddressId: fromAddress, toAddressId:toAddress });
                     }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Select</Text>
+                        <Text style={{textAlign:"center", color: "white", fontSize: 16}}>Select</Text>
                     </TouchableOpacity>
                 </View>
         </Card>
@@ -120,11 +120,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         alignContent: 'center',
         margin: 10,
-        borderWidth: 1,
-        height: 50,
+        height: 45,
         width: "100%",
-        backgroundColor: "#2e47e8",
-        borderRadius: 10
+        backgroundColor: "#00549F",
+        borderRadius: 8
     },
     // pickerItem:{
     //     borderRadius: 10,

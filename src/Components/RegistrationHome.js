@@ -87,7 +87,7 @@ export default function App({navigation}) {
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
-              console.log(responseJson)
+              console.log(responseJson.status)
               if(responseJson.status == "0"){
                 Alert.alert(responseJson.message)
               }

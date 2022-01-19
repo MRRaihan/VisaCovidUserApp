@@ -25,7 +25,7 @@ const RtpcLeftDate = ({navigation}) => {
             fetch(boosterUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    console.log(responseJson)
+                    console.log(responseJson.status)
                     setRtpcrLeftDay(responseJson.leftDay);
                     setRtpcrLeftTime(responseJson.leftHour)
                     setRtpcrAddress(responseJson.centerAddress)
@@ -40,7 +40,7 @@ const RtpcLeftDate = ({navigation}) => {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.statusText}>You have registered for the RT-PCR</Text>
+                <Text style={styles.statusText}>You have registered for the RT-PCR. Your test date left</Text>
                 <View style={styles.dateTimesStatus}>
                     <View style={styles.leftTime}>
                         <Text style={styles.leftDates}>{rtpcrLeftDay}</Text>
@@ -54,13 +54,13 @@ const RtpcLeftDate = ({navigation}) => {
                 </View>
                 <Card style={{paddingRight: 20, marginTop: 30}}>
                     <View style={styles.pickLocation}>
-                        <Text style={{fontSize: 20, color: "#050505"}}>{rtpcrAddress}</Text>
+                        <Text style={{fontSize: 16, color: "#050505"}}>Center Address: {rtpcrAddress}</Text>
                     </View>
                 </Card>
                 <TouchableOpacity style={styles.button} onPress={() => {
                     navigation.navigate("Home");
                 }}>
-                    <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Back</Text>
+                    <Text style={{textAlign:"center", color: "white", fontSize: 14}}>Back</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
@@ -72,17 +72,15 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         width: "100%",
-
-
     },
     statusText:{
         width: "100%",
-        fontSize: 20,
+        fontSize: 16,
         justifyContent: 'center',
         textAlign: "center",
-        padding: 20,
-        color: "#a0a2a3",
-        fontWeight: "bold"
+        marginTop: 20,
+        marginBottom: 20,
+        color: "#00549F",
     },
     dateTimesStatus:{
         width: "90%",
@@ -119,8 +117,6 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         paddingLeft: 20,
         borderRadius: 10
-
-
     },
     leftHours:{
         backgroundColor: "#333538",
@@ -177,12 +173,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         alignContent: 'center',
-        margin: 20,
-        borderWidth: 1,
-        height: 50,
-        width: "90%",
-        backgroundColor: "#2e47e8",
-        borderRadius: 10
+        marginTop: 30,
+        height: 45,
+        width: "100%",
+        backgroundColor: "#00549F",
+        borderRadius: 6
     },
 
 })

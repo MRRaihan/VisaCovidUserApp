@@ -64,10 +64,11 @@ export default function App({navigation}) {
         };
         //Alert.alert(url);
 
+
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
-
+              console.log(responseJson.status)
               if (responseJson.status == "2"){
                 AsyncStorage.setItem('phone', responseJson.phone);
                 AsyncStorage.setItem('password', responseJson.password);

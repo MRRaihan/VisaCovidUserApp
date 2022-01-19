@@ -104,6 +104,7 @@ const MobileOTP= ({navigation, route}) =>{
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {
+                            console.log(responseJson.status)
                             if (responseJson.status == "1")
                             {
                                 Alert.alert(responseJson.message);

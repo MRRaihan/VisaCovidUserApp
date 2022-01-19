@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import { Card } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 
@@ -36,7 +36,7 @@ const Synchronise = ({navigation, route}) => {
         fetch(url,config)
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
+                console.log(responseJson.status)
                 if (responseJson.status == "1")
                 {
                     setAllRules(responseJson.rules);
@@ -129,20 +129,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#bb44eb",
     },
     address:{
-        fontSize: 20,
+        fontSize: 16,
         paddingTop:10,
         marginTop: 15,
         marginBottom: -10,
         marginLeft: 20,
-        color: "gray"
+        color:'#00549F'
     },
     mainTitle:{
-        fontSize: 20,
+        fontSize: 18,
         paddingTop:10,
         marginTop: 15,
         marginBottom: -10,
         marginLeft: 6,
-        color: "gray"
+        color:'#00549F'
     },
     ImageShow:{
         height: 100,

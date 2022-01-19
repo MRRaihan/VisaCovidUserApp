@@ -40,7 +40,7 @@ const PCRLeftDate = ({navigation}) => {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.statusText}>You have registered for the PCR test.</Text>
+                <Text style={styles.statusText}>You have registered for the PCR test. Your test date left</Text>
                 <View style={styles.dateTimesStatus}>
                     <View style={styles.leftTime}>
                         <Text style={styles.leftDates}>{pcrLeftDay}</Text>
@@ -62,7 +62,7 @@ const PCRLeftDate = ({navigation}) => {
                 <TouchableOpacity style={styles.button} onPress={() => {
                         navigation.navigate("");
                     }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Ready to Test</Text>
+                        <Text style={{textAlign:"center", color: "white", fontSize: 16}}>Ready to Test</Text>
                     </TouchableOpacity>
             </View>
         </ScrollView>
@@ -79,10 +79,12 @@ const styles = StyleSheet.create({
     },
     statusText:{
         width: "100%",
-        fontSize: 20,
+        fontSize: 16,
         justifyContent: 'center',
         textAlign: "center",
-        padding: 20
+        marginTop: 20,
+        marginBottom: 20,
+        color: "#00549F",
     },
     dateTimesStatus:{
         width: "90%",
@@ -177,12 +179,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         alignContent: 'center',
-        margin: 20,
-        borderWidth: 1,
-        height: 50,
-        width: "90%",
-        backgroundColor: "#2e47e8",
-        borderRadius: 10
+        marginTop: 30,
+        height: 45,
+        width: "100%",
+        backgroundColor: "#00549F",
+        borderRadius: 6
     },
 
 })

@@ -65,6 +65,7 @@ const Home = ({navigation}) =>{
             fetch(vaccineUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
+                    console.log(responseJson.boosterStatus)
                     setVaccination(responseJson.navigationPath);
                     setVaccinationIcon(responseJson.vaccinationIcon);
                     setBoosterStatus(responseJson.boosterStatus);
@@ -96,6 +97,7 @@ const Home = ({navigation}) =>{
             fetch(pcrUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
+                    console.log(responseJson.navigationPath)
                     setPcrStatus(responseJson.navigationPath);
                     setPcrStatusIcon(responseJson.pcrIcon);
                     setPcrLoader(false)
@@ -124,7 +126,7 @@ const Home = ({navigation}) =>{
             fetch(rtpcrUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    console.log(responseJson)
+                    console.log(responseJson.navigationPath)
                     setRtpcr(responseJson.navigationPath);
                     setRtpcrStatusIcon(responseJson.rtpcrIcon);
                     setRtPcrLoader(false)
@@ -152,6 +154,7 @@ const Home = ({navigation}) =>{
             fetch(boosterUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
+                    console.log(responseJson.navigationPath)
                     setBooster(responseJson.navigationPath);
                     setBoosterIcon(responseJson.boosterIcon);
                     setBoosterLoader(false)
@@ -179,6 +182,7 @@ const Home = ({navigation}) =>{
             .then((response) => response.json())
             .then((responseJson) => {
                 // Alert.alert(responseJson.status);
+                console.log(responseJson.status)
                 if (responseJson.status == "1")
                 {
                     setSlider(responseJson.sliders);
@@ -240,7 +244,7 @@ const Home = ({navigation}) =>{
                                             color: "#050505"
                                         }}
                                     >
-                                        PCR
+                                        RAPID-PCR
                                     </Text>
 
                                     <TouchableOpacity>
@@ -359,7 +363,7 @@ const Home = ({navigation}) =>{
 
 
                 {
-                    boosterStatus ?
+                    boosterStatus == 0 ?
                         (<Card style={styles.dataFlex}><Text style={styles.boosterStatus}>Booster Not Available</Text></Card>) : (<View>
                             {
                                 boosterLoader ? <ActivityIndicator size="large" color="#718AEE"/> :

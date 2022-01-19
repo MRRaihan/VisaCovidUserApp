@@ -45,6 +45,7 @@ const Rtpcr = ({navigation}) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 // Alert.alert(responseJson.status);
+                console.log(responseJson.status)
                 if (responseJson.status == "1")
                 {
                     setCountryItem(responseJson.countries);
@@ -67,7 +68,7 @@ const Rtpcr = ({navigation}) => {
                             style={styles.checkItemColor}
                             selectedValue={selectedFirstItem}
                             onValueChange={(itemValue) =>{
-                                const url = appUrl.State+"/"+itemValue;
+                                const url = appUrl.rtpcrCenter+"/"+itemValue;
                                 const config = {
                                     method: 'GET',
                                     headers: {
@@ -81,7 +82,7 @@ const Rtpcr = ({navigation}) => {
                                         if (responseJson.status == "1")
                                         {
                                             setSelectedFirstItem(itemValue);
-                                            setStateItem(responseJson.states);
+                                            setCenterItem(responseJson.centers);
                                         }else if(responseJson.status == "0"){
                                             Alert.alert(responseJson.message);
                                         }
@@ -96,89 +97,6 @@ const Rtpcr = ({navigation}) => {
                                 allCountry.map((country)=>{
                                     return (
                                         <Picker.Item key={country.id} label={country.name} value={country.id} />
-                                    )
-                                })
-                            }
-                        </Picker>
-                    </View>
-                    <View style={styles.pickerAllItem}>
-                        <Text style={styles.checkTitle}>Select State</Text>
-                        <Picker
-                            style={styles.checkItemColor}
-                            selectedValue={selectedSecondItem}
-                            onValueChange={(itemValue, itemIndex) =>{
-                                const url = appUrl.City+"/"+itemValue;
-                                const config = {
-                                    method: 'GET',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    }
-                                };
-                                fetch(url,config)
-                                    .then((response) => response.json())
-                                    .then((responseJson) => {
-                                        if (responseJson.status == "1")
-                                        {
-                                            setSelectedSecondItem(itemValue)
-                                            setCityItem(responseJson.cities);
-                                        }else if(responseJson.status == "0"){
-                                            Alert.alert(responseJson.message);
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        //Alert.alert("Failed to registration 2");
-                                    });
-                            }
-                            }>
-                            <Picker.Item key="4564234" label="Select one"/>
-                            {
-                                allState.map((state)=>{
-                                    return (
-                                        <Picker.Item key={state.id} label={state.name} value={state.id} />
-                                    )
-                                })
-                            }
-                        </Picker>
-                    </View>
-
-                    <View style={styles.pickerAllItem}>
-                        <Text style={styles.checkTitle}>Select City</Text>
-                        <Picker
-                            style={styles.checkItemColor}
-                            selectedValue={selectedThirdItem}
-                            onValueChange={(itemValue, itemIndex) =>
-                            {
-                                const url = appUrl.rtpcrCenter+"/"+itemValue;
-                                const config = {
-                                    method: 'GET',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    }
-                                };
-                                fetch(url,config)
-                                    .then((response) => response.json())
-                                    .then((responseJson) => {
-                                        if (responseJson.status == "1")
-                                        {
-                                            setSelectedThirdItem(itemValue)
-                                            setCenterItem(responseJson.centers);
-                                        }else if(responseJson.status == "0"){
-                                            Alert.alert(responseJson.message);
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        //Alert.alert("Failed to registration 2");
-                                    });
-                            }
-
-                            }>
-                            <Picker.Item key="345634" label="Select one"/>
-                            {
-                                allCity.map((city)=>{
-                                    return (
-                                        <Picker.Item key={city.id} label={city.name} value={city.id} />
                                     )
                                 })
                             }
@@ -250,6 +168,7 @@ const Rtpcr = ({navigation}) => {
                         fetch(url,config)
                             .then((response) => response.json())
                             .then((responseJson) => {
+                                console.log(responseJson)
                                 if (responseJson.status == "2")
                                 {
                                     Alert.alert(responseJson.message);
@@ -259,14 +178,14 @@ const Rtpcr = ({navigation}) => {
                                     Alert.alert(responseJson.message);
                                     navigation.navigate("Rtpcr Status");
                                 }else if(responseJson.status == "0"){
-                                    Alert.alert(responseJson.message);
+                                    alert(responseJson.message);
                                 }
                             })
                             .catch((error) => {
                                 //Alert.alert("Failed to registration 2");
                             });
                     }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Registration Now</Text>
+                        <Text style={{textAlign:"center", color: "white", fontSize: 14}}>Registration Now</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -317,11 +236,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         alignContent: 'center',
         margin: 20,
-        borderWidth: 1,
         height: 50,
         width: "95%",
-        backgroundColor: "#2e47e8",
-        borderRadius: 10
+        backgroundColor: "#00549F",
+        borderRadius: 6
     },
     checkTitle:{
         fontSize:18,
