@@ -1,7 +1,7 @@
 
 class AppUrl{
     //static BaseUrl = 'http://10.10.10.117/VisaCovidCenterDevelopment/public/';
-    static BaseUrl = 'http://192.168.31.150/VisaCovidCenterDevelopment/public/';
+    static BaseUrl = 'http://10.10.10.127/VisaCovidCenterDevelopment/public/';
     //static BaseUrl = 'https://visacovid.com/';
     //static BaseUrl = 'http://visacovid.xyz/';
 
