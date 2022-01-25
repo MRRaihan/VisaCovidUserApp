@@ -7,9 +7,9 @@ const VaccineRegistrationButton = ({navigation}) => {
             <View style={styles.container}>
                 <View>
                     <TouchableOpacity style={styles.button} onPress={()=>{
-                        navigation.navigate("Already TakeVaccine");
+                        navigation.navigate("Already Vaccinated");
                     }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 16}}>Already Take Vaccine</Text>
+                        <Text style={{textAlign:"center", color: "white", fontSize: 16}}>Already Vaccinated</Text>
                     </TouchableOpacity>
                 </View>
 
