@@ -9,9 +9,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Image,
   View,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import RNFetchBlob from 'react-native-fetch-blob'
 import appUrl from '../../../../RestApi/AppUrl';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
@@ -24,6 +26,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
   const [secondDose, setSecondDose] = useState('');
   const [description, setDescription] = useState(null);
   const [document, setDocument] = useState(null);
+  const [fromImage, setFromImage] = useState(null);
   const [center, setCenter] = useState(null);
   const [centerLocation, setCenterLocation] = useState(null);
 
@@ -59,6 +62,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
         // Alert.alert(responseJson.status);
         if (responseJson.status == '1') {
           setVaccineNames(responseJson.vaccineName);
+          // setSelectedVaccine(responseJson.vaccineName[0].name);
         } else if (responseJson.status == '0') {
           Alert.alert(responseJson.message);
         }
@@ -69,13 +73,13 @@ const AlreadyTakeVaccine = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    console.log(selectedDose);
-    console.log(selectedVaccine);
-    console.log(center);
-    console.log(centerLocation);
-    console.log(secondDose);
-    console.log(description);
-    console.log(firstDose);
+    // console.log(selectedDose);
+    // console.log(selectedVaccine);
+    // console.log(center);
+    // console.log(centerLocation);
+    // console.log(secondDose);
+    // console.log(description);
+    // console.log(firstDose);
   }, []);
 
   return (
@@ -88,7 +92,6 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 );
             })}
         </View>:null}
-        {console.log(errorMessages)}
         <Text style={styles.inputTitle}>Select Dose</Text>
         <View style={styles.pickerView}>
           <Picker
@@ -102,6 +105,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
               return <Picker.Item key={dose} label={dose} value={dose} />;
             })}
           </Picker>
+          {(selectedDose == null || selectedDose == '') ? <Text style={styles.errorText}>Please select Dose</Text>:null}
         </View>
 
         <Text style={styles.inputTitle}>Select Vaccine</Text>
@@ -123,6 +127,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
               );
             })}
           </Picker>
+          {(selectedVaccine == null || selectedVaccine == '') ? <Text style={styles.errorText}>Please select Vaccine</Text>:null}
         </View>
 
         <Text style={styles.inputTitle}>Center Name</Text>
@@ -132,6 +137,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
             placeholderTextColor="#003f5c"
             onChangeText={center => setCenter(center)}
           />
+          {(center == null || center == '') ? <Text style={styles.errorText}>Center name is required</Text>:null}
         </View>
 
         <Text style={styles.inputTitle}>Center location</Text>
@@ -141,6 +147,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
             placeholderTextColor="#003f5c"
             onChangeText={location => setCenterLocation(location)}
           />
+          {(centerLocation == null || centerLocation == '') ? <Text style={styles.errorText}>Center location is required</Text>:null}
         </View>
 
         {selectedDose === '1st Dose' || selectedDose === 'Both Dose' ? (
@@ -173,6 +180,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 }}
               />
             </View>
+            {(firstDose == '' || firstDose == null) ? <Text style={styles.errorText}>Date is required</Text>:null}
           </>
         ) : null}
 
@@ -207,6 +215,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 }}
               />
             </View>
+            {(secondDose == '' || secondDose == null) ? <Text style={styles.errorText}>Date is required</Text>:null}
           </>
         ) : null}
 
@@ -219,17 +228,21 @@ const AlreadyTakeVaccine = ({navigation}) => {
             placeholderTextColor="#003f5c"
             onChangeText={description => setDescription(description)}
           />
+          {(description == null || description == '') ? <Text style={styles.errorText}>Description is required</Text>:null}
         </View>
+        {document && <Image
+          source={{ uri: document }}
+          style={{ width:100, height:100, marginTop:18 }}
+        />}
 
         <Text style={styles.inputTitle}>Document</Text>
           <TouchableOpacity
           style={styles.fileInput}
           onPress={() => {
             let options = {
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
+              storageOptions: {
+                  path: 'images',
+              },
             };
             launchImageLibrary(options, (response) => {
             console.log('Response = ', response);
@@ -242,16 +255,17 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 console.log('User tapped custom button: ', response.customButton);
                 alert(response.customButton);
             } else {
-                const source = { uri: response.uri };
-                console.log('response', JSON.stringify(response));
+                // const source = { uri: response.assets[0].uri };
+                // console.log('response', JSON.stringify(response.assets['height']));
+
                 // this.setState({
                 // filePath: response,
                 // fileData: response.data,
                 // fileUri: response.uri
                 // });
 
-                setDocument(response.data)
-                // console.log(document)
+                setDocument(response.assets[0].uri)
+                setFromImage(response.data)
             }
             });
           }}>
@@ -259,51 +273,89 @@ const AlreadyTakeVaccine = ({navigation}) => {
           <Icon name='file' type='font-awesome' color='#00549F' /> Choose File
           </Text>
         </TouchableOpacity>
-
+        {(document == null) ? <Text style={styles.errorText}>Document is required</Text>:null}
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
+            // const url = appUrl.ExternalVaccination;
+            // const config = {
+            //   method: 'POST',
+            //   headers: {
+            //     Accept: 'application/json',
+            //     'Content-Type': 'multipart/form-data',
+            //     // 'enctype': 'multipart/form-data',
+            //   },
+            //   body: JSON.stringify({
+            //     phone: phone,
+            //     vaccineName: selectedVaccine,
+            //     firstDose: firstDose,
+            //     secondDose: secondDose,
+            //     selectedDose: selectedDose,
+            //     description: description,
+            //     document: document,
+            //     center: center,
+            //     centerLocation: centerLocation,
+            //   }),
+            // };
+
+            // fetch(url, config)
+            //   .then(response => response.json())
+            //   .then(responseJson => {
+            //     // console.log(responseJson)
+            //     if (responseJson.status == '2') {
+            //       Alert.alert(responseJson.message);
+            //     } else if (responseJson.status == '1') {
+            //       Alert.alert(responseJson.message);
+            //       navigation.navigate('Home');
+            //     } else if (responseJson.status == '0') {
+            //       Alert.alert(responseJson.message);
+            //     // } else if (responseJson.status == '3') {
+            //     //   setErrorMessages(responseJson.messages.toArray())
+            //     // Alert.alert(responseJson.messages);
+
+            //     }
+            //   })
+            //   .catch(error => {
+            //     //Alert.alert("Failed to registration 2");
+            //   });
+
             const url = appUrl.ExternalVaccination;
-            const config = {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'enctype': 'multipart/form-data',
-              },
-              body: JSON.stringify({
-                phone: phone,
-                vaccineName: selectedVaccine,
-                firstDose: firstDose,
-                secondDose: secondDose,
-                selectedDose: selectedDose,
-                description: description,
-                document: document,
-                center: center,
-                centerLocation: centerLocation,
-              }),
-            };
+                    
+            RNFetchBlob.fetch('POST', url, {
+              otherHeader : "foo",
+              Accept: 'application/json',
+              'Content-Type' : 'multipart/form-data',
+            }, [
+              // custom content type
+              { name : 'document', filename : 'avatar-png.png', type:'image/png', data: fromImage},
+              // elements without property `filename` will be sent as plain text
+              { name : 'phone', data : phone},
+              { name : 'selectedVaccine', data : selectedVaccine},
+              { name : 'firstDose', data : firstDose},
+              { name : 'secondDose', data : secondDose},
+              { name : 'selectedDose', data : selectedDose},
+              { name : 'description', data : description},
+              { name : 'center', data : center},
+              { name : 'centerLocation', data : centerLocation},
+            ]).then(response => response.json())
+            //   .then(responseJson => {
+            //     // console.log(responseJson)
+            //     if (responseJson.status == '2') {
+            //       Alert.alert(responseJson.message);
+            //     } else if (responseJson.status == '1') {
+            //       Alert.alert(responseJson.message);
+            //       navigation.navigate('Home');
+            //     } else if (responseJson.status == '0') {
+            //       Alert.alert(responseJson.message);
+            //     // } else if (responseJson.status == '3') {
+            //     //   setErrorMessages(responseJson.messages.toArray())
+            //     // Alert.alert(responseJson.messages);
 
-            fetch(url, config)
-              .then(response => response.json())
-              .then(responseJson => {
-                // console.log(responseJson)
-                if (responseJson.status == '2') {
-                  Alert.alert(responseJson.message);
-                } else if (responseJson.status == '1') {
-                  Alert.alert(responseJson.message);
-                  navigation.navigate('Home');
-                } else if (responseJson.status == '0') {
-                  Alert.alert(responseJson.message);
-                } else if (responseJson.status == '3') {
-                  setErrorMessages(responseJson.messages.toArray())
-                // Alert.alert(responseJson.messages);
-
-                }
-              })
-              .catch(error => {
-                //Alert.alert("Failed to registration 2");
-              });
+            //     }
+            //   })
+            //   .catch(error => {
+            //     //Alert.alert("Failed to registration 2");
+            //   });
           }}>
           <Text style={{textAlign: 'center', color: 'white', fontSize: 16}}>
             Submit
@@ -347,7 +399,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
     width: '95%',
-    height: 40,
+    height: 50,
     marginBottom: 5,
   },
   pickerView: {
@@ -357,7 +409,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     width: '95%',
     height: 52,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   TextInput: {
     color: '#ddd',
@@ -415,5 +467,12 @@ const styles = StyleSheet.create({
   checkItemColor: {
     color: '#050505',
   },
+  errorText:{ 
+    // marginLeft: 10,
+    color: 'red',
+    textAlign:"left",
+    // marginTop: 100,
+    fontWeight:"bold",
+},
 });
 export default AlreadyTakeVaccine;
