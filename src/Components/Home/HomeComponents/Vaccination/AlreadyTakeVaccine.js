@@ -239,48 +239,48 @@ const AlreadyTakeVaccine = ({navigation}) => {
           <TouchableOpacity
           style={styles.fileInput}
           onPress={() => {
-            let options = {
-              storageOptions: {
-                  path: 'images',
-              },
-              mediaType : 'photo'
-            };
-            launchImageLibrary(options, (response) => {
-            console.log('Response = ', response);
+            // let options = {
+            //   storageOptions: {
+            //       path: 'images',
+            //   },
+            // };
+            // launchImageLibrary(options, (response) => {
+            // console.log('Response = ', response);
         
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-                alert(response.customButton);
-            } else {
-                // const source = { uri: response.assets[0].uri };
-                // console.log('response', JSON.stringify(response.assets['height']));
+            // if (response.didCancel) {
+            //     console.log('User cancelled image picker');
+            // } else if (response.error) {
+            //     console.log('ImagePicker Error: ', response.error);
+            // } else if (response.customButton) {
+            //     console.log('User tapped custom button: ', response.customButton);
+            //     alert(response.customButton);
+            // } else {
+            //     // const source = { uri: response.assets[0].uri };
+            //     // console.log('response', JSON.stringify(response.assets['height']));
 
             //     // this.setState({
-            //     // filePath: response,
-            //     // fileData: response.data,
-            //     // fileUri: response.uri
+            //       // filePath: response,
+            //       // fileData: response.data,
+            //       // fileUri: response.uri
             //     // });
 
-            //     // setDocument(response.assets[0].uri)
-            //     // setFromImage(response.data)
 
-                setDocument(response.assets[0].uri)              
-                setFromImage({
-                  uri: response.assets[0].uri,
-                  type: response.assets[0].type,
-                  name: response.assets[0].fileName,
-                  // data: response.data
-                  data: response.assets[0].uri
-                })
+            //     setDocument(response.assets[0].uri)              
+            //     setFromImage({
+            //       uri: response.assets[0].uri,
+            //       type: response.assets[0].type,
+            //       name: response.assets[0].fileName,
+            //       // data: response.data
+            //       data: response.assets[0].uri
+            //     })
 
-                // console.log(fromImage);
+            //     console.log(fromImage);
 
-            }
-            });
+            // }
+            // });
+
+            // Alert.alert('sdfsdkv');
+
           }}>
           <Text style={{textAlign: 'center', color: '#00549F', fontSize: 16,fontWeight: 'bold',}}>
           <Icon name='file' type='font-awesome' color='#00549F' /> Choose File
@@ -332,6 +332,10 @@ const AlreadyTakeVaccine = ({navigation}) => {
             //     //Alert.alert("Failed to registration 2");
             //   });
 
+
+
+
+
             // const url = appUrl.testImageStore;
                     
             // fetch('POST', url, {
@@ -370,6 +374,47 @@ const AlreadyTakeVaccine = ({navigation}) => {
             //   .catch(error => {
             //     //Alert.alert("Failed to registration 2");
             //   });
+
+
+
+
+            const url = appUrl.testImageStore;
+
+            const config = {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'enctype': 'multipart/form-data',
+              },
+              body: JSON.stringify({
+                document: fromImage,
+              }),
+            };
+
+
+           
+            fetch(url, config)
+              .then(response => response.json())
+              .then(responseJson => {
+                // console.log(responseJson)
+                if (responseJson.status == '2') {
+                  Alert.alert(responseJson.message);
+                } else if (responseJson.status == '1') {
+                  Alert.alert(responseJson.message);
+                  // navigation.navigate('Home');
+                } else if (responseJson.status == '0') {
+                  Alert.alert(responseJson.message);
+                // } else if (responseJson.status == '3') {
+                //   setErrorMessages(responseJson.messages.toArray())
+                // Alert.alert(responseJson.messages);
+
+                }
+              })
+              .catch(error => {
+                //Alert.alert("Failed to registration 2");
+              });
+
           }}>
           <Text style={{textAlign: 'center', color: 'white', fontSize: 16}}>
             Submit
