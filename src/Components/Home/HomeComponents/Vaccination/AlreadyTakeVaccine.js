@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {launchImageLibrary,ImagePicker} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+
 import { Icon } from 'react-native-elements';
 
 import {
@@ -13,7 +14,6 @@ import {
   View,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import RNFetchBlob from 'react-native-fetch-blob'
 import appUrl from '../../../../RestApi/AppUrl';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
@@ -26,7 +26,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
   const [secondDose, setSecondDose] = useState('');
   const [description, setDescription] = useState(null);
   const [document, setDocument] = useState(null);
-  const [fromImage, setFromImage] = useState(null);
+  const [fromImage, setFromImage] = useState({});
   const [center, setCenter] = useState(null);
   const [centerLocation, setCenterLocation] = useState(null);
 
@@ -243,6 +243,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
               storageOptions: {
                   path: 'images',
               },
+              mediaType : 'photo'
             };
             launchImageLibrary(options, (response) => {
             console.log('Response = ', response);
@@ -258,14 +259,26 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 // const source = { uri: response.assets[0].uri };
                 // console.log('response', JSON.stringify(response.assets['height']));
 
-                // this.setState({
-                // filePath: response,
-                // fileData: response.data,
-                // fileUri: response.uri
-                // });
+            //     // this.setState({
+            //     // filePath: response,
+            //     // fileData: response.data,
+            //     // fileUri: response.uri
+            //     // });
 
-                setDocument(response.assets[0].uri)
-                setFromImage(response.data)
+            //     // setDocument(response.assets[0].uri)
+            //     // setFromImage(response.data)
+
+                setDocument(response.assets[0].uri)              
+                setFromImage({
+                  uri: response.assets[0].uri,
+                  type: response.assets[0].type,
+                  name: response.assets[0].fileName,
+                  // data: response.data
+                  data: response.assets[0].uri
+                })
+
+                // console.log(fromImage);
+
             }
             });
           }}>
@@ -319,25 +332,26 @@ const AlreadyTakeVaccine = ({navigation}) => {
             //     //Alert.alert("Failed to registration 2");
             //   });
 
-            const url = appUrl.ExternalVaccination;
+            // const url = appUrl.testImageStore;
                     
-            RNFetchBlob.fetch('POST', url, {
-              otherHeader : "foo",
-              Accept: 'application/json',
-              'Content-Type' : 'multipart/form-data',
-            }, [
-              // custom content type
-              { name : 'document', filename : 'avatar-png.png', type:'image/png', data: fromImage},
-              // elements without property `filename` will be sent as plain text
-              { name : 'phone', data : phone},
-              { name : 'selectedVaccine', data : selectedVaccine},
-              { name : 'firstDose', data : firstDose},
-              { name : 'secondDose', data : secondDose},
-              { name : 'selectedDose', data : selectedDose},
-              { name : 'description', data : description},
-              { name : 'center', data : center},
-              { name : 'centerLocation', data : centerLocation},
-            ]).then(response => response.json())
+            // fetch('POST', url, {
+            //   otherHeader : "foo",
+            //   Accept: 'multipart/form-data',
+            //   'Content-Type' : 'multipart/form-data',
+            // }, [
+            //   // custom content type
+            //   // { name : 'document', filename : 'avatar-png.png', type:'image/png', data: fromImage},
+            //   { name : 'document', data : phone},
+            //   // elements without property `filename` will be sent as plain text
+            //   { name : 'phone', data : fromImage},
+            //   { name : 'selectedVaccine', data : selectedVaccine},
+            //   { name : 'firstDose', data : firstDose},
+            //   { name : 'secondDose', data : secondDose},
+            //   { name : 'selectedDose', data : selectedDose},
+            //   { name : 'description', data : description},
+            //   { name : 'center', data : center},
+            //   { name : 'centerLocation', data : centerLocation},
+            // ]).then(response => response.json())
             //   .then(responseJson => {
             //     // console.log(responseJson)
             //     if (responseJson.status == '2') {
