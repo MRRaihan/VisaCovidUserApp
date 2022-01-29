@@ -72,16 +72,6 @@ const AlreadyTakeVaccine = ({navigation}) => {
       });
   }, []);
 
-  useEffect(() => {
-    // console.log(selectedDose);
-    // console.log(selectedVaccine);
-    // console.log(center);
-    // console.log(centerLocation);
-    // console.log(secondDose);
-    // console.log(description);
-    // console.log(firstDose);
-  }, []);
-
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -239,48 +229,35 @@ const AlreadyTakeVaccine = ({navigation}) => {
           <TouchableOpacity
           style={styles.fileInput}
           onPress={() => {
-            // let options = {
-            //   storageOptions: {
-            //       path: 'images',
-            //   },
-            // };
-            // launchImageLibrary(options, (response) => {
-            // console.log('Response = ', response);
+            let options = {
+              storageOptions: {
+                  path: 'images',
+                  mediaType: "image",
+              },
+              includeBase64:true
+            };
+            launchImageLibrary(options, (response) => {
         
-            // if (response.didCancel) {
-            //     console.log('User cancelled image picker');
-            // } else if (response.error) {
-            //     console.log('ImagePicker Error: ', response.error);
-            // } else if (response.customButton) {
-            //     console.log('User tapped custom button: ', response.customButton);
-            //     alert(response.customButton);
-            // } else {
-            //     // const source = { uri: response.assets[0].uri };
-            //     // console.log('response', JSON.stringify(response.assets['height']));
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                alert(response.customButton);
+            } else {
+                setDocument(response.assets[0].uri)              
+                // setFromImage(response.assets[0].base64)
+                setFromImage({
+                  uri: response.assets[0].uri,
+                  type: response.assets[0].type,
+                  name: response.assets[0].fileName,
+                  // data: response.data
+                  data: response.assets[0].base64
+                })
 
-            //     // this.setState({
-            //       // filePath: response,
-            //       // fileData: response.data,
-            //       // fileUri: response.uri
-            //     // });
-
-
-            //     setDocument(response.assets[0].uri)              
-            //     setFromImage({
-            //       uri: response.assets[0].uri,
-            //       type: response.assets[0].type,
-            //       name: response.assets[0].fileName,
-            //       // data: response.data
-            //       data: response.assets[0].uri
-            //     })
-
-            //     console.log(fromImage);
-
-            // }
-            // });
-
-            // Alert.alert('sdfsdkv');
-
+            }
+            });
           }}>
           <Text style={{textAlign: 'center', color: '#00549F', fontSize: 16,fontWeight: 'bold',}}>
           <Icon name='file' type='font-awesome' color='#00549F' /> Choose File
@@ -290,95 +267,8 @@ const AlreadyTakeVaccine = ({navigation}) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            // const url = appUrl.ExternalVaccination;
-            // const config = {
-            //   method: 'POST',
-            //   headers: {
-            //     Accept: 'application/json',
-            //     'Content-Type': 'multipart/form-data',
-            //     // 'enctype': 'multipart/form-data',
-            //   },
-            //   body: JSON.stringify({
-            //     phone: phone,
-            //     vaccineName: selectedVaccine,
-            //     firstDose: firstDose,
-            //     secondDose: secondDose,
-            //     selectedDose: selectedDose,
-            //     description: description,
-            //     document: document,
-            //     center: center,
-            //     centerLocation: centerLocation,
-            //   }),
-            // };
 
-            // fetch(url, config)
-            //   .then(response => response.json())
-            //   .then(responseJson => {
-            //     // console.log(responseJson)
-            //     if (responseJson.status == '2') {
-            //       Alert.alert(responseJson.message);
-            //     } else if (responseJson.status == '1') {
-            //       Alert.alert(responseJson.message);
-            //       navigation.navigate('Home');
-            //     } else if (responseJson.status == '0') {
-            //       Alert.alert(responseJson.message);
-            //     // } else if (responseJson.status == '3') {
-            //     //   setErrorMessages(responseJson.messages.toArray())
-            //     // Alert.alert(responseJson.messages);
-
-            //     }
-            //   })
-            //   .catch(error => {
-            //     //Alert.alert("Failed to registration 2");
-            //   });
-
-
-
-
-
-            // const url = appUrl.testImageStore;
-                    
-            // fetch('POST', url, {
-            //   otherHeader : "foo",
-            //   Accept: 'multipart/form-data',
-            //   'Content-Type' : 'multipart/form-data',
-            // }, [
-            //   // custom content type
-            //   // { name : 'document', filename : 'avatar-png.png', type:'image/png', data: fromImage},
-            //   { name : 'document', data : phone},
-            //   // elements without property `filename` will be sent as plain text
-            //   { name : 'phone', data : fromImage},
-            //   { name : 'selectedVaccine', data : selectedVaccine},
-            //   { name : 'firstDose', data : firstDose},
-            //   { name : 'secondDose', data : secondDose},
-            //   { name : 'selectedDose', data : selectedDose},
-            //   { name : 'description', data : description},
-            //   { name : 'center', data : center},
-            //   { name : 'centerLocation', data : centerLocation},
-            // ]).then(response => response.json())
-            //   .then(responseJson => {
-            //     // console.log(responseJson)
-            //     if (responseJson.status == '2') {
-            //       Alert.alert(responseJson.message);
-            //     } else if (responseJson.status == '1') {
-            //       Alert.alert(responseJson.message);
-            //       navigation.navigate('Home');
-            //     } else if (responseJson.status == '0') {
-            //       Alert.alert(responseJson.message);
-            //     // } else if (responseJson.status == '3') {
-            //     //   setErrorMessages(responseJson.messages.toArray())
-            //     // Alert.alert(responseJson.messages);
-
-            //     }
-            //   })
-            //   .catch(error => {
-            //     //Alert.alert("Failed to registration 2");
-            //   });
-
-
-
-
-            const url = appUrl.testImageStore;
+            const url = appUrl.ExternalVaccination;
 
             const config = {
               method: 'POST',
@@ -389,32 +279,32 @@ const AlreadyTakeVaccine = ({navigation}) => {
               },
               body: JSON.stringify({
                 document: fromImage,
+                phone: phone,
+                vaccineName: selectedVaccine,
+                center: center,
+                firstDose: firstDose,
+                secondDose: secondDose,
+                selectedDose: selectedDose,
+                description: description,
+                centerLocation: centerLocation,
               }),
             };
-
-
            
             fetch(url, config)
               .then(response => response.json())
               .then(responseJson => {
-                // console.log(responseJson)
                 if (responseJson.status == '2') {
                   Alert.alert(responseJson.message);
                 } else if (responseJson.status == '1') {
                   Alert.alert(responseJson.message);
-                  // navigation.navigate('Home');
+                  navigation.navigate('Home');
                 } else if (responseJson.status == '0') {
                   Alert.alert(responseJson.message);
-                // } else if (responseJson.status == '3') {
-                //   setErrorMessages(responseJson.messages.toArray())
-                // Alert.alert(responseJson.messages);
-
                 }
               })
               .catch(error => {
                 //Alert.alert("Failed to registration 2");
               });
-
           }}>
           <Text style={{textAlign: 'center', color: 'white', fontSize: 16}}>
             Submit
