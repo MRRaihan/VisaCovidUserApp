@@ -48,19 +48,19 @@ const VaccineRegistration = ({navigation}) => {
 
         setLoader(true)
         fetch(url,config)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // Alert.alert(responseJson.status);
-                if (responseJson.status == "1")
-                {
-                    setCountryItem(responseJson.countries);
-                }else if(responseJson.status == "0"){
-                    Alert.alert(responseJson.message);
-                }
-            })
-            .catch((error) => {
-                //Alert.alert("Failed to registration 2");
-            });
+        .then((response) => response.json())
+        .then((responseJson) => {
+            // Alert.alert(responseJson.status);
+            if (responseJson.status == "1")
+            {
+                setCountryItem(responseJson.countries);
+            }else if(responseJson.status == "0"){
+                Alert.alert(responseJson.message);
+            }
+        })
+        .catch((error) => {
+            //Alert.alert("Failed to registration 2");
+        });
     },[])
 
     useEffect(()=>{
@@ -217,19 +217,19 @@ const VaccineRegistration = ({navigation}) => {
                                 body: JSON.stringify({ city_id:selectedThirdItem, vaccineName:itemValue})
                             };
                             fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setCenterItem(responseJson.centers);
-                                    }else if(responseJson.status == "0"){
-                                        setCenterItem([])
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setCenterItem(responseJson.centers);
+                                }else if(responseJson.status == "0"){
+                                    setCenterItem([])
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
                         }
 
                         }>
@@ -241,7 +241,7 @@ const VaccineRegistration = ({navigation}) => {
                                 )
                             })
                         }
-                    </Picker>
+                        </Picker>
                 </View>
 
                 <View style={styles.pickerAllItem}>

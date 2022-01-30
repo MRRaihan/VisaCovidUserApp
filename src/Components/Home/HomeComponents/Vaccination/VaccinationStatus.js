@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View, StyleSheet, ScrollView, Image, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, TouchableOpacity, ActivityIndicator, Text } from 'react-native';
 import { Card, Title, Paragraph } from "react-native-paper";
 import VaccinationImage from "../../../../../assets/images/Vaccination.png";
 import VaccinationData from "./VaccineStatusData";
@@ -14,8 +14,6 @@ const VaccinationStatus = ({route}) => {
     const [vaccinationCenter, setVaccinationCenter] = useState('');
     const [vaccinationCenterLocation, setVaccinationCenterLocation] = useState('');
     const [loader, setLoader] = useState(true);
-
-
 
     const [serveByFirstId, setServeByFirstId] = useState('');
     const [serveByFirstName, setServeByFirstName] = useState('');
@@ -49,7 +47,7 @@ const VaccinationStatus = ({route}) => {
                     setServeBySecondId(responseJson.myServeBySecondId);
                     setServeBySecondName(responseJson.myServeBySecondName);
                     setMyVaccinationImage(responseJson.myVaccinationImage);
-                    setLoader(false)
+                    setLoader(false);
                 })
                 .catch((error) => {
                     setLoader(false)
@@ -107,8 +105,6 @@ const VaccinationStatus = ({route}) => {
                                 </View>
                             </Card.Content>
                         </Card>
-
-
 
                         <Card style={styles.cardStyle}>
                             <Card.Content>
