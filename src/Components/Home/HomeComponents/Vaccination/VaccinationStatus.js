@@ -15,8 +15,6 @@ const VaccinationStatus = ({route}) => {
     const [vaccinationCenterLocation, setVaccinationCenterLocation] = useState('');
     const [loader, setLoader] = useState(true);
 
-
-
     const [serveByFirstId, setServeByFirstId] = useState('');
     const [serveByFirstName, setServeByFirstName] = useState('');
     const [serveBySecondId, setServeBySecondId] = useState('');
@@ -107,8 +105,6 @@ const VaccinationStatus = ({route}) => {
                                 </View>
                             </Card.Content>
                         </Card>
-
-
 
                         <Card style={styles.cardStyle}>
                             <Card.Content>
