@@ -26,7 +26,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
   const [secondDose, setSecondDose] = useState('');
   const [description, setDescription] = useState(null);
   const [document, setDocument] = useState(null);
-  const [fromImage, setFromImage] = useState({});
+  const [formImage, setFormImage] = useState({});
   const [center, setCenter] = useState(null);
   const [centerLocation, setCenterLocation] = useState(null);
 
@@ -246,8 +246,8 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 alert(response.customButton);
             } else {
                 setDocument(response.assets[0].uri)              
-                // setFromImage(response.assets[0].base64)
-                setFromImage({
+                // setFormImage(response.assets[0].base64)
+                setFormImage({
                   uri: response.assets[0].uri,
                   type: response.assets[0].type,
                   name: response.assets[0].fileName,
@@ -277,7 +277,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 'enctype': 'multipart/form-data',
               },
               body: JSON.stringify({
-                document: fromImage,
+                document: formImage,
                 phone: phone,
                 vaccineName: selectedVaccine,
                 center: center,

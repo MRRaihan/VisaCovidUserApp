@@ -23,6 +23,7 @@ class AppUrl {
 
     static Vaccine = this.BaseUrl + 'api/home/vaccine/registration';
     static ExternalVaccination = this.BaseUrl + 'api/home/vaccine/externalVaccination';
+    static updateProfilePicture = this.BaseUrl + 'api/updateProfilePicture';
     static ExternalVaccinationDoseTwo = this.BaseUrl + 'api/home/vaccine/externalVaccinationDoseTwo';
     // static testImageStore = this.BaseUrl + 'api/test-image-store';
     static PCR = this.BaseUrl + 'api/home/prc/registration';
