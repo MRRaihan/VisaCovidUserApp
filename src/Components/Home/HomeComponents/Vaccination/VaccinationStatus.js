@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import { View, StyleSheet, ScrollView, Image, TouchableOpacity, ActivityIndicator, Text } from 'react-native';
 import { Card, Title, Paragraph } from "react-native-paper";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import VaccinationImage from "../../../../../assets/images/Vaccination.png";
 import VaccinationData from "./VaccineStatusData";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../../../RestApi/AppUrl";
 
-const VaccinationStatus = ({route}) => {
+const VaccinationStatus = ({navigation}) => {
     //Vaccination
     const [vaccinationDoseOne, setVaccinationDoseOne] = useState('');
     const [vaccinationDoseTwo, setVaccinationDoseTwo] = useState('');
@@ -106,7 +107,7 @@ const VaccinationStatus = ({route}) => {
                             </Card.Content>
                         </Card>
 
-                        <Card style={styles.cardStyle}>
+                        <Card style={styles.cardStyle2}>
                             <Card.Content>
                                 <Title>Second Dose</Title>
                                 <View
@@ -140,9 +141,17 @@ const VaccinationStatus = ({route}) => {
                                     <Text style={styles.testStartItem}>ServedById</Text>
                                     <Text style={styles.testEndItem}>{serveBySecondId}</Text>
                                 </View>
-
+                                <View style={styles.alreadyTakenDoseBtnDiv}>
+                                    <TouchableOpacity style={styles.alreadyTakenDoseTwoBtn} onPress={() =>{
+                                       navigation.navigate("Already Vaccinated Second Dose");
+                                    }}>
+                                    <Icon name="plus" size={16} color="#fff" solid />
+                                    <Text style={styles.whiteText}>Already taken?</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </Card.Content>
                         </Card>
+                       
                     </View>
             }
         </ScrollView>
@@ -183,6 +192,12 @@ const styles = StyleSheet.create({
         height: 270,
         marginTop:20,
     },
+    cardStyle2: {
+        backgroundColor: "white",
+        width: "95%",
+        height: 300,
+        marginTop:20,
+    },
     testContents: {
         justifyContent: "space-between",
         flexDirection: "row",
@@ -213,7 +228,24 @@ const styles = StyleSheet.create({
         marginTop: 110,
         fontSize: 20,
 
-    }
+    },
+    alreadyTakenDoseBtnDiv:{
+        width: "100%",
+        alignItems:'flex-end',
+        margin: 5
+    },
+    alreadyTakenDoseTwoBtn:{
+        width: "35%",
+        borderRadius: 10,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 20,
+        backgroundColor: "#3a9aba",
+    },
+    whiteText:{
+        color: "#ffffff"
+    },
 })
 
 export default VaccinationStatus;
