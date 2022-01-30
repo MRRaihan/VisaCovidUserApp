@@ -49,6 +49,7 @@ const VaccinationStatus = ({navigation}) => {
                     setServeBySecondName(responseJson.myServeBySecondName);
                     setMyVaccinationImage(responseJson.myVaccinationImage);
                     setLoader(false);
+                    console.log(vaccinationDoseTwo);
                 })
                 .catch((error) => {
                     setLoader(false)
@@ -107,7 +108,7 @@ const VaccinationStatus = ({navigation}) => {
                             </Card.Content>
                         </Card>
 
-                        <Card style={styles.cardStyle2}>
+                        <Card style={(vaccinationDoseTwo == null || vaccinationDoseTwo == '') ? styles.cardStyle2 : styles.cardStyle }>
                             <Card.Content>
                                 <Title>Second Dose</Title>
                                 <View
@@ -141,14 +142,14 @@ const VaccinationStatus = ({navigation}) => {
                                     <Text style={styles.testStartItem}>ServedById</Text>
                                     <Text style={styles.testEndItem}>{serveBySecondId}</Text>
                                 </View>
-                                <View style={styles.alreadyTakenDoseBtnDiv}>
+                                {(vaccinationDoseTwo == null || vaccinationDoseTwo == '') ?  <View style={styles.alreadyTakenDoseBtnDiv}>
                                     <TouchableOpacity style={styles.alreadyTakenDoseTwoBtn} onPress={() =>{
                                        navigation.navigate("Already Vaccinated Second Dose");
                                     }}>
                                     <Icon name="plus" size={16} color="#fff" solid />
                                     <Text style={styles.whiteText}>Already taken?</Text>
                                     </TouchableOpacity>
-                                </View>
+                                </View> : null }
                             </Card.Content>
                         </Card>
                        

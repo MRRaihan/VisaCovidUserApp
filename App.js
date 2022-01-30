@@ -72,7 +72,7 @@ const App = () => {
         <Stack.Screen name="Vaccination Status" component={VaccinationStatus} />
         <Stack.Screen name="Vaccine Registration Button" options={{ title: 'Vaccine Registration' }} component={VaccineRegistrationButton} />
         <Stack.Screen name="Already Vaccinated" options={{ title: 'About Your Health Record' }} component={AlreadyVaccinated} />
-        <Stack.Screen name="Already Vaccinated Second Dose" options={{ title: 'About Your Health Record' }} component={AlreadyVaccinatedSecondDose} />
+        <Stack.Screen name="Already Vaccinated Second Dose" options={{ title: 'Update 2nd Dose Information' }} component={AlreadyVaccinatedSecondDose} />
 
         <Stack.Screen name="Add Country" component={AddCountry} />
         <Stack.Screen name="Synchronise" component={Synchronise} />
