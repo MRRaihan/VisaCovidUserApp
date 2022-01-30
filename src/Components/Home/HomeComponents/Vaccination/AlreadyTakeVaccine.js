@@ -181,7 +181,6 @@ const AlreadyTakeVaccine = ({navigation}) => {
               <DatePicker
                 style={styles.datePickerStyle}
                 date={secondDose}
-                minDate={firstDose}
                 mode="date"
                 format="YYYY-MM-DD"
                 maxDate="2022-06-01"
