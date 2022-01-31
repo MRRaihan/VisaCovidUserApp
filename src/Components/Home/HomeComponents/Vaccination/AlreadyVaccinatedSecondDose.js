@@ -19,10 +19,9 @@ import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const AlreadyTakeVaccine = ({navigation}) => {
+const AlreadyVaccinatedSecondDose = ({navigation}) => {
   const [phone, setPhone] = useState(null);
   const [vaccineNames, setVaccineNames] = useState([]);
-  const [firstDose, setFirstDose] = useState('');
   const [secondDose, setSecondDose] = useState('');
   const [description, setDescription] = useState(null);
   const [document, setDocument] = useState(null);
@@ -32,12 +31,10 @@ const AlreadyTakeVaccine = ({navigation}) => {
 
   // new added by arafat
   const [vaccineDoses, setVaccineDoses] = useState([
-    '1st Dose',
     '2nd Dose',
-    'Both Dose',
   ]);
   const [errorMessages, setErrorMessages] = useState([]);
-  const [selectedDose, setSelectedDose] = useState('1st Dose');
+  const [selectedDose, setSelectedDose] = useState('2nd Dose');
   const [selectedVaccine, setSelectedVaccine] = useState('');
 
   useEffect(() => {
@@ -81,22 +78,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 <Text>{message}</Text>
                 );
             })}
-        </View>:null}
-        <Text style={styles.inputTitle}>Select Dose</Text>
-        <View style={styles.pickerView}>
-          <Picker
-            style={styles.checkItemColor}
-            selectedValue={selectedDose}
-            onValueChange={(itemValue, itemIndex) => {
-              setSelectedDose(itemValue);
-            }}>
-            <Picker.Item key="165161651" label="Select one" />
-            {vaccineDoses.map(dose => {
-              return <Picker.Item key={dose} label={dose} value={dose} />;
-            })}
-          </Picker>
-          {(selectedDose == null || selectedDose == '') ? <Text style={styles.errorText}>Please select Dose</Text>:null}
-        </View>
+        </View>:null}        
 
         <Text style={styles.inputTitle}>Select Vaccine</Text>
         <View style={styles.pickerView}>
@@ -140,73 +122,36 @@ const AlreadyTakeVaccine = ({navigation}) => {
           {(centerLocation == null || centerLocation == '') ? <Text style={styles.errorText}>Center location is required</Text>:null}
         </View>
 
-        {selectedDose === '1st Dose' || selectedDose === 'Both Dose' ? (
-          <>
-            <Text style={styles.inputTitle}>Date of first dose</Text>
-            <View>
-              <DatePicker
-                style={styles.datePickerStyle}
-                date={firstDose}
-                mode="date"
-                format="YYYY-MM-DD"
-                maxDate="2022-06-01"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0,
-                  },
-                  dateInput: {
-                    marginLeft: 36,
-                  },
-                  // ... You can check the source to find the other keys.
-                }}
-                onDateChange={date => {
-                  var currentMyDate = moment(date).format('YYYY-MM-DD');
-                  setFirstDose(currentMyDate);
-                }}
-              />
-            </View>
-            {(firstDose == '' || firstDose == null) ? <Text style={styles.errorText}>Date is required</Text>:null}
-          </>
-        ) : null}
-
-        {selectedDose === '2nd Dose' || selectedDose === 'Both Dose' ? (
-          <>
-            <Text style={styles.inputTitle}>Date of second dose</Text>
-            <View>
-              <DatePicker
-                style={styles.datePickerStyle}
-                date={secondDose}
-                mode="date"
-                format="YYYY-MM-DD"
-                maxDate="2022-06-01"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0,
-                  },
-                  dateInput: {
-                    marginLeft: 36,
-                  },
-                  // ... You can check the source to find the other keys.
-                }}
-                onDateChange={date => {
-                  var currentMyDate = moment(date).format('YYYY-MM-DD');
-                  setSecondDose(currentMyDate);
-                }}
-              />
-            </View>
-            {(secondDose == '' || secondDose == null) ? <Text style={styles.errorText}>Date is required</Text>:null}
-          </>
-        ) : null}
+        <Text style={styles.inputTitle}>Date of second dose</Text>
+        <View>
+            <DatePicker
+            style={styles.datePickerStyle}
+            date={secondDose}
+            mode="date"
+            format="YYYY-MM-DD"
+            maxDate="2022-06-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+                dateIcon: {
+                position: 'absolute',
+                left: 0,
+                top: 4,
+                marginLeft: 0,
+                },
+                dateInput: {
+                marginLeft: 36,
+                },
+                // ... You can check the source to find the other keys.
+            }}
+            onDateChange={date => {
+                var currentMyDate = moment(date).format('YYYY-MM-DD');
+                setSecondDose(currentMyDate);
+            }}
+            />
+        </View>
+        {(secondDose == '' || secondDose == null) ? <Text style={styles.errorText}>Date is required</Text>:null}
+         
 
         <Text style={styles.inputTitle}>Description</Text>
         <View style={styles.inputView}>
@@ -267,7 +212,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
           style={styles.button}
           onPress={() => {
 
-            const url = appUrl.ExternalVaccination;
+            const url = appUrl.ExternalVaccinationDoseTwo;
 
             const config = {
               method: 'POST',
@@ -281,9 +226,8 @@ const AlreadyTakeVaccine = ({navigation}) => {
                 phone: phone,
                 vaccineName: selectedVaccine,
                 center: center,
-                firstDose: firstDose,
                 secondDose: secondDose,
-                selectedDose: selectedDose,
+                selectedDose: '2nd Dose',
                 description: description,
                 centerLocation: centerLocation,
               }),
@@ -423,4 +367,4 @@ const styles = StyleSheet.create({
     fontWeight:"bold",
 },
 });
-export default AlreadyTakeVaccine;
+export default AlreadyVaccinatedSecondDose;

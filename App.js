@@ -32,6 +32,7 @@ import BoosterStatus from './src/Components/Home/HomeComponents/Booster/BoosterS
 import Artboard from "./src/Components/Home/Artboard";
 import VaccineRegistrationButton from "./src/Components/Home/HomeComponents/Vaccination/VaccineRegistrationButton";
 import AlreadyVaccinated from "./src/Components/Home/HomeComponents/Vaccination/AlreadyTakeVaccine";
+import AlreadyVaccinatedSecondDose from "./src/Components/Home/HomeComponents/Vaccination/AlreadyVaccinatedSecondDose";
 import Rtpcr from "./src/Components/Home/HomeComponents/Rtpcr/Rtpcr";
 import RtpcrData from "./src/Components/Home/HomeComponents/Rtpcr/RtpcrData";
 import RtpcLeftDate from "./src/Components/Home/HomeComponents/Rtpcr/RtpcLeftDate";
@@ -71,6 +72,7 @@ const App = () => {
         <Stack.Screen name="Vaccination Status" component={VaccinationStatus} />
         <Stack.Screen name="Vaccine Registration Button" options={{ title: 'Vaccine Registration' }} component={VaccineRegistrationButton} />
         <Stack.Screen name="Already Vaccinated" options={{ title: 'About Your Health Record' }} component={AlreadyVaccinated} />
+        <Stack.Screen name="Already Vaccinated Second Dose" options={{ title: 'Update 2nd Dose Information' }} component={AlreadyVaccinatedSecondDose} />
 
         <Stack.Screen name="Add Country" component={AddCountry} />
         <Stack.Screen name="Synchronise" component={Synchronise} />

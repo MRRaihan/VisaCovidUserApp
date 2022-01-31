@@ -6,12 +6,19 @@ import AntibodyLogo from "../../../assets/images/userProfileLogoImg.jpg";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../RestApi/AppUrl";
 import ProfileEdit from '../../../assets/Icons/profileEdit.png';
+import {launchImageLibrary} from 'react-native-image-picker';
+
+
 
 const UserProfile = ({navigation}) => {
   const [userId, setUserId] = useState();
   const [lastEffected, setLastEffected] = useState('');
   const [recovered, setRecovered] = useState('');
   const [antibodyRemaining, setAntibodyRemaining] = useState('');
+  const [formImage, setFormImage] = useState({});
+  const [document, setDocument] = useState(null);
+  const [phone, setPhone] = useState(null);
+
 
   const [loader, setLoader] = useState(true);
 
@@ -44,6 +51,7 @@ const UserProfile = ({navigation}) => {
 
     AsyncStorage.getItem('phone').then(value =>{
       //For pcr Status
+      setPhone(value);
       const boosterUrl = appUrl.profileInformation;
       const postConfig = {
         method: 'POST',
@@ -98,10 +106,44 @@ const UserProfile = ({navigation}) => {
         loader ? <ActivityIndicator size="large" color="#718AEE"/> :
             <View style={styles.container}>
               <View style={styles.AntibodyLogo}>
-                <Image style={styles.AntibodyLogoImg} source = {{uri:appUrl.BaseUrl+userProfileImage}} />
+              {(document) ? <Image style={styles.AntibodyLogoImg} source ={{ uri: document }} />: <Image style={styles.AntibodyLogoImg} source = {{uri:appUrl.BaseUrl+userProfileImage}} />}
 
-                <TouchableOpacity style={styles.profileEditSection} onPress={()=> alert('hi')}>
-                  <Image style={styles.profileEditButton} source={ProfileEdit}/>
+                <TouchableOpacity style={styles.profileEditSection} onPress={() => {
+                  let options = {
+                    storageOptions: {
+                        path: 'images',
+                        mediaType: "image",
+                    },
+                    includeBase64:true
+                  };
+                  launchImageLibrary(options, (response) => {
+              
+                  if (response.didCancel) {
+                      console.log('User cancelled image picker');
+                  } else if (response.error) {
+                      console.log('ImagePicker Error: ', response.error);
+                  } else if (response.customButton) {
+                      console.log('User tapped custom button: ', response.customButton);
+                      alert(response.customButton);
+                  } else {
+                    
+                      setDocument(response.assets[0].uri)              
+                      // setFormImage(response.assets[0].base64)
+                      setFormImage({
+                        uri: response.assets[0].uri,
+                        type: response.assets[0].type,
+                        name: response.assets[0].fileName,
+                        // data: response.data
+                        data: response.assets[0].base64
+                      })
+                      console.log(document)
+                      console.log(ProfileEdit)
+
+                  }
+                  });
+                }}>
+                <Image style={styles.profileEditButton} source={ProfileEdit}/>
+                  
                 </TouchableOpacity>
 
                 <View style={styles.UserID}>
@@ -113,9 +155,42 @@ const UserProfile = ({navigation}) => {
                 <View style={styles.subscribtionBtn}>
                   <View style={{width: "60%", justifyContent: "center", alignItems: 'center', marginLeft: 20}}>
                     <TouchableOpacity style={styles.subscribtionBtnMain} onPress={() =>{
-                      navigation.navigate("")
+                        if(document != null){
+                          const url = appUrl.updateProfilePicture;
+
+                          const config = {
+                            method: 'POST',
+                            headers: {
+                              Accept: 'application/json',
+                              'Content-Type': 'application/json',
+                              'enctype': 'multipart/form-data',
+                            },
+                            body: JSON.stringify({
+                              document: formImage,
+                              phone: phone,
+                            }),
+                          };
+                         
+                          fetch(url, config)
+                            .then(response => response.json())
+                            .then(responseJson => {
+                              if (responseJson.status == '2') {
+                                Alert.alert(responseJson.message);
+                              } else if (responseJson.status == '1') {
+                                Alert.alert(responseJson.message);
+                                // navigation.navigate('Home');
+                              } else if (responseJson.status == '0') {
+                                Alert.alert(responseJson.message);
+                              }
+                            })
+                            .catch(error => {
+                              //Alert.alert("Failed to registration 2");
+                            });
+                        }else{
+                          alert("Please Select Image!");
+                        }
                     }}>
-                      <Text style={styles.PaymentText}>Subscribe Now</Text>
+                      <Text style={styles.PaymentText}>Update Profile Image</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
