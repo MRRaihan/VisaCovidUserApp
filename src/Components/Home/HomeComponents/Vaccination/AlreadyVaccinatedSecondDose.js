@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
-
 import { Icon } from 'react-native-elements';
-
 import {
   Alert,
   ScrollView,
