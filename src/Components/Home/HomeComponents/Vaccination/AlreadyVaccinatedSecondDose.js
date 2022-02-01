@@ -28,14 +28,97 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
   const [formImage, setFormImage] = useState({});
   const [center, setCenter] = useState(null);
   const [centerLocation, setCenterLocation] = useState(null);
-
-  // new added by arafat
-  const [vaccineDoses, setVaccineDoses] = useState([
-    '2nd Dose',
-  ]);
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [selectedDose, setSelectedDose] = useState('2nd Dose');
   const [selectedVaccine, setSelectedVaccine] = useState('');
+  
+  let [errorMessages, setErrorMessages] = useState({
+      document : null,
+      selectedVaccine : null,
+      center : null,
+      secondDose: null,
+      description : null,
+      centerLocation: null,
+  });  
+  let _onPressButton = () => {
+    let newMessages = {
+      document : null,
+      selectedVaccine : null,
+      selectedDose : null,
+      center : null,
+      secondDose: null,
+      description : null,
+      centerLocation: null,
+    }
+  
+    // selectedVaccine
+    if((selectedVaccine == null || selectedVaccine == '' || selectedVaccine == undefined ) ){
+      newMessages.selectedVaccine = "Please select a Vaccine";
+    }
+    // center
+    if((center == null || center == '' || center == undefined ) ){
+      newMessages.center = "Please enter center name";
+    }
+    // centerLocation
+    if((centerLocation == null || centerLocation == '' || centerLocation == undefined ) ){
+      newMessages.centerLocation = "Please enter location";
+    }
+    // secondDose
+    if((secondDose == null || secondDose == '' || secondDose == undefined ) ){
+      newMessages.secondDose = "Please enter second dose date";
+    }
+    // description
+    if((description == null || description == '' || description == undefined ) ){
+      newMessages.description = "Please enter description";
+    }
+    // document
+    if((document == null || document == '' || document == undefined ) ){
+      newMessages.document = "Please choose a document";
+    }
+    setErrorMessages(newMessages);
+
+    if((newMessages.document == null && newMessages.selectedVaccine == null && newMessages.center == null && newMessages.secondDose == null && newMessages.description == null && newMessages.centerLocation == null)){
+      // console.log('ok')
+      // return true;
+      const url = appUrl.ExternalVaccinationDoseTwo;
+
+      const config = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'enctype': 'multipart/form-data',
+        },
+        body: JSON.stringify({
+          document: formImage,
+          phone: phone,
+          vaccineName: selectedVaccine,
+          center: center,
+          secondDose: secondDose,
+          selectedDose: '2nd Dose',
+          description: description,
+          centerLocation: centerLocation,
+        }),
+      };
+     
+      fetch(url, config)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.status == '2') {
+          Alert.alert(responseJson.message);
+        } else if (responseJson.status == '1') {
+          Alert.alert(responseJson.message);
+          navigation.navigate('Home');
+        } else if (responseJson.status == '0') {
+          Alert.alert(responseJson.message);
+        }
+      })
+      .catch(error => {
+        //Alert.alert("Failed to registration 2");
+      });
+    }else{
+      // alert('not ok')
+    }
+
+  };
 
   useEffect(() => {
     AsyncStorage.getItem('phone').then(value => {
@@ -72,23 +155,24 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {(errorMessages != null) ?<View>
-            {errorMessages.map(message => {
-                return (
-                <Text>{message}</Text>
-                );
-            })}
-        </View>:null}        
-
-        <Text style={styles.inputTitle}>Select Vaccine</Text>
+      <Text style={styles.inputTitle}>Select Vaccine</Text>
         <View style={styles.pickerView}>
           <Picker
+
             style={styles.checkItemColor}
             selectedValue={selectedVaccine}
             onValueChange={(itemValue, itemIndex) => {
               setSelectedVaccine(itemValue);
-            }}>
-            <Picker.Item key="165161651" label="Select one" />
+              if((itemValue == null || itemValue == '' || itemValue == undefined ) ){
+                setErrorMessages({...errorMessages,selectedVaccine:"Please select a Vaccine"})
+              }else{
+                setErrorMessages({...errorMessages,selectedVaccine:null})    
+              }
+            }}
+            selectedValue={selectedVaccine}
+            // value={selectedVaccine}
+            >
+            <Picker.Item key="12313131" label="Select one" />
             {vaccineNames.map(vaccine => {
               return (
                 <Picker.Item
@@ -99,7 +183,7 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
               );
             })}
           </Picker>
-          {(selectedVaccine == null || selectedVaccine == '') ? <Text style={styles.errorText}>Please select Vaccine</Text>:null}
+          {(errorMessages.selectedVaccine != null || errorMessages.selectedVaccine  !='') ? <Text style={styles.errorText}>{errorMessages.selectedVaccine}</Text>:null}
         </View>
 
         <Text style={styles.inputTitle}>Center Name</Text>
@@ -107,9 +191,17 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
           <TextInput
             placeholder="Enter center name"
             placeholderTextColor="#003f5c"
-            onChangeText={center => setCenter(center)}
+            onChangeText={(center) =>{ 
+              setCenter(center)
+              if((center == null || center == '' || center == undefined ) ){
+                setErrorMessages({...errorMessages,center:"Please enter center name"})
+              }else{
+                setErrorMessages({...errorMessages,center:null})    
+              }
+            }}
+            value={center} 
           />
-          {(center == null || center == '') ? <Text style={styles.errorText}>Center name is required</Text>:null}
+          {(errorMessages.center != null || errorMessages.center  !='') ? <Text style={styles.errorText}>{errorMessages.center}</Text>:null}
         </View>
 
         <Text style={styles.inputTitle}>Center location</Text>
@@ -117,14 +209,21 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
           <TextInput
             placeholder="Enter center location"
             placeholderTextColor="#003f5c"
-            onChangeText={location => setCenterLocation(location)}
+            onChangeText={(location) => {
+              setCenterLocation(location)
+              if((location == null || location == '' || location == undefined ) ){
+                setErrorMessages({...errorMessages,centerLocation:"Please enter location"})
+              }else{
+                setErrorMessages({...errorMessages,centerLocation:null})    
+              }
+            }}
           />
-          {(centerLocation == null || centerLocation == '') ? <Text style={styles.errorText}>Center location is required</Text>:null}
+          {(errorMessages.centerLocation != null || errorMessages.centerLocation  !='') ? <Text style={styles.errorText}>{errorMessages.centerLocation}</Text>:null}
         </View>
 
         <Text style={styles.inputTitle}>Date of second dose</Text>
         <View>
-            <DatePicker
+          <DatePicker
             style={styles.datePickerStyle}
             date={secondDose}
             mode="date"
@@ -133,25 +232,29 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{
-                dateIcon: {
+              dateIcon: {
                 position: 'absolute',
                 left: 0,
                 top: 4,
                 marginLeft: 0,
-                },
-                dateInput: {
+              },
+              dateInput: {
                 marginLeft: 36,
-                },
-                // ... You can check the source to find the other keys.
+              },
+              // ... You can check the source to find the other keys.
             }}
             onDateChange={date => {
-                var currentMyDate = moment(date).format('YYYY-MM-DD');
-                setSecondDose(currentMyDate);
+              var currentMyDate = moment(date).format('YYYY-MM-DD');
+              setSecondDose(currentMyDate);
+              if((currentMyDate == null || currentMyDate == '' || currentMyDate == undefined ) ){
+                setErrorMessages({...errorMessages,secondDose:"Please enter second dose date"})
+              }else{
+                setErrorMessages({...errorMessages,secondDose:null})    
+              }
             }}
-            />
+          />
         </View>
-        {(secondDose == '' || secondDose == null) ? <Text style={styles.errorText}>Date is required</Text>:null}
-         
+        {(errorMessages.secondDose != null || errorMessages.secondDose  !='') ? <Text style={styles.errorText}>{errorMessages.secondDose}</Text>:null}
 
         <Text style={styles.inputTitle}>Description</Text>
         <View style={styles.inputView}>
@@ -160,9 +263,16 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
             multiline={true}
             numberOfLines={5}
             placeholderTextColor="#003f5c"
-            onChangeText={description => setDescription(description)}
+            onChangeText={(description) => {
+              setDescription(description)
+              if((description == null || description == '' || description == undefined ) ){
+                setErrorMessages({...errorMessages,description:"Please enter description"})
+              }else{
+                setErrorMessages({...errorMessages,description:null})    
+              }
+            }}
           />
-          {(description == null || description == '') ? <Text style={styles.errorText}>Description is required</Text>:null}
+          {(errorMessages.description != null || errorMessages.description  !='') ? <Text style={styles.errorText}>{errorMessages.description}</Text>:null}
         </View>
         {document && <Image
           source={{ uri: document }}
@@ -199,7 +309,11 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
                   // data: response.data
                   data: response.assets[0].base64
                 })
-
+                if((response.assets[0].uri == null || response.assets[0].uri == '' || response.assets[0].uri == undefined ) ){
+                  setErrorMessages({...errorMessages,document:"Please choose a document"})
+                }else{
+                  setErrorMessages({...errorMessages,document:null})    
+                }
             }
             });
           }}>
@@ -207,8 +321,8 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
           <Icon name='file' type='font-awesome' color='#00549F' /> Choose File
           </Text>
         </TouchableOpacity>
-        {(document == null) ? <Text style={styles.errorText}>Document is required</Text>:null}
-        <TouchableOpacity
+        {(errorMessages.document != null || errorMessages.document  !='') ? <Text style={styles.errorText}>{errorMessages.document}</Text>:null}
+        {/* <TouchableOpacity
           style={styles.button}
           onPress={() => {
 
@@ -252,6 +366,15 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
           <Text style={{textAlign: 'center', color: 'white', fontSize: 16}}>
             Submit
           </Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={
+            _onPressButton
+          }>
+          <Text style={{textAlign: 'center', color: 'white', fontSize: 16}}>
+            Submit
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -280,10 +403,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 13,
     fontWeight: 'bold',
-  },
-  firstView: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
   },
   inputView: {
     backgroundColor: '#ffffff',
