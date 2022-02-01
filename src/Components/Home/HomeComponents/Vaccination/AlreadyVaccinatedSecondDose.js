@@ -117,7 +117,6 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
     }else{
       // alert('not ok')
     }
-
   };
 
   useEffect(() => {
@@ -322,51 +321,6 @@ const AlreadyVaccinatedSecondDose = ({navigation}) => {
           </Text>
         </TouchableOpacity>
         {(errorMessages.document != null || errorMessages.document  !='') ? <Text style={styles.errorText}>{errorMessages.document}</Text>:null}
-        {/* <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-
-            const url = appUrl.ExternalVaccinationDoseTwo;
-
-            const config = {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'enctype': 'multipart/form-data',
-              },
-              body: JSON.stringify({
-                document: formImage,
-                phone: phone,
-                vaccineName: selectedVaccine,
-                center: center,
-                secondDose: secondDose,
-                selectedDose: '2nd Dose',
-                description: description,
-                centerLocation: centerLocation,
-              }),
-            };
-           
-            fetch(url, config)
-              .then(response => response.json())
-              .then(responseJson => {
-                if (responseJson.status == '2') {
-                  Alert.alert(responseJson.message);
-                } else if (responseJson.status == '1') {
-                  Alert.alert(responseJson.message);
-                  navigation.navigate('Home');
-                } else if (responseJson.status == '0') {
-                  Alert.alert(responseJson.message);
-                }
-              })
-              .catch(error => {
-                //Alert.alert("Failed to registration 2");
-              });
-          }}>
-          <Text style={{textAlign: 'center', color: 'white', fontSize: 16}}>
-            Submit
-          </Text>
-        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.button}
           onPress={
