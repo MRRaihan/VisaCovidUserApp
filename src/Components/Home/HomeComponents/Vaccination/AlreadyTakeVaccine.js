@@ -339,9 +339,9 @@ const AlreadyTakeVaccine = ({navigation}) => {
                   setSecondDose(currentMyDate);
                   if((selectedDose === '2nd Dose' || selectedDose === 'Both Dose')){
                     if((currentMyDate == null || currentMyDate == '' || currentMyDate == undefined ) ){
-                      setErrorMessages({...errorMessages,selectedDose:"Please enter second dose date"})
+                      setErrorMessages({...errorMessages,secondDose:"Please enter second dose date"})
                     }else{
-                      setErrorMessages({...errorMessages,selectedDose:null})    
+                      setErrorMessages({...errorMessages,secondDose:null})    
                     }
                   }
                 }}
@@ -439,25 +439,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 
-  pickerAllItem: {
-    justifyContent: 'center',
-    padding: 10,
-    margin: 10,
-    borderRadius: 10,
-    borderColor: '#d9b555',
-    backgroundColor: '#d8d9e6',
-    width: '100%',
-  },
   inputTitle: {
     color: '#00549F',
     paddingVertical: 10,
     fontSize: 13,
     fontWeight: 'bold',
   },
-  firstView: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
+
   inputView: {
     backgroundColor: '#ffffff',
     borderColor: '#0f0f0f',
@@ -484,21 +472,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 5,
   },
-  MapArea: {
-    backgroundColor: '#d8d9e6',
-    borderRadius: 10,
-    padding: 10,
-    flexDirection: 'column',
-    height: 410,
-    width: '100%',
-    marginLeft: 10,
-  },
-
-  map: {
-    width: '100%',
-    height: 345,
-    borderRadius: 10,
-  },
   button: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -513,31 +486,19 @@ const styles = StyleSheet.create({
     borderColor: '#0f0f0f',
     borderWidth: 1,
     borderRadius: 6,
-    // color: '#00549F',
-    // fontWeight: 'bold',
-
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
     height: 40,
     width: '95%',
-    // backgroundColor: '#white',
-  },
-  checkTitle: {
-    fontSize: 18,
-    color: '#050505',
-    marginTop: 5,
-    fontWeight: 'bold',
   },
   checkItemColor: {
     color: '#050505',
   },
-  errorText:{ 
-    // marginLeft: 10,
+  errorText:{
     color: 'red',
     textAlign:"left",
-    // marginTop: 100,
     fontWeight:"bold",
-},
+  },
 });
 export default AlreadyTakeVaccine;
