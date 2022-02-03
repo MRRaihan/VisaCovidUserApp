@@ -80,7 +80,7 @@ const Synchronise = ({navigation, route}) => {
                                             <Checkbox
                                                 status={personalDataChecked ? 'checked' : 'unchecked'}
                                                 onPress={() => {
-                                                        alert("hello")
+                                                    alert("hello")
                                                 }}
                                             /><Text style={styles.checkData}>{rule.synchronize_rule}</Text>
                                         </View>)
