@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import { Card } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 
