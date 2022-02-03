@@ -32,23 +32,23 @@ const Synchronise = ({navigation, route}) => {
         };
 
         fetch(url,config)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson)
-                if (responseJson.status == "1")
-                {
-                    setAllRules(responseJson.rules);
-                    setCountryName(responseJson.country_name);
-                    setLoader(false)
-                }else if(responseJson.status == "0"){
-                   Alert.alert(responseJson.message)
-                }
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson)
+            if (responseJson.status == "1")
+            {
+                setAllRules(responseJson.rules);
+                setCountryName(responseJson.country_name);
                 setLoader(false)
-            })
-            .catch((error) => {
-                setLoader(false)
-                //Alert.alert("Failed to registration 2");
-            });
+            }else if(responseJson.status == "0"){
+                Alert.alert(responseJson.message)
+            }
+            setLoader(false)
+        })
+        .catch((error) => {
+            setLoader(false)
+            //Alert.alert("Failed to registration 2");
+        });
     },[])
 
     return (
@@ -68,7 +68,6 @@ const Synchronise = ({navigation, route}) => {
                                         marginTop: 13,
                                     }}
                                 />
-
                                 {
                                     allRules.length < 1 && (<View style={{flexDirection: "row", width:"80%", marginLeft: 5, padding: 5, marginTop: 5}}>
                                         <Text style={styles.checkData}>No data found</Text>
@@ -81,7 +80,7 @@ const Synchronise = ({navigation, route}) => {
                                             <Checkbox
                                                 status={personalDataChecked ? 'checked' : 'unchecked'}
                                                 onPress={() => {
-
+                                                        alert("hello")
                                                 }}
                                             /><Text style={styles.checkData}>{rule.synchronize_rule}</Text>
                                         </View>)
