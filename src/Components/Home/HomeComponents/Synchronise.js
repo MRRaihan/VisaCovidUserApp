@@ -10,17 +10,15 @@ import appUrl from "../../../RestApi/AppUrl";
 
 const Synchronise = ({navigation, route}) => {
     const [personalDataChecked, setPersonalDataChecked] = React.useState(false);
-    const [diagnosisDataChecked, setDiagnosisDataChecked] = React.useState(false);
-    const [PCRDataChecked, setPCRDataChecked] = React.useState(false);
-    const [vaccinationDataChecked, setVaccinationDataChecked] = React.useState(false);
-    const [biometricDataChecked, setBiometricDataChecked] = React.useState(false);
+    // const [diagnosisDataChecked, setDiagnosisDataChecked] = React.useState(false);
+    // const [PCRDataChecked, setPCRDataChecked] = React.useState(false);
+    // const [vaccinationDataChecked, setVaccinationDataChecked] = React.useState(false);
+    // const [biometricDataChecked, setBiometricDataChecked] = React.useState(false);
     const [loader, setLoader] = useState(true);
 
 
     const [allRules, setAllRules] = useState([]);
     const [countryName, setCountryName] = useState('');
-    const [errorRules, setErrorRules] = useState('');
-    const [errorStatus, setErrorStatus] = useState(null);
 
     useEffect(()=>{
         setLoader(true)
@@ -56,57 +54,52 @@ const Synchronise = ({navigation, route}) => {
     return (
         <ScrollView>
             <View style={StyleSheet.container}>
+                <View>
+                    <Text style={styles.address}>To Address: {countryName}</Text>
+                </View>
+                    {
+                        loader ? <ActivityIndicator size="large" color="#718AEE"/> :
+                            <View style={styles.checkboxViewStyle}>
+                                <Text style={styles.mainTitle}>Rules for movement</Text>
+                                <View
+                                    style={{
+                                        borderBottomColor: "#e8e2e1",
+                                        borderBottomWidth: 2,
+                                        marginTop: 13,
+                                    }}
+                                />
 
-            <View>
-                <Text style={styles.address}>To Address: {countryName}</Text>
-            </View>
-
-                {
-                    loader ? <ActivityIndicator size="large" color="#718AEE"/> :
-                        <View style={styles.checkboxViewStyle}>
-                            <Text style={styles.mainTitle}>Rules for movement</Text>
-                            <View
-                                style={{
-                                    borderBottomColor: "#e8e2e1",
-                                    borderBottomWidth: 2,
-                                    marginTop: 13,
-                                }}
-                            />
-
-                            {
-                                allRules.length < 1 && (<View style={{flexDirection: "row", width:"80%", marginLeft: 5, padding: 5, marginTop: 5}}>
-                                    <Text style={styles.checkData}>No data found</Text>
-                                </View>)
-                            }
-
-                            {
-                                allRules && allRules.length > 0 && allRules.map((rule) =>{
-                                    return (<View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
-                                        <Checkbox
-                                            status={personalDataChecked ? 'checked' : 'unchecked'}
-                                            onPress={() => {
-
-                                            }}
-                                        /><Text style={styles.checkData}>{rule.synchronize_rule}</Text>
+                                {
+                                    allRules.length < 1 && (<View style={{flexDirection: "row", width:"80%", marginLeft: 5, padding: 5, marginTop: 5}}>
+                                        <Text style={styles.checkData}>No data found</Text>
                                     </View>)
-                                })
-                            }
-                        </View>
-                }
+                                }
 
-            <View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', width:"100%"}}>
-                    <TouchableOpacity style={styles.button} onPress={() => {
-                        props.navigation.navigate("Home");
-                    }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 16}}>Synchronize & Exit</Text>
-                    </TouchableOpacity>
+                                {
+                                    allRules && allRules.length > 0 && allRules.map((rule) =>{
+                                        return (<View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
+                                            <Checkbox
+                                                status={personalDataChecked ? 'checked' : 'unchecked'}
+                                                onPress={() => {
+
+                                                }}
+                                            /><Text style={styles.checkData}>{rule.synchronize_rule}</Text>
+                                        </View>)
+                                    })
+                                }
+                            </View>
+                    }
+                <View>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', width:"100%"}}>
+                        <TouchableOpacity style={styles.button} onPress={() => {
+                            props.navigation.navigate("Home");
+                        }}>
+                            <Text style={{textAlign:"center", color: "white", fontSize: 16}}>Synchronize & Exit</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
-
-            </View>
         </ScrollView>
-
     )
 }
 
@@ -159,15 +152,6 @@ const styles = StyleSheet.create({
         fontSize:18,
         color: "#050505",
         marginTop: 5
-    },
-    downloadInstallStyle:{
-        width: "90%",
-        fontSize: 20,
-        paddingTop:10,
-        marginTop: 15,
-        marginBottom: -10,
-        marginLeft: 20,
-        color: "gray"
     },
     button: {
         justifyContent: "center",
