@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
         alignItems:'center',
         width:'100%',
         marginBottom: 10
-
     },
     PCRLogo: {
         justifyContent: 'center',

@@ -24,19 +24,19 @@ const AddCountry = ({navigation}) => {
         };
 
         fetch(url,config)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // Alert.alert(responseJson.status);
-                if (responseJson.status == "1")
-                {
-                    setCountryItem(responseJson.countries);
-                }else if(responseJson.status == "0"){
-                    Alert.alert(responseJson.message);
-                }
-            })
-            .catch((error) => {
-                //Alert.alert("Failed to registration 2");
-            });
+        .then((response) => response.json())
+        .then((responseJson) => {
+            // Alert.alert(responseJson.status);
+            if (responseJson.status == "1")
+            {
+                setCountryItem(responseJson.countries);
+            }else if(responseJson.status == "0"){
+                Alert.alert(responseJson.message);
+            }
+        })
+        .catch((error) => {
+            //Alert.alert("Failed to registration 2");
+        });
         setLoader(false)
 
     }, []);
@@ -95,8 +95,6 @@ const AddCountry = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
         </Card>
-
-
     )
 }
 

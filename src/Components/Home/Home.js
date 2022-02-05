@@ -14,10 +14,15 @@ import {
 } from "react-native";
 import Antibody from "../../../assets/images/battery.png";
 import AddCountry from "../../../assets/images/CAddCountry.jpeg";
+import tickMarkImage from "../../../assets/images/tick_mark_frame.png";
 import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../RestApi/AppUrl";
 import Rtpcr from "./HomeComponents/Rtpcr/Rtpcr";
+import CountDown from 'react-native-countdown-component';
+
+
+
 
 
 
@@ -39,6 +44,7 @@ const Home = ({navigation}) =>{
     const [vaccinationIcon, setVaccinationIcon] = useState("");
     const [pcr, setPcrStatus] = useState("");
     const [pcrIcon, setPcrStatusIcon] = useState("");
+    const [pcrEfficacyTimeInSecond, setPcrEfficacyTimeInSecond] = useState(null);
     const [rtpcrIcon, setRtpcrStatusIcon] = useState("");
     const [booster, setBooster] = useState("");
     const [boosterIcon, setBoosterIcon] = useState("");
@@ -94,16 +100,17 @@ const Home = ({navigation}) =>{
                 body: JSON.stringify({phone:value})
             };
             fetch(pcrUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setPcrStatus(responseJson.navigationPath);
-                    setPcrStatusIcon(responseJson.pcrIcon);
-                    setPcrLoader(false)
-                })
-                .catch((error) => {
-                    //Alert.alert("Failed to registration 2");
-                    setPcrLoader(false)
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setPcrStatus(responseJson.navigationPath);
+                setPcrStatusIcon(responseJson.pcrIcon);
+                setPcrEfficacyTimeInSecond(responseJson.pcrEfficacyTimeInSecond);
+                setPcrLoader(false)
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+                setPcrLoader(false)
+            });
         });
         setLoader(false)
     }, []);
@@ -124,7 +131,6 @@ const Home = ({navigation}) =>{
             fetch(rtpcrUrl,postConfig)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    console.log(responseJson)
                     setRtpcr(responseJson.navigationPath);
                     setRtpcrStatusIcon(responseJson.rtpcrIcon);
                     setRtPcrLoader(false)
@@ -150,16 +156,16 @@ const Home = ({navigation}) =>{
                 body: JSON.stringify({phone:value})
             };
             fetch(boosterUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setBooster(responseJson.navigationPath);
-                    setBoosterIcon(responseJson.boosterIcon);
-                    setBoosterLoader(false)
-                })
-                .catch((error) => {
-                    //Alert.alert("Failed to registration 2");
-                    setBoosterLoader(false)
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setBooster(responseJson.navigationPath);
+                setBoosterIcon(responseJson.boosterIcon);
+                setBoosterLoader(false)
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+                setBoosterLoader(false)
+            });
         });
 
     }, []);
@@ -243,18 +249,14 @@ const Home = ({navigation}) =>{
                                         PCR
                                     </Text>
 
-                                    <TouchableOpacity>
-                                        <Button
-                                            style={{
-                                                alignItems: "center",
-                                                flex: 1,
-                                                justifyContent: "space-between",
-                                                marginTop: 15,
-                                                marginRight: -30
-                                            }}
-                                            icon="information-outline"
-                                        />
-                                    </TouchableOpacity>
+                                    <View>
+                                    <CountDown
+                                        until={pcrEfficacyTimeInSecond}
+                                        onFinish={() => alert('Time End')}
+                                        // onPress={() => alert('hello')}
+                                        size={12}
+                                    />
+                                    </View>
                                 </View>
                                 <View>
                                     <TouchableOpacity
@@ -268,7 +270,6 @@ const Home = ({navigation}) =>{
                             </Card>
                     }
                 </View>
-
                 <View>
                     {
                         rtPcrLoader ? <ActivityIndicator size="large" color="#718AEE"/> :
