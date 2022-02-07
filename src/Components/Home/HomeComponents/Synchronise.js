@@ -75,14 +75,14 @@ const Synchronise = ({navigation, route}) => {
                                 }
 
                                 {
-                                    allRules && allRules.length > 0 && allRules.map((rule) =>{
+                                    allRules && allRules.length > 0 && allRules.map((synchronizeRuleBasedOnCounter) =>{
                                         return (<View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
                                             <Checkbox
                                                 status={false ? 'checked' : 'unchecked'}
                                                 onPress={() => {
                                                     alert("hello")
                                                 }}
-                                            /><Text style={styles.checkData}>{rule.rule.synchronize_rule}</Text>
+                                            /><Text style={styles.checkData}>{synchronizeRuleBasedOnCounter.rule.synchronize_rule}</Text>
                                         </View>)
                                     })
                                 }
