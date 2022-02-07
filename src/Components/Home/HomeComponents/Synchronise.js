@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../../RestApi/AppUrl";
 
 const Synchronise = ({navigation, route}) => {
-    const [personalDataChecked, setPersonalDataChecked] = React.useState(false);
+    // const [personalDataChecked, setPersonalDataChecked] = React.useState(false);
     // const [diagnosisDataChecked, setDiagnosisDataChecked] = React.useState(false);
     // const [PCRDataChecked, setPCRDataChecked] = React.useState(false);
     // const [vaccinationDataChecked, setVaccinationDataChecked] = React.useState(false);
@@ -34,7 +34,7 @@ const Synchronise = ({navigation, route}) => {
         fetch(url,config)
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson)
+            // console.log(responseJson)
             if (responseJson.status == "1")
             {
                 setAllRules(responseJson.rules);
@@ -78,11 +78,11 @@ const Synchronise = ({navigation, route}) => {
                                     allRules && allRules.length > 0 && allRules.map((rule) =>{
                                         return (<View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
                                             <Checkbox
-                                                status={personalDataChecked ? 'checked' : 'unchecked'}
+                                                status={false ? 'checked' : 'unchecked'}
                                                 onPress={() => {
                                                     alert("hello")
                                                 }}
-                                            /><Text style={styles.checkData}>{rule.synchronize_rule}</Text>
+                                            /><Text style={styles.checkData}>{rule.rule.synchronize_rule}</Text>
                                         </View>)
                                     })
                                 }
