@@ -208,10 +208,8 @@ const AlreadyTakeVaccine = ({navigation}) => {
 
             style={styles.checkItemColor}
             selectedValue={selectedVaccine}
-            onValueChange={(itemValue, itemIndex, key) => {
+            onValueChange={(itemValue, itemIndex) => {
               setSelectedVaccine(itemValue);
-              console.log(itemIndex)
-              console.log(key)
               if((itemValue == null || itemValue == '' || itemValue == undefined ) ){
                 setErrorMessages({...errorMessages,selectedVaccine:"Please select a Vaccine"})
               }else{
