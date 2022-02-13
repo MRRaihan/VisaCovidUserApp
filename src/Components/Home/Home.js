@@ -74,6 +74,7 @@ const Home = ({navigation}) =>{
                     setVaccination(responseJson.navigationPath);
                     setVaccinationIcon(responseJson.vaccinationIcon);
                     setBoosterStatus(responseJson.boosterStatus);
+                    console.log(responseJson.boosterStatus);
 
                     setVaccinationLoader(false)
                 })
@@ -361,7 +362,7 @@ const Home = ({navigation}) =>{
 
                 {
                     boosterStatus ?
-                        (<Card style={styles.dataFlex}><Text style={styles.boosterStatus}>Booster Not Available</Text></Card>) : (<View>
+                        (<View>
                             {
                                 boosterLoader ? <ActivityIndicator size="large" color="#718AEE"/> :
                                     <Card style={styles.dataFlex}>
@@ -403,7 +404,7 @@ const Home = ({navigation}) =>{
                                         </View>
                                     </Card>
                             }
-                        </View>)
+                        </View>):(<Card style={styles.dataFlex}><Text style={styles.boosterStatus}>Booster Not Available</Text></Card>)
                 }
 
                 <View>
