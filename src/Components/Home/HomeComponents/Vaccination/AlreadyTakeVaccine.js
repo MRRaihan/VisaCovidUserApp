@@ -112,7 +112,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
         body: JSON.stringify({
           document: formImage,
           phone: phone,
-          vaccineName: selectedVaccine,
+          synchronizeRuleId : selectedVaccine,
           center: center,
           firstDose: firstDose,
           secondDose: secondDose,
@@ -167,6 +167,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
         // Alert.alert(responseJson.status);
         if (responseJson.status == '1') {
           setVaccineNames(responseJson.vaccineName);
+          // console.log(responseJson.vaccineName)
           // setSelectedVaccine(responseJson.vaccineName[0].name);
         } else if (responseJson.status == '0') {
           Alert.alert(responseJson.message);
@@ -207,8 +208,10 @@ const AlreadyTakeVaccine = ({navigation}) => {
 
             style={styles.checkItemColor}
             selectedValue={selectedVaccine}
-            onValueChange={(itemValue, itemIndex) => {
+            onValueChange={(itemValue, itemIndex, key) => {
               setSelectedVaccine(itemValue);
+              console.log(itemIndex)
+              console.log(key)
               if((itemValue == null || itemValue == '' || itemValue == undefined ) ){
                 setErrorMessages({...errorMessages,selectedVaccine:"Please select a Vaccine"})
               }else{
@@ -223,8 +226,8 @@ const AlreadyTakeVaccine = ({navigation}) => {
               return (
                 <Picker.Item
                   key={vaccine.id}
-                  label={vaccine.name}
-                  value={vaccine.name}
+                  label={vaccine.synchronize_rule}
+                  value={vaccine.id}
                 />
               );
             })}

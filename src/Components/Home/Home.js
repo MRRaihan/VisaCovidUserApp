@@ -48,7 +48,7 @@ const Home = ({navigation}) =>{
     const [rtpcrIcon, setRtpcrStatusIcon] = useState("");
     const [booster, setBooster] = useState("");
     const [boosterIcon, setBoosterIcon] = useState("");
-    const [boosterStatus, setBoosterStatus] = useState("");
+    const [boosterStatus, setBoosterStatus] = useState(false);
     const [Refreshing, setRefreshing] = useState(false);
 
     //For Slider width & hight
