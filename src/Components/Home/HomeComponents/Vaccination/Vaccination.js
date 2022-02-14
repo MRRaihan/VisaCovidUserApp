@@ -246,7 +246,7 @@ const VaccineRegistration = ({navigation}) => {
                 </View>
 
                 <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select a center for Vaccination Test</Text>
+                    <Text style={styles.checkTitle}>Select a center for Vaccination</Text>
                     <Picker
                         style={styles.checkItemColor}
                         selectedValue={selectedFourItem}
@@ -303,9 +303,6 @@ const VaccineRegistration = ({navigation}) => {
                         },
                         body: JSON.stringify({ phone:phone, center_id:selectedFourItem, synchronizeRuleId: selectedFifthItem, date:date })
                     };
-                    //Alert.alert(url);
-                    console.log(config.body)
-
                     fetch(url,config)
                         .then((response) => response.json())
                         .then((responseJson) => {

@@ -187,7 +187,7 @@ const Booster = ({navigation}) => {
                 </View>
 
                 <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select a center for Vaccination Test</Text>
+                    <Text style={styles.checkTitle}>Select a center for Vaccination</Text>
                     <Picker
                         style={styles.checkItemColor}
                         selectedValue={selectedFourItem}
