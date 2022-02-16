@@ -97,9 +97,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
     setErrorMessages(newMessages);
 
     if((newMessages.document == null && newMessages.selectedVaccine == null && newMessages.selectedDose == null && newMessages.center == null && newMessages.firstDose == null && newMessages.secondDose == null && newMessages.description == null && newMessages.centerLocation == null)){
-      // console.log('ok')
-      // alert('ok')
-      // return true;
+     
       const url = appUrl.ExternalVaccination;
 
       const config = {
