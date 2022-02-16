@@ -97,7 +97,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
     setErrorMessages(newMessages);
 
     if((newMessages.document == null && newMessages.selectedVaccine == null && newMessages.selectedDose == null && newMessages.center == null && newMessages.firstDose == null && newMessages.secondDose == null && newMessages.description == null && newMessages.centerLocation == null)){
-     
+      // api code here 
       const url = appUrl.ExternalVaccination;
 
       const config = {
@@ -165,8 +165,6 @@ const AlreadyTakeVaccine = ({navigation}) => {
         // Alert.alert(responseJson.status);
         if (responseJson.status == '1') {
           setVaccineNames(responseJson.vaccineName);
-          // console.log(responseJson.vaccineName)
-          // setSelectedVaccine(responseJson.vaccineName[0].name);
         } else if (responseJson.status == '0') {
           Alert.alert(responseJson.message);
         }
@@ -215,7 +213,6 @@ const AlreadyTakeVaccine = ({navigation}) => {
               }
             }}
             selectedValue={selectedVaccine}
-            // value={selectedVaccine}
             >
             <Picker.Item key="12313131" label="Select one" />
             {vaccineNames.map(vaccine => {
