@@ -13,11 +13,13 @@ const Booster = ({navigation}) => {
     const [selectedSecondItem, setSelectedSecondItem] = useState();
     const [selectedThirdItem, setSelectedThirdItem] = useState();
     const [selectedFourItem, setSelectedFourItem] = useState();
+    const [selectedFifthItem, setSelectedFifthItem] = useState();
 
     const [allCountry, setCountryItem] = useState([]);
     const [allState, setStateItem] = useState([]);
     const [allCity, setCityItem] = useState([]);
     const [allCenter, setCenterItem] = useState([]);
+    const [boosterNames, setBoosterNames] = useState([]);
 
     //time
     const [currentDate, setCurrentDate] = useState('');
@@ -56,6 +58,33 @@ const Booster = ({navigation}) => {
             .catch((error) => {
                 //Alert.alert("Failed to registration 2");
             });
+    },[])
+
+    useEffect(()=>{
+        const url = appUrl.BoosterNames;
+        const config = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        };
+
+        fetch(url, config)
+        .then(response => response.json())
+        .then(responseJson => {
+            // Alert.alert(responseJson.status);
+            if (responseJson.status == '1') {
+                setBoosterNames(responseJson.boosterName);
+                // console.log(responseJson.boosterName[0].id)
+                setSelectedFifthItem(responseJson.boosterName[0].id);
+            } else if (responseJson.status == '0') {
+                Alert.alert(responseJson.message);
+            }
+        })
+        .catch(error => {
+            //Alert.alert("Failed to registration 2");
+        });
     },[])
 
     return (
@@ -117,19 +146,19 @@ const Booster = ({navigation}) => {
                                 }
                             };
                             fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setSelectedSecondItem(itemValue)
-                                        setCityItem(responseJson.cities);
-                                    }else if(responseJson.status == "0"){
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setSelectedSecondItem(itemValue)
+                                    setCityItem(responseJson.cities);
+                                }else if(responseJson.status == "0"){
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
                         }
                         }>
                         <Picker.Item key="4564234" label="Select one"/>
@@ -150,32 +179,34 @@ const Booster = ({navigation}) => {
                         selectedValue={selectedThirdItem}
                         onValueChange={(itemValue, itemIndex) =>
                         {
-                            const url = appUrl.Center+"/"+itemValue;
+                            setSelectedThirdItem(itemValue)
+                            const url = appUrl.BoosterCenterSelect;
                             const config = {
-                                method: 'GET',
+                                method: 'POST',
                                 headers: {
                                     'Accept': 'application/json',
                                     'Content-Type': 'application/json'
-                                }
+                                },
+                                body: JSON.stringify({ city_id:itemValue, synchronizeRuleId:selectedFifthItem})
                             };
                             fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setSelectedThirdItem(itemValue)
-                                        setCenterItem(responseJson.centers);
-                                    }else if(responseJson.status == "0"){
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setCenterItem(responseJson.centers);
+                                }else if(responseJson.status == "0"){
+                                    setCenterItem([])
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
                         }
 
-                        }>
-                        <Picker.Item key="345634" label="Select one"/>
+                    }>
+                        <Picker.Item key="4243789" label="Select one"/>
                         {
                             allCity.map((city)=>{
                                 return (
@@ -187,7 +218,53 @@ const Booster = ({navigation}) => {
                 </View>
 
                 <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select a center for Vaccination</Text>
+                    <Text style={styles.checkTitle}>Select Booster</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedFifthItem}
+                        onValueChange={(itemValue, itemIndex) =>
+                        {
+                            setSelectedFifthItem(itemValue)
+                            const url = appUrl.BoosterCenterSelect;
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ city_id:selectedThirdItem, synchronizeRuleId:itemValue})
+                            };
+                            fetch(url,config)
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setCenterItem(responseJson.centers);
+                                }else if(responseJson.status == "0"){
+                                    setCenterItem([])
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
+                        }
+                        }>
+                        {/* <Picker.Item key="12313131" label="Select one" /> */}
+                            {boosterNames.map(booster => {
+                                return (
+                                    <Picker.Item
+                                    key={booster.id}
+                                    label={booster.synchronize_rule}
+                                    value={booster.id}
+                                    />
+                                );
+                            })}
+                    </Picker>
+                </View>
+
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select a center for Booster</Text>
                     <Picker
                         style={styles.checkItemColor}
                         selectedValue={selectedFourItem}
@@ -234,22 +311,26 @@ const Booster = ({navigation}) => {
                         }}
                     />
                 </View>
-
                 <TouchableOpacity style={styles.button} onPress={() => {
                     const url = appUrl.Booster;
+                   
+                   console.log(phone)
+                   console.log(selectedFourItem)
+                   console.log(selectedFifthItem)
+                   console.log(date)
                     const config = {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, date:date })
+                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, synchronizeRuleId: selectedFifthItem, date:date })
                     };
-                    //Alert.alert(url);
-
                     fetch(url,config)
                     .then((response) => response.json())
                     .then((responseJson) => {
+                        console.log(responseJson)
+
                         if (responseJson.status == "2")
                         {
                             Alert.alert(responseJson.message);
@@ -268,7 +349,6 @@ const Booster = ({navigation}) => {
                 }}>
                     <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Registration Now</Text>
                 </TouchableOpacity>
-
             </View>
 
         </View>

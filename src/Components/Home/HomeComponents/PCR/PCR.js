@@ -174,50 +174,6 @@ const PCR = ({navigation}) => {
                         }
                     </Picker>
                 </View>
-
-                {/* <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select City</Text>
-                    <Picker
-                        style={styles.checkItemColor}
-                        selectedValue={selectedThirdItem}
-                        onValueChange={(itemValue, itemIndex) =>
-                        {
-                            const url = appUrl.Center+"/"+itemValue;
-                            const config = {
-                                method: 'GET',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                }
-                            };
-                            fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setSelectedThirdItem(itemValue)
-                                        setCenterItem(responseJson.centers);
-                                    }else if(responseJson.status == "0"){
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
-                        }
-
-                        }>
-                        <Picker.Item key="3453234" label="Select one"/>
-                        {
-                            allCity.map((city)=>{
-                                return (
-                                    <Picker.Item key={city.id} label={city.name} value={city.id} />
-                                )
-                            })
-                        }
-                    </Picker>
-                </View> */}
-
                 <View style={styles.pickerAllItem}>
                     <Text style={styles.checkTitle}>Select City</Text>
                     <Picker
