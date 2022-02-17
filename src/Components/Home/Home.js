@@ -253,7 +253,10 @@ const Home = ({navigation}) =>{
                                     <View>
                                     <CountDown
                                         until={pcrEfficacyTimeInSecond}
-                                        onFinish={() => alert('Time End')}
+                                        onFinish={() => 
+                                            // alert('Time End')
+                                            console.log('Time End')
+                                        }
                                         // onPress={() => alert('hello')}
                                         size={12}
                                     />
