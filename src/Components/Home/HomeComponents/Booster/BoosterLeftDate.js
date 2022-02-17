@@ -24,15 +24,15 @@ const BoosterLeftDate = ({navigation}) => {
                 body: JSON.stringify({phone:value})
             };
             fetch(boosterUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setBoosterLeftDay(responseJson.leftDay);
-                    setBoosterLeftTime(responseJson.leftHour)
-                    setCenterAddress(responseJson.centerAddress)
-                })
-                .catch((error) => {
-                    //Alert.alert("Failed to registration 2");
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setBoosterLeftDay(responseJson.leftDay);
+                setBoosterLeftTime(responseJson.leftHour)
+                setCenterAddress(responseJson.centerAddress)
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
         });
     },[])
 

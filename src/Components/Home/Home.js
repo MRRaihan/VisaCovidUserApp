@@ -130,15 +130,15 @@ const Home = ({navigation}) =>{
                 body: JSON.stringify({phone:value})
             };
             fetch(rtpcrUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setRtpcr(responseJson.navigationPath);
-                    setRtpcrStatusIcon(responseJson.rtpcrIcon);
-                    setRtPcrLoader(false)
-                })
-                .catch((error) => {
-                    //Alert.alert("Failed to registration 2");
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setRtpcr(responseJson.navigationPath);
+                setRtpcrStatusIcon(responseJson.rtpcrIcon);
+                setRtPcrLoader(false)
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
         });
         setLoader(false)
     }, []);
