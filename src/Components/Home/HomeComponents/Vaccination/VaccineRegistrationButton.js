@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     checkItemColor:{
         color: "#050505"
     }
-
 })
 
 export default VaccineRegistrationButton;

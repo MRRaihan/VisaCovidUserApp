@@ -17,9 +17,11 @@ class AppUrl {
     static Country = this.BaseUrl + 'api/home/country';
     static State = this.BaseUrl + 'api/home/state';
     static City = this.BaseUrl + 'api/home/city';
-    static Center = this.BaseUrl + 'api/home/center';
+    // static Center = this.BaseUrl + 'api/home/center';
     static VaccineNames = this.BaseUrl + 'api/home/vaccine/vaccineName';
+    static PcrNames = this.BaseUrl + 'api/home/pcr/pcrName';
     static VaccinationCenterSelect = this.BaseUrl + 'api/home/vaccine/vaccinationCenterSelect';
+    static PcrCenterSelect = this.BaseUrl + 'api/home/pcr/pcrCenterSelect';
 
     static Vaccine = this.BaseUrl + 'api/home/vaccine/registration';
     static ExternalVaccination = this.BaseUrl + 'api/home/vaccine/externalVaccination';

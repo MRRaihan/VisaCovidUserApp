@@ -75,7 +75,7 @@ const PCRTestStatus = ({route}) => {
                                 />
                                 <View style={styles.testContents}>
                                     <Text style={styles.testStartItem}>PCR Test Date</Text>
-                                    <Text style={styles.testEndItem}>{pcrLastTest}he</Text>
+                                    <Text style={styles.testEndItem}>{pcrLastTest}</Text>
                                 </View>
                                 <View style={styles.testContents}>
                                     <Text style={styles.testStartItem}>PCR Test Result</Text>

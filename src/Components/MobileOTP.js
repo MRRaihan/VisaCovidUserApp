@@ -70,19 +70,19 @@ const MobileOTP= ({navigation, route}) =>{
                         body: JSON.stringify({phone: phone})
                     };
                     fetch(url,config)
-                        .then((response) => response.json())
-                        .then((responseJson) => {
-                            if (responseJson.status == "1")
-                            {
-                                Alert.alert(responseJson.message);
-                                navigation.navigate("Mobile OTP")
-                            }else if(responseJson.status == "0"){
-                                Alert.alert(responseJson.message);
-                            }
-                        })
-                        .catch((error) => {
-                            //Alert.alert("Failed to registration 2");
-                        });
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        if (responseJson.status == "1")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("Mobile OTP")
+                        }else if(responseJson.status == "0"){
+                            Alert.alert(responseJson.message);
+                        }
+                    })
+                    .catch((error) => {
+                        //Alert.alert("Failed to registration 2");
+                    });
                 }}>
                     <View style={styles.btnChangeNumber} >
                         <Text style={styles.textChange} >Send again</Text>
@@ -102,23 +102,23 @@ const MobileOTP= ({navigation, route}) =>{
                     };
 
                     fetch(url,config)
-                        .then((response) => response.json())
-                        .then((responseJson) => {
-                            if (responseJson.status == "1")
-                            {
-                                Alert.alert(responseJson.message);
-                                AsyncStorage.setItem('phone', responseJson.phone);
-                                AsyncStorage.setItem('userId', responseJson.userId);
-                                AsyncStorage.setItem('loginStatus', responseJson.loginStatus);
-                                navigation.navigate("Home")
-                            }else if(responseJson.status == "0"){
-                                Alert.alert(responseJson.message);
-                            }
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        if (responseJson.status == "1")
+                        {
+                            Alert.alert(responseJson.message);
+                            AsyncStorage.setItem('phone', responseJson.phone);
+                            AsyncStorage.setItem('userId', responseJson.userId);
+                            AsyncStorage.setItem('loginStatus', responseJson.loginStatus);
+                            navigation.navigate("Home")
+                        }else if(responseJson.status == "0"){
+                            Alert.alert(responseJson.message);
+                        }
 
-                        })
-                        .catch((error) => {
-                            //Alert.alert("Failed to registration 2");
-                        });
+                    })
+                    .catch((error) => {
+                        //Alert.alert("Failed to registration 2");
+                    });
                     //Alert.alert(url);
                     //props.navigation.navigate("Home")
                 }}  style={styles.otpButton}

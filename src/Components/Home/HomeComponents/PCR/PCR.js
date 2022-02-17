@@ -5,6 +5,7 @@ import moment from "moment";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../../../RestApi/AppUrl";
 import DatePicker from "react-native-datepicker";
+
 // import MapView from 'react-native-maps';
 
 const PCR = ({navigation}) => {
@@ -12,13 +13,16 @@ const PCR = ({navigation}) => {
     const [selectedSecondItem, setSelectedSecondItem] = useState();
     const [selectedThirdItem, setSelectedThirdItem] = useState();
     const [selectedFourItem, setSelectedFourItem] = useState();
+    const [selectedFifthItem, setSelectedFifthItem] = useState();
+
 
     const [allCountry, setCountryItem] = useState([]);
     const [allState, setStateItem] = useState([]);
     const [allCity, setCityItem] = useState([]);
     const [allCenter, setCenterItem] = useState([]);
+    const [pcrNames, setPcrNames] = useState([]);
 
-    //time
+    // time
     const [currentDate, setCurrentDate] = useState('');
     const [date, setDate] = useState('');
     const [phone, setPhone] = useState("");
@@ -42,19 +46,47 @@ const PCR = ({navigation}) => {
         };
 
         fetch(url,config)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // Alert.alert(responseJson.status);
-                if (responseJson.status == "1")
-                {
-                    setCountryItem(responseJson.countries);
-                }else if(responseJson.status == "0"){
-                    Alert.alert(responseJson.message);
-                }
-            })
-            .catch((error) => {
-                //Alert.alert("Failed to registration 2");
-            });
+        .then((response) => response.json())
+        .then((responseJson) => {
+            // Alert.alert(responseJson.status);
+            if (responseJson.status == "1")
+            {
+                setCountryItem(responseJson.countries);
+            }else if(responseJson.status == "0"){
+                Alert.alert(responseJson.message);
+            }
+        })
+        .catch((error) => {
+            //Alert.alert("Failed to registration 2");
+        });
+    },[])
+
+    
+    useEffect(()=>{
+        const url = appUrl.PcrNames;
+        const config = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        };
+
+        fetch(url, config)
+        .then(response => response.json())
+        .then(responseJson => {
+            // Alert.alert(responseJson.status);
+            if (responseJson.status == '1') {
+                setPcrNames(responseJson.pcrName);
+                // console.log(responseJson.pcrName[0].id)
+                setSelectedFifthItem(responseJson.pcrName[0].id);
+            } else if (responseJson.status == '0') {
+                Alert.alert(responseJson.message);
+            }
+        })
+        .catch(error => {
+            //Alert.alert("Failed to registration 2");
+        });
     },[])
 
 
@@ -77,19 +109,19 @@ const PCR = ({navigation}) => {
                                 }
                             };
                             fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setSelectedFirstItem(itemValue);
-                                        setStateItem(responseJson.states);
-                                    }else if(responseJson.status == "0"){
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setSelectedFirstItem(itemValue);
+                                    setStateItem(responseJson.states);
+                                }else if(responseJson.status == "0"){
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
                         }
                         }>
                         <Picker.Item key="3453234" label="Select one"/>
@@ -117,19 +149,19 @@ const PCR = ({navigation}) => {
                                 }
                             };
                             fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setSelectedSecondItem(itemValue)
-                                        setCityItem(responseJson.cities);
-                                    }else if(responseJson.status == "0"){
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setSelectedSecondItem(itemValue)
+                                    setCityItem(responseJson.cities);
+                                }else if(responseJson.status == "0"){
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
                         }
                         }>
                         <Picker.Item key="3453234" label="Select one"/>
@@ -143,7 +175,7 @@ const PCR = ({navigation}) => {
                     </Picker>
                 </View>
 
-                <View style={styles.pickerAllItem}>
+                {/* <View style={styles.pickerAllItem}>
                     <Text style={styles.checkTitle}>Select City</Text>
                     <Picker
                         style={styles.checkItemColor}
@@ -183,6 +215,96 @@ const PCR = ({navigation}) => {
                                 )
                             })
                         }
+                    </Picker>
+                </View> */}
+
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select City</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedThirdItem}
+                        onValueChange={(itemValue, itemIndex) =>
+                        {
+                            setSelectedThirdItem(itemValue)
+                            const url = appUrl.PcrCenterSelect;
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ city_id:itemValue, synchronizeRuleId:selectedFifthItem})
+                            };
+                            fetch(url,config)
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setCenterItem(responseJson.centers);
+                                }else if(responseJson.status == "0"){
+                                    setCenterItem([])
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
+                        }
+
+                    }>
+                        <Picker.Item key="4243789" label="Select one"/>
+                        {
+                            allCity.map((city)=>{
+                                return (
+                                    <Picker.Item key={city.id} label={city.name} value={city.id} />
+                                )
+                            })
+                        }
+                    </Picker>
+                </View>
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select PCR</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedFifthItem}
+                        onValueChange={(itemValue, itemIndex) =>
+                        {
+                            setSelectedFifthItem(itemValue)
+                            const url = appUrl.PcrCenterSelect;
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ city_id:selectedThirdItem, synchronizeRuleId:itemValue})
+                            };
+                            fetch(url,config)
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setCenterItem(responseJson.centers);
+                                }else if(responseJson.status == "0"){
+                                    setCenterItem([])
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
+                        }
+                        }>
+                        {/* <Picker.Item key="12313131" label="Select one" /> */}
+                            {pcrNames.map(pcr => {
+                                return (
+                                    <Picker.Item
+                                    key={pcr.id}
+                                    label={pcr.synchronize_rule}
+                                    value={pcr.id}
+                                    />
+                                );
+                            })}
                     </Picker>
                 </View>
 
@@ -242,36 +364,33 @@ const PCR = ({navigation}) => {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, date:date })
+                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, synchronizeRuleId: selectedFifthItem, date:date })
                     };
-                    console.log(url)
-
                     fetch(url,config)
-                        .then((response) => response.json())
-                        .then((responseJson) => {
-                            if (responseJson.status == "2")
-                            {
-                                Alert.alert(responseJson.message);
-                                navigation.navigate("PCR Date Status");
-                            }else if (responseJson.status == "1")
-                            {
-                                Alert.alert(responseJson.message);
-                                navigation.navigate("PCR Date Status");
-                            }else if(responseJson.status == "0"){
-                                Alert.alert(responseJson.message);
-                            }
-                        })
-                        .catch((error) => {
-                            //Alert.alert("Failed to registration 2");
-                        });
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+
+                        if (responseJson.status == "2")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("PCR Date Status");
+                        } else if (responseJson.status == "1")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("PCR Date Status");
+                        }else if(responseJson.status == "0"){
+                            Alert.alert(responseJson.message);
+                        }
+                    })
+                    .catch((error) => {
+                        //Alert.alert("Failed to registration 2");
+                    });
                 }}>
                     <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Registration Now</Text>
                 </TouchableOpacity>
             </View>
         </View>
     </ScrollView>
-
-
     )
 }
 
@@ -332,7 +451,6 @@ const styles = StyleSheet.create({
     checkItemColor:{
         color: "#050505"
     }
-
 })
 
 export default PCR;

@@ -77,19 +77,19 @@ const Booster = ({navigation}) => {
                                 }
                             };
                             fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setSelectedFirstItem(itemValue);
-                                        setStateItem(responseJson.states);
-                                    }else if(responseJson.status == "0"){
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setSelectedFirstItem(itemValue);
+                                    setStateItem(responseJson.states);
+                                }else if(responseJson.status == "0"){
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
                         }
                         }>
                         <Picker.Item key="45643234" label="Select one"/>
@@ -248,23 +248,23 @@ const Booster = ({navigation}) => {
                     //Alert.alert(url);
 
                     fetch(url,config)
-                        .then((response) => response.json())
-                        .then((responseJson) => {
-                            if (responseJson.status == "2")
-                            {
-                                Alert.alert(responseJson.message);
-                                navigation.navigate("Booster Date Status");
-                            } else if (responseJson.status == "1")
-                            {
-                                Alert.alert(responseJson.message);
-                                navigation.navigate("Booster Date Status");
-                            }else if(responseJson.status == "0"){
-                                Alert.alert(responseJson.message);
-                            }
-                        })
-                        .catch((error) => {
-                            //Alert.alert("Failed to registration 2");
-                        });
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        if (responseJson.status == "2")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("Booster Date Status");
+                        } else if (responseJson.status == "1")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("Booster Date Status");
+                        }else if(responseJson.status == "0"){
+                            Alert.alert(responseJson.message);
+                        }
+                    })
+                    .catch((error) => {
+                        //Alert.alert("Failed to registration 2");
+                    });
                 }}>
                     <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Registration Now</Text>
                 </TouchableOpacity>
@@ -340,7 +340,6 @@ const styles = StyleSheet.create({
     //     width: "100%",
     //     fontSize: 20
     // }
-
 })
 
 export default Booster;
