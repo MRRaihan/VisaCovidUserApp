@@ -20,9 +20,11 @@ class AppUrl {
     // static Center = this.BaseUrl + 'api/home/center';
     static VaccineNames = this.BaseUrl + 'api/home/vaccine/vaccineName';
     static PcrNames = this.BaseUrl + 'api/home/pcr/pcrName';
+    static RtPcrNames = this.BaseUrl + 'api/home/rtpcr/rtPcrName';
     static BoosterNames = this.BaseUrl + 'api/home/booster/boosterName';
     static VaccinationCenterSelect = this.BaseUrl + 'api/home/vaccine/vaccinationCenterSelect';
     static PcrCenterSelect = this.BaseUrl + 'api/home/pcr/pcrCenterSelect';
+    static RtPcrCenterSelect = this.BaseUrl + 'api/home/rtpcr/RtPcrCenterSelect';
     static BoosterCenterSelect = this.BaseUrl + 'api/home/booster/boosterCenterSelect';
 
     static Vaccine = this.BaseUrl + 'api/home/vaccine/registration';
@@ -62,7 +64,7 @@ class AppUrl {
     //RT-PCR
     static rtpcrStatus = this.BaseUrl + 'api/rtpcrStatus';
     static rtpcrCenter = this.BaseUrl + 'api/rtpcrCenter';
-    static rtpcrRegistration = this.BaseUrl + 'api/rtpcrRegistration';
+    static rtPcrRegistration = this.BaseUrl + 'api/rtPcrRegistration';
     static rtpcrResult = this.BaseUrl + 'api/rtpcrResult';
     static rtpcrTimeLeft = this.BaseUrl + 'api/rtpcrTimeLeft';
 }

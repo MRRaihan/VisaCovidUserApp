@@ -132,6 +132,7 @@ const Home = ({navigation}) =>{
             fetch(rtpcrUrl,postConfig)
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
                 setRtpcr(responseJson.navigationPath);
                 setRtpcrStatusIcon(responseJson.rtpcrIcon);
                 setRtPcrLoader(false)
