@@ -39,7 +39,6 @@ const BoosterStatus = ({route}) => {
                 setBoosterCenterLocation(responseJson.myBoosterCenterLocation);
                 setBoosterDate(responseJson.myBoosterDate);
                 setAntibodyRemaining(responseJson.myAntibodyRemaining);
-                setAntibodyRemaining(responseJson.myNameOfVaccine);
                 setVaccineName(responseJson.myNameOfVaccine);
                 setServeById(responseJson.myServeById);
                 setServeByName(responseJson.myServeByName);
