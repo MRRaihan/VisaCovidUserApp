@@ -62,7 +62,7 @@ const App = () => {
         <Stack.Screen name="PCR Date Status" component={PCRLeftDate} />
         <Stack.Screen name="PCR Test Status" component={PCRTestStatus} />
 
-        <Stack.Screen name="Rtpcr Status" options={{ title: 'Rtpcr' }} component={RtpcLeftDate} />
+        <Stack.Screen name="Rtpcr Status" options={{ title: 'Rtpcr date status' }} component={RtpcLeftDate} />
         <Stack.Screen name="Rtpcr data" options={{ title: 'Rtpcr result' }} component={RtpcrData} />
         <Stack.Screen name="Rtpcr Registration Button" options={{ title: 'Rtpcr Registration' }} component={Rtpcr} />
 
