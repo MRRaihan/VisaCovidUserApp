@@ -74,7 +74,7 @@ const Home = ({navigation}) =>{
                     setVaccination(responseJson.navigationPath);
                     setVaccinationIcon(responseJson.vaccinationIcon);
                     setBoosterStatus(responseJson.boosterStatus);
-                    console.log(responseJson.boosterStatus);
+                    // console.log(responseJson.boosterStatus);
 
                     setVaccinationLoader(false)
                 })
@@ -103,6 +103,8 @@ const Home = ({navigation}) =>{
             fetch(pcrUrl,postConfig)
             .then((response) => response.json())
             .then((responseJson) => {
+                // console.log(responseJson)
+                console.log(responseJson)
                 setPcrStatus(responseJson.navigationPath);
                 setPcrStatusIcon(responseJson.pcrIcon);
                 setPcrEfficacyTimeInSecond(responseJson.pcrEfficacyTimeInSecond);
@@ -132,7 +134,7 @@ const Home = ({navigation}) =>{
             fetch(rtpcrUrl,postConfig)
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
+                // console.log(responseJson)
                 setRtpcr(responseJson.navigationPath);
                 setRtpcrStatusIcon(responseJson.rtpcrIcon);
                 setRtPcrLoader(false)
