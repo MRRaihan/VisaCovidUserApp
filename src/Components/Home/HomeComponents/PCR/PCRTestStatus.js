@@ -32,20 +32,20 @@ const PCRTestStatus = ({route}) => {
                 body: JSON.stringify({phone:value})
             };
             fetch(boosterUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setPcrLastTest(responseJson.myPcrLastTest);
-                    setLastPcrResult(responseJson.myLastPcrResult);
-                    setPcrTestCenter(responseJson.myPcrTestCenter);
-                    setPcrCenterLocation(responseJson.myPcrCenterLocation);
-                    setServeById(responseJson.myServeById);
-                    setServeByName(responseJson.myServeByName);
-                    setLoader(false)
-                })
-                .catch((error) => {
-                    setLoader(false)
-                    //Alert.alert("Failed to registration 2");
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setPcrLastTest(responseJson.myPcrLastTest);
+                setLastPcrResult(responseJson.myLastPcrResult);
+                setPcrTestCenter(responseJson.myPcrTestCenter);
+                setPcrCenterLocation(responseJson.myPcrCenterLocation);
+                setServeById(responseJson.myServeById);
+                setServeByName(responseJson.myServeByName);
+                setLoader(false)
+            })
+            .catch((error) => {
+                setLoader(false)
+                //Alert.alert("Failed to registration 2");
+            });
         });
     },[])
 
@@ -75,7 +75,7 @@ const PCRTestStatus = ({route}) => {
                                 />
                                 <View style={styles.testContents}>
                                     <Text style={styles.testStartItem}>PCR Test Date</Text>
-                                    <Text style={styles.testEndItem}>{pcrLastTest}he</Text>
+                                    <Text style={styles.testEndItem}>{pcrLastTest}</Text>
                                 </View>
                                 <View style={styles.testContents}>
                                     <Text style={styles.testStartItem}>PCR Test Result</Text>

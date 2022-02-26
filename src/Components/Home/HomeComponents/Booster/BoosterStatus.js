@@ -33,22 +33,21 @@ const BoosterStatus = ({route}) => {
                 body: JSON.stringify({phone:value})
             };
             fetch(boosterUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setBoosterCenter(responseJson.myBoosterCenter);
-                    setBoosterCenterLocation(responseJson.myBoosterCenterLocation);
-                    setBoosterDate(responseJson.myBoosterDate);
-                    setAntibodyRemaining(responseJson.myAntibodyRemaining);
-                    setAntibodyRemaining(responseJson.myNameOfVaccine);
-                    setVaccineName(responseJson.myNameOfVaccine);
-                    setServeById(responseJson.myServeById);
-                    setServeByName(responseJson.myServeByName);
-                    setLoader(false)
-                })
-                .catch((error) => {
-                    setLoader(false)
-                    //Alert.alert("Failed to registration 2");
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setBoosterCenter(responseJson.myBoosterCenter);
+                setBoosterCenterLocation(responseJson.myBoosterCenterLocation);
+                setBoosterDate(responseJson.myBoosterDate);
+                setAntibodyRemaining(responseJson.myAntibodyRemaining);
+                setVaccineName(responseJson.myNameOfVaccine);
+                setServeById(responseJson.myServeById);
+                setServeByName(responseJson.myServeByName);
+                setLoader(false)
+            })
+            .catch((error) => {
+                setLoader(false)
+                //Alert.alert("Failed to registration 2");
+            });
         });
     },[])
 

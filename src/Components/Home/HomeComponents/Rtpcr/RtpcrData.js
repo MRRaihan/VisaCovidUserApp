@@ -31,20 +31,20 @@ const RtpcrData = ({navigation}) => {
                 body: JSON.stringify({phone:value})
             };
             fetch(boosterUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setRtPcrLastTest(responseJson.myRtPcrLastTest);
-                    setLastRtPcrResult(responseJson.myLastRtPcrResult);
-                    setRtPcrTestCenter(responseJson.myRtPcrTestCenter);
-                    setRtPcrCenterLocation(responseJson.myRtPcrCenterLocation);
-                    setServeById(responseJson.myServeById);
-                    setServeByName(responseJson.myServeByName);
-                    setLoader(false)
-                })
-                .catch((error) => {
-                    setLoader(false)
-                    //Alert.alert("Failed to registration 2");
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setRtPcrLastTest(responseJson.myRtPcrLastTest);
+                setLastRtPcrResult(responseJson.myLastRtPcrResult);
+                setRtPcrTestCenter(responseJson.myRtPcrTestCenter);
+                setRtPcrCenterLocation(responseJson.myRtPcrCenterLocation);
+                setServeById(responseJson.myServeById);
+                setServeByName(responseJson.myServeByName);
+                setLoader(false)
+            })
+            .catch((error) => {
+                setLoader(false)
+                //Alert.alert("Failed to registration 2");
+            });
         });
     },[])
     return (

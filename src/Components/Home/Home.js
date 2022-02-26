@@ -48,7 +48,7 @@ const Home = ({navigation}) =>{
     const [rtpcrIcon, setRtpcrStatusIcon] = useState("");
     const [booster, setBooster] = useState("");
     const [boosterIcon, setBoosterIcon] = useState("");
-    const [boosterStatus, setBoosterStatus] = useState("");
+    const [boosterStatus, setBoosterStatus] = useState(false);
     const [Refreshing, setRefreshing] = useState(false);
 
     //For Slider width & hight
@@ -74,6 +74,7 @@ const Home = ({navigation}) =>{
                     setVaccination(responseJson.navigationPath);
                     setVaccinationIcon(responseJson.vaccinationIcon);
                     setBoosterStatus(responseJson.boosterStatus);
+                    // console.log(responseJson.boosterStatus);
 
                     setVaccinationLoader(false)
                 })
@@ -102,6 +103,8 @@ const Home = ({navigation}) =>{
             fetch(pcrUrl,postConfig)
             .then((response) => response.json())
             .then((responseJson) => {
+                // console.log(responseJson)
+                console.log(responseJson)
                 setPcrStatus(responseJson.navigationPath);
                 setPcrStatusIcon(responseJson.pcrIcon);
                 setPcrEfficacyTimeInSecond(responseJson.pcrEfficacyTimeInSecond);
@@ -129,15 +132,16 @@ const Home = ({navigation}) =>{
                 body: JSON.stringify({phone:value})
             };
             fetch(rtpcrUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setRtpcr(responseJson.navigationPath);
-                    setRtpcrStatusIcon(responseJson.rtpcrIcon);
-                    setRtPcrLoader(false)
-                })
-                .catch((error) => {
-                    //Alert.alert("Failed to registration 2");
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson)
+                setRtpcr(responseJson.navigationPath);
+                setRtpcrStatusIcon(responseJson.rtpcrIcon);
+                setRtPcrLoader(false)
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
         });
         setLoader(false)
     }, []);
@@ -252,7 +256,10 @@ const Home = ({navigation}) =>{
                                     <View>
                                     <CountDown
                                         until={pcrEfficacyTimeInSecond}
-                                        onFinish={() => alert('Time End')}
+                                        onFinish={() => 
+                                            // alert('Time End')
+                                            console.log('Time End')
+                                        }
                                         // onPress={() => alert('hello')}
                                         size={12}
                                     />
@@ -361,7 +368,7 @@ const Home = ({navigation}) =>{
 
                 {
                     boosterStatus ?
-                        (<Card style={styles.dataFlex}><Text style={styles.boosterStatus}>Booster Not Available</Text></Card>) : (<View>
+                        (<View>
                             {
                                 boosterLoader ? <ActivityIndicator size="large" color="#718AEE"/> :
                                     <Card style={styles.dataFlex}>
@@ -403,7 +410,7 @@ const Home = ({navigation}) =>{
                                         </View>
                                     </Card>
                             }
-                        </View>)
+                        </View>):(<Card style={styles.dataFlex}><Text style={styles.boosterStatus}>Booster Not Available</Text></Card>)
                 }
 
                 <View>

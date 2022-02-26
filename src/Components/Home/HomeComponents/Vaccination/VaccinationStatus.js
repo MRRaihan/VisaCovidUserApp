@@ -36,25 +36,25 @@ const VaccinationStatus = ({navigation}) => {
                 body: JSON.stringify({phone:value})
             };
             fetch(boosterUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setVaccinationDoseOne(responseJson.myVaccinationDoseOne);
-                    setVaccinationDoseTwo(responseJson.myVaccinationDoseTwo);
-                    setVaccinationName(responseJson.myVaccinationName);
-                    setVaccinationCenter(responseJson.myVaccinationCenter);
-                    setVaccinationCenterLocation(responseJson.myVaccinationCenterLocation);
-                    setServeByFirstId(responseJson.myServeByFirstId);
-                    setServeByFirstName(responseJson.myServeByFirstName);
-                    setServeBySecondId(responseJson.myServeBySecondId);
-                    setServeBySecondName(responseJson.myServeBySecondName);
-                    setMyVaccinationImage(responseJson.myVaccinationImage);
-                    setLoader(false);
-                    console.log(vaccinationDoseTwo);
-                })
-                .catch((error) => {
-                    setLoader(false)
-                    //Alert.alert("Failed to registration 2");
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setVaccinationDoseOne(responseJson.myVaccinationDoseOne);
+                setVaccinationDoseTwo(responseJson.myVaccinationDoseTwo);
+                setVaccinationName(responseJson.myVaccinationName);
+                setVaccinationCenter(responseJson.myVaccinationCenter);
+                setVaccinationCenterLocation(responseJson.myVaccinationCenterLocation);
+                setServeByFirstId(responseJson.myServeByFirstId);
+                setServeByFirstName(responseJson.myServeByFirstName);
+                setServeBySecondId(responseJson.myServeBySecondId);
+                setServeBySecondName(responseJson.myServeBySecondName);
+                setMyVaccinationImage(responseJson.myVaccinationImage);
+                setLoader(false);
+                console.log(vaccinationDoseTwo);
+            })
+            .catch((error) => {
+                setLoader(false)
+                //Alert.alert("Failed to registration 2");
+            });
         });
     },[])
     return (

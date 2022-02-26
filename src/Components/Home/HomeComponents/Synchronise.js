@@ -7,47 +7,44 @@ import BeAware from "../../../../assets/images/BeAware.png";
 import moment from "moment";
 import AsyncStorage from "@react-native-community/async-storage";
 import appUrl from "../../../RestApi/AppUrl";
+import {userSynchronizeRuleCheck} from "../../../CustomHelper/Helper";
 
 const Synchronise = ({navigation, route}) => {
-    // const [personalDataChecked, setPersonalDataChecked] = React.useState(false);
-    // const [diagnosisDataChecked, setDiagnosisDataChecked] = React.useState(false);
-    // const [PCRDataChecked, setPCRDataChecked] = React.useState(false);
-    // const [vaccinationDataChecked, setVaccinationDataChecked] = React.useState(false);
-    // const [biometricDataChecked, setBiometricDataChecked] = React.useState(false);
     const [loader, setLoader] = useState(true);
-
-
     const [allRules, setAllRules] = useState([]);
     const [countryName, setCountryName] = useState('');
+    const [userSynchronizeData, setUserSynchronizeData] = useState([]);
 
     useEffect(()=>{
         setLoader(true)
-        const url = appUrl.Synchronize+'/'+route.params.toAddressId;
-        const config = {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        };
-
-        fetch(url,config)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            // console.log(responseJson)
-            if (responseJson.status == "1")
-            {
-                setAllRules(responseJson.rules);
-                setCountryName(responseJson.country_name);
+        AsyncStorage.getItem('phone').then(value =>{
+            const url = appUrl.Synchronize+'/'+route.params.toAddressId+'/'+value;
+            const config = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            };
+    
+            fetch(url,config)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.status == "1")
+                {
+                    setAllRules(responseJson.rules);
+                    setUserSynchronizeData(responseJson.user_synchronizes);
+                    setCountryName(responseJson.country_name);
+                    setLoader(false)
+                }else if(responseJson.status == "0"){
+                    Alert.alert(responseJson.message)
+                }
                 setLoader(false)
-            }else if(responseJson.status == "0"){
-                Alert.alert(responseJson.message)
-            }
-            setLoader(false)
-        })
-        .catch((error) => {
-            setLoader(false)
-            //Alert.alert("Failed to registration 2");
+            })
+            .catch((error) => {
+                setLoader(false)
+                //Alert.alert("Failed to registration 2");
+            });
         });
     },[])
 
@@ -78,7 +75,7 @@ const Synchronise = ({navigation, route}) => {
                                     allRules && allRules.length > 0 && allRules.map((synchronizeRuleBasedOnCountry) =>{
                                         return (<View style={{flexDirection: "row", width:"80%", marginLeft: 10, padding: 5, marginTop: 5}}>
                                             <Checkbox
-                                                status={false ? 'checked' : 'unchecked'}
+                                                status={userSynchronizeRuleCheck(synchronizeRuleBasedOnCountry.rule.id, userSynchronizeData) ? 'checked' : 'unchecked'}
                                                 onPress={() => {
                                                     alert("hello")
                                                 }}

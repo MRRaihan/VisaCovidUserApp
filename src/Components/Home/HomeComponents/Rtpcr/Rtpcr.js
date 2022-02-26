@@ -1,24 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-
-import appUrl from "../../../../RestApi/AppUrl";
-import DatePicker from 'react-native-datepicker';
-import moment from 'moment';
+import moment from "moment";
 import AsyncStorage from "@react-native-community/async-storage";
+import appUrl from "../../../../RestApi/AppUrl";
+import DatePicker from "react-native-datepicker";
+
+// import MapView from 'react-native-maps';
 
 const Rtpcr = ({navigation}) => {
     const [selectedFirstItem, setSelectedFirstItem] = useState();
     const [selectedSecondItem, setSelectedSecondItem] = useState();
     const [selectedThirdItem, setSelectedThirdItem] = useState();
     const [selectedFourItem, setSelectedFourItem] = useState();
+    const [selectedFifthItem, setSelectedFifthItem] = useState();
+
 
     const [allCountry, setCountryItem] = useState([]);
     const [allState, setStateItem] = useState([]);
     const [allCity, setCityItem] = useState([]);
     const [allCenter, setCenterItem] = useState([]);
+    const [rtPcrNames, setRtPcrNames] = useState([]);
 
-    //time
+    // time
     const [currentDate, setCurrentDate] = useState('');
     const [date, setDate] = useState('');
     const [phone, setPhone] = useState("");
@@ -42,222 +46,76 @@ const Rtpcr = ({navigation}) => {
         };
 
         fetch(url,config)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // Alert.alert(responseJson.status);
-                if (responseJson.status == "1")
-                {
-                    setCountryItem(responseJson.countries);
-                }else if(responseJson.status == "0"){
-                    Alert.alert(responseJson.message);
-                }
-            })
-            .catch((error) => {
-                //Alert.alert("Failed to registration 2");
-            });
+        .then((response) => response.json())
+        .then((responseJson) => {
+            // Alert.alert(responseJson.status);
+            if (responseJson.status == "1")
+            {
+                setCountryItem(responseJson.countries);
+            }else if(responseJson.status == "0"){
+                Alert.alert(responseJson.message);
+            }
+        })
+        .catch((error) => {
+            //Alert.alert("Failed to registration 2");
+        });
     },[])
+
+    
+    useEffect(()=>{
+        const url = appUrl.RtPcrNames;
+        const config = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        };
+        // console.log(url)
+
+        fetch(url, config)
+        .then(response => response.json())
+        .then(responseJson => {
+            // Alert.alert(responseJson.status);
+            if (responseJson.status == '1') {
+                setRtPcrNames(responseJson.rtPcrName);
+                console.log(responseJson.rtPcrName)
+                setSelectedFifthItem(responseJson.rtPcrName[0].id);
+            } else if (responseJson.status == '0') {
+                Alert.alert(responseJson.message);
+            }
+        })
+        .catch(error => {
+            //Alert.alert("Failed to registration 2");
+        });
+    },[])
+
 
     return (
         <ScrollView>
             <View style={styles.container}>
-                <View style={styles.firstView}>
-                    <View style={styles.pickerAllItem}>
-                        <Text style={styles.checkTitle}>Select a Country</Text>
-                        <Picker
-                            style={styles.checkItemColor}
-                            selectedValue={selectedFirstItem}
-                            onValueChange={(itemValue) =>{
-                                const url = appUrl.State+"/"+itemValue;
-                                const config = {
-                                    method: 'GET',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    }
-                                };
-                                fetch(url,config)
-                                    .then((response) => response.json())
-                                    .then((responseJson) => {
-                                        if (responseJson.status == "1")
-                                        {
-                                            setSelectedFirstItem(itemValue);
-                                            setStateItem(responseJson.states);
-                                        }else if(responseJson.status == "0"){
-                                            Alert.alert(responseJson.message);
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        //Alert.alert("Failed to registration 2");
-                                    });
-                            }
-                            }>
-                            <Picker.Item key="45643234" label="Select one"/>
-                            {
-                                allCountry.map((country)=>{
-                                    return (
-                                        <Picker.Item key={country.id} label={country.name} value={country.id} />
-                                    )
-                                })
-                            }
-                        </Picker>
-                    </View>
-                    <View style={styles.pickerAllItem}>
-                        <Text style={styles.checkTitle}>Select State</Text>
-                        <Picker
-                            style={styles.checkItemColor}
-                            selectedValue={selectedSecondItem}
-                            onValueChange={(itemValue, itemIndex) =>{
-                                const url = appUrl.City+"/"+itemValue;
-                                const config = {
-                                    method: 'GET',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    }
-                                };
-                                fetch(url,config)
-                                    .then((response) => response.json())
-                                    .then((responseJson) => {
-                                        if (responseJson.status == "1")
-                                        {
-                                            setSelectedSecondItem(itemValue)
-                                            setCityItem(responseJson.cities);
-                                        }else if(responseJson.status == "0"){
-                                            Alert.alert(responseJson.message);
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        //Alert.alert("Failed to registration 2");
-                                    });
-                            }
-                            }>
-                            <Picker.Item key="4564234" label="Select one"/>
-                            {
-                                allState.map((state)=>{
-                                    return (
-                                        <Picker.Item key={state.id} label={state.name} value={state.id} />
-                                    )
-                                })
-                            }
-                        </Picker>
-                    </View>
-
-                    <View style={styles.pickerAllItem}>
-                        <Text style={styles.checkTitle}>Select City</Text>
-                        <Picker
-                            style={styles.checkItemColor}
-                            selectedValue={selectedThirdItem}
-                            onValueChange={(itemValue, itemIndex) =>
-                            {
-                                const url = appUrl.rtpcrCenter+"/"+itemValue;
-                                const config = {
-                                    method: 'GET',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    }
-                                };
-                                fetch(url,config)
-                                    .then((response) => response.json())
-                                    .then((responseJson) => {
-                                        if (responseJson.status == "1")
-                                        {
-                                            setSelectedThirdItem(itemValue)
-                                            setCenterItem(responseJson.centers);
-                                        }else if(responseJson.status == "0"){
-                                            Alert.alert(responseJson.message);
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        //Alert.alert("Failed to registration 2");
-                                    });
-                            }
-
-                            }>
-                            <Picker.Item key="345634" label="Select one"/>
-                            {
-                                allCity.map((city)=>{
-                                    return (
-                                        <Picker.Item key={city.id} label={city.name} value={city.id} />
-                                    )
-                                })
-                            }
-                        </Picker>
-                    </View>
-
-                    <View style={styles.pickerAllItem}>
-                        <Text style={styles.checkTitle}>Select a center for TR-PCR Test</Text>
-                        <Picker
-                            style={styles.checkItemColor}
-                            selectedValue={selectedFourItem}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedFourItem(itemValue)
-                            }>
-                            <Picker.Item key="345543234" label="Select one"/>
-                            {
-                                allCenter.map((center)=>{
-                                    return (
-                                        <Picker.Item key={center.id} label={center.name} value={center.id} />
-                                    )
-                                })
-                            }
-                        </Picker>
-                    </View>
-
-                    <View style={styles.pickerAllItem}>
-                        <DatePicker
-                            style={{width: '100%'}}
-                            date={date}
-                            mode="date"
-                            placeholder="select date"
-                            format="YYYY-MM-DD"
-                            minDate={currentDate}
-                            maxDate="2022-06-01"
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
-                            customStyles={{
-                                dateIcon: {
-                                    position: 'absolute',
-                                    left: 0,
-                                    top: 4,
-                                    marginLeft: 0
-                                },
-                                dateInput: {
-                                    marginLeft: 36
+            <View style={styles.firstView}>
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select a Country</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedFirstItem}
+                        onValueChange={(itemValue) =>{
+                            const url = appUrl.State+"/"+itemValue;
+                            const config = {
+                                method: 'GET',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
                                 }
-                                // ... You can check the source to find the other keys.
-                            }}
-                            onDateChange={(date) => {
-                                var currentMyDate = moment(date).format('YYYY-MM-DD');
-                                setDate(currentMyDate);
-                            }}
-                        />
-                    </View>
-
-                    <TouchableOpacity style={styles.button} onPress={() => {
-                        const url = appUrl.rtpcrRegistration;
-                        const config = {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ phone:phone, center_id:selectedFourItem, date:date })
-                        };
-                        //Alert.alert(url);
-
-
-                        fetch(url,config)
+                            };
+                            fetch(url,config)
                             .then((response) => response.json())
                             .then((responseJson) => {
-                                if (responseJson.status == "2")
+                                if (responseJson.status == "1")
                                 {
-                                    Alert.alert(responseJson.message);
-                                    navigation.navigate("Rtpcr Status");
-                                } else if (responseJson.status == "1")
-                                {
-                                    Alert.alert(responseJson.message);
-                                    navigation.navigate("Rtpcr Status");
+                                    setSelectedFirstItem(itemValue);
+                                    setStateItem(responseJson.states);
                                 }else if(responseJson.status == "0"){
                                     Alert.alert(responseJson.message);
                                 }
@@ -265,15 +123,235 @@ const Rtpcr = ({navigation}) => {
                             .catch((error) => {
                                 //Alert.alert("Failed to registration 2");
                             });
-                    }}>
-                        <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Registration Now</Text>
-                    </TouchableOpacity>
-
+                        }
+                        }>
+                        <Picker.Item key="3453234" label="Select one"/>
+                        {
+                            allCountry.map((country)=>{
+                                return (
+                                    <Picker.Item key={country.id} label={country.name} value={country.id} />
+                                )
+                            })
+                        }
+                    </Picker>
                 </View>
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select State</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedSecondItem}
+                        onValueChange={(itemValue, itemIndex) =>{
+                            const url = appUrl.City+"/"+itemValue;
+                            const config = {
+                                method: 'GET',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                }
+                            };
+                            fetch(url,config)
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setSelectedSecondItem(itemValue)
+                                    setCityItem(responseJson.cities);
+                                }else if(responseJson.status == "0"){
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
+                        }
+                        }>
+                        <Picker.Item key="3453234" label="Select one"/>
+                        {
+                            allState.map((state)=>{
+                                return (
+                                    <Picker.Item key={state.id} label={state.name} value={state.id} />
+                                )
+                            })
+                        }
+                    </Picker>
+                </View>
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select City</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedThirdItem}
+                        onValueChange={(itemValue, itemIndex) =>
+                        {
+                            console.log("----"+itemValue+"----")
+                            console.log("----"+selectedFifthItem+"----")
+                            setSelectedThirdItem(itemValue)
+                            const url = appUrl.RtPcrCenterSelect;
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ city_id:itemValue, synchronizeRuleId:selectedFifthItem})
+                            };
+                            fetch(url,config)
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setCenterItem(responseJson.centers);
+                                }else if(responseJson.status == "0"){
+                                    setCenterItem([])
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
+                        }
+
+                    }>
+                        <Picker.Item key="4243789" label="Select one"/>
+                        {
+                            allCity.map((city)=>{
+                                return (
+                                    <Picker.Item key={city.id} label={city.name} value={city.id} />
+                                )
+                            })
+                        }
+                    </Picker>
+                </View>
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select RT-PCR</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedFifthItem}
+                        onValueChange={(itemValue, itemIndex) =>
+                        {
+                            setSelectedFifthItem(itemValue)
+                            const url = appUrl.RtPcrCenterSelect;
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ city_id:selectedThirdItem, synchronizeRuleId:itemValue})
+                            };
+                            fetch(url,config)
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setCenterItem(responseJson.centers);
+                                }else if(responseJson.status == "0"){
+                                    setCenterItem([])
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
+                        }
+                        }>
+                        {/* <Picker.Item key="12313131" label="Select one" /> */}
+                            {rtPcrNames.map(pcr => {
+                                return (
+                                    <Picker.Item
+                                    key={pcr.id}
+                                    label={pcr.synchronize_rule}
+                                    value={pcr.id}
+                                    />
+                                );
+                            })}
+                    </Picker>
+                </View>
+
+                <View style={styles.pickerAllItem}>
+                    <Text style={styles.checkTitle}>Select a center for RT-PCR Test</Text>
+                    <Picker
+                        style={styles.checkItemColor}
+                        selectedValue={selectedFourItem}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setSelectedFourItem(itemValue)
+                        }>
+                        <Picker.Item key="424456456" label="Select one" />
+                        {
+                            allCenter.map((center)=>{
+                                return (
+                                    <Picker.Item key={center.id} label={center.name} value={center.id} />
+                                )
+                            })
+                        }
+                    </Picker>
+                </View>
+
+                <View style={styles.pickerAllItem}>
+                    <DatePicker
+                        style={{width: '100%'}}
+                        date={date}
+                        mode="date"
+                        placeholder="select date"
+                        format="YYYY-MM-DD"
+                        minDate={currentDate}
+                        maxDate="2022-06-01"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                marginLeft: 36
+                            }
+                            // ... You can check the source to find the other keys.
+                        }}
+                        onDateChange={(date) => {
+                            var currentMyDate = moment(date).format('YYYY-MM-DD');
+                            setDate(currentMyDate);
+                        }}
+                    />
+                </View>
+                <TouchableOpacity style={styles.button} onPress={() => {
+                    const url = appUrl.rtPcrRegistration;
+                    const config = {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, synchronizeRuleId: selectedFifthItem, date:date })
+                    };
+                    fetch(url,config)
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+
+                        if (responseJson.status == "2")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("Rtpcr Status");
+                        } else if (responseJson.status == "1")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("Rtpcr Status");
+                        }else if(responseJson.status == "0"){
+                            Alert.alert(responseJson.message);
+                        }
+                    })
+                    .catch((error) => {
+                        //Alert.alert("Failed to registration 2");
+                    });
+                }}>
+                    <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Registration Now</Text>
+                </TouchableOpacity>
             </View>
-        </ScrollView>
-    );
-};
+        </View>
+    </ScrollView>
+    )
+}
 
 const styles = StyleSheet.create({
     container:{
@@ -332,15 +410,6 @@ const styles = StyleSheet.create({
     checkItemColor:{
         color: "#050505"
     }
-    // pickerItem:{
-    //     borderRadius: 10,
-    //     borderColor: "#d9b555",
-    //     backgroundColor: "#ebecf2",
-    //     width: "100%",
-    //     fontSize: 20
-    // }
-
 })
 
 export default Rtpcr;
-

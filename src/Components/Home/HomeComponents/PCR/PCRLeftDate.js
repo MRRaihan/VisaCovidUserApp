@@ -25,15 +25,15 @@ const PCRLeftDate = ({navigation}) => {
                 body: JSON.stringify({phone:value})
             };
             fetch(pcrUrl,postConfig)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setPcrLeftDay(responseJson.leftDay);
-                    setPcrLeftTime(responseJson.leftHour)
-                    setPcrAddress(responseJson.centerAddress)
-                })
-                .catch((error) => {
-                    //Alert.alert("Failed to registration 2");
-                });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setPcrLeftDay(responseJson.leftDay);
+                setPcrLeftTime(responseJson.leftHour)
+                setPcrAddress(responseJson.centerAddress)
+            })
+            .catch((error) => {
+                //Alert.alert("Failed to registration 2");
+            });
         });
     },[])
 

@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
     //     width: "100%",
     //     fontSize: 20
     // }
-
 })
 
 export default AddCountry;

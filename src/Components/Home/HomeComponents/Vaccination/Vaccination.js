@@ -21,7 +21,7 @@ const VaccineRegistration = ({navigation}) => {
     const [allState, setStateItem] = useState([]);
     const [allCity, setCityItem] = useState([]);
     const [allCenter, setCenterItem] = useState([]);
-    const [vaccineName, setVaccineName] = useState([]);
+    const [vaccineNames, setVaccineNames] = useState([]);
 
     //time
     const [currentDate, setCurrentDate] = useState('');
@@ -64,31 +64,30 @@ const VaccineRegistration = ({navigation}) => {
     },[])
 
     useEffect(()=>{
-
         const url = appUrl.VaccineNames;
         const config = {
             method: 'GET',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
         };
 
-
-        fetch(url,config)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // Alert.alert(responseJson.status);
-                if (responseJson.status == "1")
-                {
-                    setVaccineName(responseJson.vaccineName);
-                }else if(responseJson.status == "0"){
-                    Alert.alert(responseJson.message);
-                }
-            })
-            .catch((error) => {
-                //Alert.alert("Failed to registration 2");
-            });
+        fetch(url, config)
+        .then(response => response.json())
+        .then(responseJson => {
+            // Alert.alert(responseJson.status);
+            if (responseJson.status == '1') {
+            setVaccineNames(responseJson.vaccineName);
+            // console.log(responseJson.vaccineName)
+            // setSelectedVaccine(responseJson.vaccineName[0].name);
+            } else if (responseJson.status == '0') {
+            Alert.alert(responseJson.message);
+            }
+        })
+        .catch(error => {
+            //Alert.alert("Failed to registration 2");
+        });
     },[])
 
     return (
@@ -110,19 +109,19 @@ const VaccineRegistration = ({navigation}) => {
                                 }
                             };
                             fetch(url,config)
-                                .then((response) => response.json())
-                                .then((responseJson) => {
-                                    if (responseJson.status == "1")
-                                    {
-                                        setSelectedFirstItem(itemValue);
-                                        setStateItem(responseJson.states);
-                                    }else if(responseJson.status == "0"){
-                                        Alert.alert(responseJson.message);
-                                    }
-                                })
-                                .catch((error) => {
-                                    //Alert.alert("Failed to registration 2");
-                                });
+                            .then((response) => response.json())
+                            .then((responseJson) => {
+                                if (responseJson.status == "1")
+                                {
+                                    setSelectedFirstItem(itemValue);
+                                    setStateItem(responseJson.states);
+                                }else if(responseJson.status == "0"){
+                                    Alert.alert(responseJson.message);
+                                }
+                            })
+                            .catch((error) => {
+                                //Alert.alert("Failed to registration 2");
+                            });
                         }
                     }>
                         <Picker.Item key="4243234" label="Select one" />
@@ -214,7 +213,7 @@ const VaccineRegistration = ({navigation}) => {
                                     'Accept': 'application/json',
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify({ city_id:selectedThirdItem, vaccineName:itemValue})
+                                body: JSON.stringify({ city_id:selectedThirdItem, synchronizeRuleId:itemValue})
                             };
                             fetch(url,config)
                             .then((response) => response.json())
@@ -233,19 +232,21 @@ const VaccineRegistration = ({navigation}) => {
                         }
 
                         }>
-                        <Picker.Item key="4243789" label="Select one"/>
-                        {
-                            vaccineName.map((vaccine)=>{
+                        <Picker.Item key="12313131" label="Select one" />
+                            {vaccineNames.map(vaccine => {
                                 return (
-                                    <Picker.Item key={vaccine.id} label={vaccine.name} value={vaccine.name} />
-                                )
-                            })
-                        }
-                        </Picker>
+                                    <Picker.Item
+                                    key={vaccine.id}
+                                    label={vaccine.synchronize_rule}
+                                    value={vaccine.id}
+                                    />
+                                );
+                            })}
+                    </Picker>
                 </View>
 
                 <View style={styles.pickerAllItem}>
-                    <Text style={styles.checkTitle}>Select a center for Vaccination Test</Text>
+                    <Text style={styles.checkTitle}>Select a center for Vaccination</Text>
                     <Picker
                         style={styles.checkItemColor}
                         selectedValue={selectedFourItem}
@@ -300,30 +301,27 @@ const VaccineRegistration = ({navigation}) => {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, vaccineName: selectedFifthItem, date:date })
+                        body: JSON.stringify({ phone:phone, center_id:selectedFourItem, synchronizeRuleId: selectedFifthItem, date:date })
                     };
-                    //Alert.alert(url);
-                    console.log(config.body)
-
                     fetch(url,config)
-                        .then((response) => response.json())
-                        .then((responseJson) => {
+                    .then((response) => response.json())
+                    .then((responseJson) => {
 
-                            if (responseJson.status == "2")
-                            {
-                                Alert.alert(responseJson.message);
-                                navigation.navigate("Vaccine Date Status");
-                            } else if (responseJson.status == "1")
-                            {
-                                Alert.alert(responseJson.message);
-                                navigation.navigate("Vaccine Date Status");
-                            }else if(responseJson.status == "0"){
-                                Alert.alert(responseJson.message);
-                            }
-                        })
-                        .catch((error) => {
-                            //Alert.alert("Failed to registration 2");
-                        });
+                        if (responseJson.status == "2")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("Vaccine Date Status");
+                        } else if (responseJson.status == "1")
+                        {
+                            Alert.alert(responseJson.message);
+                            navigation.navigate("Vaccine Date Status");
+                        }else if(responseJson.status == "0"){
+                            Alert.alert(responseJson.message);
+                        }
+                    })
+                    .catch((error) => {
+                        //Alert.alert("Failed to registration 2");
+                    });
                     }}>
                         <Text style={{textAlign:"center", color: "white", fontSize: 20}}>Registration Now</Text>
                 </TouchableOpacity>
@@ -395,7 +393,6 @@ const styles = StyleSheet.create({
     checkItemColor:{
         color: "#050505"
     }
-
 })
 
 export default VaccineRegistration;

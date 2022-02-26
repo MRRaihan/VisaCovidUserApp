@@ -97,9 +97,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
     setErrorMessages(newMessages);
 
     if((newMessages.document == null && newMessages.selectedVaccine == null && newMessages.selectedDose == null && newMessages.center == null && newMessages.firstDose == null && newMessages.secondDose == null && newMessages.description == null && newMessages.centerLocation == null)){
-      // console.log('ok')
-      // alert('ok')
-      // return true;
+      // api code here 
       const url = appUrl.ExternalVaccination;
 
       const config = {
@@ -112,7 +110,7 @@ const AlreadyTakeVaccine = ({navigation}) => {
         body: JSON.stringify({
           document: formImage,
           phone: phone,
-          vaccineName: selectedVaccine,
+          synchronizeRuleId : selectedVaccine,
           center: center,
           firstDose: firstDose,
           secondDose: secondDose,
@@ -167,7 +165,6 @@ const AlreadyTakeVaccine = ({navigation}) => {
         // Alert.alert(responseJson.status);
         if (responseJson.status == '1') {
           setVaccineNames(responseJson.vaccineName);
-          // setSelectedVaccine(responseJson.vaccineName[0].name);
         } else if (responseJson.status == '0') {
           Alert.alert(responseJson.message);
         }
@@ -216,15 +213,14 @@ const AlreadyTakeVaccine = ({navigation}) => {
               }
             }}
             selectedValue={selectedVaccine}
-            // value={selectedVaccine}
             >
             <Picker.Item key="12313131" label="Select one" />
             {vaccineNames.map(vaccine => {
               return (
                 <Picker.Item
                   key={vaccine.id}
-                  label={vaccine.name}
-                  value={vaccine.name}
+                  label={vaccine.synchronize_rule}
+                  value={vaccine.id}
                 />
               );
             })}
